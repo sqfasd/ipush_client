@@ -90,6 +90,7 @@ class SocketClient : public NonCopyable {
   void WorkerThread();
   void HandleRead();
   void HandleWrite();
+  void Notify();
 
   int sock_fd_;
   std::thread worker_thread_;

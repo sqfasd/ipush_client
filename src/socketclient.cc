@@ -256,6 +256,10 @@ int SocketClient::Publish(const string& topic, const string& message) {
   packet->SetContent(writer.write(json));
   write_queue_.Push(packet);
 
+  Notify();
+}
+
+void SocketClient::Notify() {
   // notify through socket pipe
   static const char PIPE_DATA = '0';
   ::send(pipe_[0], &PIPE_DATA, 1, 0);
@@ -263,6 +267,7 @@ int SocketClient::Publish(const string& topic, const string& message) {
 
 void SocketClient::Close() {
   is_connected_ = false;
+  Notify();
 }
 
 }
