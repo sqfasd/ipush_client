@@ -3,6 +3,7 @@
 ## 用法
 
 ```
-gyp all.gyp --depth=. -fmake
+gyp all.gyp --generator-output=build --depth=. -fmake
+cd build
 make
 ```
