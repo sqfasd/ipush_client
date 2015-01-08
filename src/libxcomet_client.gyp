@@ -11,7 +11,10 @@
         '../'
       ],
       'cflags': [
-        '-std=c++11 -pthread',
+        '-std=c++11',
+      ],
+      "libraries": [
+        "-lpthread", 
       ],
       'dependencies': [
         '../deps/jsoncpp/jsoncpp.gyp:jsoncpp',

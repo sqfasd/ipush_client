@@ -10,7 +10,10 @@
         '../../',
       ],
       'cflags': [
-        '-std=c++11 -pthread',
+        '-std=c++11',
+      ],
+      "libraries": [
+        "-lpthread", 
       ],
       'dependencies': [
         '../../src/libxcomet_client.gyp:libxcomet_client',
