@@ -6,13 +6,13 @@
 #include <sstream>
 #include <thread>
 
-#define LOG_LEVEL tcpmany::LOG_INFO
+#define LOG_LEVEL xcomet::LOG_INFO
 #define LOG_VERBOSE_LEVEL 3
 
 #define LOG(severity) \
-  if (LOG_LEVEL <= tcpmany::LOG_##severity) \
-    tcpmany::SimpleLogger(__FILE__, __LINE__, #severity, \
-        tcpmany::LOG_##severity).Stream()
+  if (LOG_LEVEL <= xcomet::LOG_##severity) \
+    xcomet::SimpleLogger(__FILE__, __LINE__, #severity, \
+        xcomet::LOG_##severity).Stream()
 
 #define VLOG(v) \
   if (LOG_VERBOSE_LEVEL >= v) LOG(INFO)

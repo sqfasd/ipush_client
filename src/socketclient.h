@@ -55,13 +55,10 @@ class Packet {
 typedef std::function<void ()> ConnectCallback;
 typedef std::function<void ()> DisconnectCallback;
 typedef std::function<void (const std::string&)> MessageCallback;
-typedef std::function<void (ClientErrorCode)> ErrorCallback;
+typedef std::function<void (const std::string&)> ErrorCallback;
 
 class SocketClient : public NonCopyable {
  public:
-  enum ErrorCode {
-    OK = 0,
-  }
   SocketClient(const ClientOption option);
   ~SocketClient();
 
@@ -82,8 +79,8 @@ class SocketClient : public NonCopyable {
   }
 
   int Connect();
-  int Subscribe(const string& topic);
-  int Publish(const string& topic, const string& message);
+  int Subscribe(const std::string& topic);
+  int Publish(const std::string& topic, const std::string& message);
   void Close();
 
  private:

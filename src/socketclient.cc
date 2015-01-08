@@ -12,7 +12,13 @@
 #include <arpa/inet.h>
 
 #include "deps/jsoncpp/include/json/json.h"
+#include "basictypes.h"
 #include "logging.h"
+#include "util.h"
+
+using std::string;
+
+#define CERROR(msg) string(msg) + ": " + ::strerror(errno)
 
 namespace xcomet {
 
@@ -31,20 +37,20 @@ int Packet::ReadDataLen(int fd) {
   int ret;
   int total = 0;
   do {
-    ret = ::read(sock_fd_, p, 1);
+    ret = ::read(fd, p, 1);
     total++;
-    p++;
-  } while (ret == 1 && *p != '\r' && total < MAX_DATA_LEN);
+  } while (ret == 1 && *p++ != '\r' && total < MAX_DATA_LEN);
   if (ret != 1) {
     return ret;
-  } else if (total < MAX_DATA_LEN) {
+  } else if (total >= MAX_DATA_LEN) {
     return -2;
   } else {
-    ret = ::read(sock_fd_, p, 1);
+    ret = ::read(fd, p, 1);
     if (ret != 1) {
       return ret;
     } else {
-      return ::atoi(buf);
+      // 2 is crlf '\r\n'
+      return ::strtol(buf, NULL, 16) + 2;
     }
   }
 }
@@ -52,7 +58,7 @@ int Packet::ReadDataLen(int fd) {
 int Packet::Read(int fd) {
   int n;
   if (left_ == 0) {
-    n = ReadDataLen();
+    n = ReadDataLen(fd);
     if (n <= 0) {
       return n;
     }
@@ -64,11 +70,11 @@ int Packet::Read(int fd) {
   char buf[BUFFER_LEN] = {0};
   int total = 0;
   do {
-    int max_read_len = left_len_ > BUFFER_LEN ? BUFFER_LEN : left_len_;
+    int max_read_len = left_ > BUFFER_LEN ? BUFFER_LEN : left_;
     n = ::read(fd, buf, max_read_len);
     if (n > 0) {
-      len_ -= n;
       content_.append(buf, n);
+      left_ -= n;
       total += n;
     }
   } while (n > 0 && left_ > 0);
@@ -81,7 +87,7 @@ int Packet::Read(int fd) {
 int Packet::Write(int fd) {
   CHECK(len_ > 0);
   char buf[MAX_DATA_LEN] = {0};
-  int n = ::snprintf(buf, MAX_DATA_LEN, "%x\r\n", content_.size());
+  int n = ::snprintf(buf, MAX_DATA_LEN, "%x\r\n", (uint32)content_.size());
   CHECK(n < MAX_DATA_LEN + 2);
   int ret = ::write(fd, buf, n);
   CHECK(ret == n);
@@ -100,13 +106,16 @@ SocketClient::SocketClient(const ClientOption option)
 
 SocketClient::~SocketClient() {
   Close();
+  if (worker_thread_.joinable()) {
+    worker_thread_.join();
+  }
   ::close(pipe_[0]);
   ::close(pipe_[1]);
 }
 
 int SocketClient::Connect() {
   worker_thread_ = std::thread(&SocketClient::WorkerThread, this);
-  return OK;
+  return 0;
 }
 
 void SocketClient::WorkerThread() {
@@ -115,13 +124,13 @@ void SocketClient::WorkerThread() {
     ip = option_.host;
   } else {
     if (!GetHostIp(option_.host, ip)) {
-      error_cb_(E_INVALID_HOST);
+      error_cb_("invalid host");
       return;
     }
   }
-  sock_fd_ = ::socket(AF_INET, SOCKET_STREAM, 0);
-  if (p_->sock_fd_== -1) {
-    error_cb_(E_SOCKET);
+  sock_fd_ = ::socket(AF_INET, SOCK_STREAM, 0);
+  if (sock_fd_== -1) {
+    error_cb_(CERROR("socket error"));
     return;
   }
   
@@ -133,30 +142,31 @@ void SocketClient::WorkerThread() {
   if (::connect(sock_fd_,
                 (struct sockaddr*)&server_addr,
                 sizeof(struct sockaddr)) == -1) {
-    error_cb_(E_CONNECT);
+    error_cb_(CERROR("connect error"));
     return;
   }
   char buffer[1024] = {0};
   int size = ::snprintf(
       buffer,
-      "GET /sub?seq=-1&username=%s&password=%s HTTP/1.1\r\n"
+      sizeof(buffer),
+      "GET /sub?seq=-1&uid=%s&password=%s HTTP/1.1\r\n"
       "User-Agent: mobile_socket_client/0.1.0\r\n"
       "Accept: */*\r\n"
       "\r\n",
       option_.user_name.c_str(),
-      option_.password.c_str(),
-      sizeof(http_header));
-  if (::send(sock_fd_, http_header, size, 0) < 0) {
-    error_cb_(E_SEND_HTTP_HEADER);
+      option_.password.c_str()
+      );
+  if (::send(sock_fd_, buffer, size, 0) < 0) {
+    error_cb_(CERROR("send error"));
     return;
   }
   ::memset(buffer, 0, sizeof(buffer));
   if (::recv(sock_fd_, buffer, sizeof(buffer), 0) < 0) {
-    error_cb_(E_RECV);
+    error_cb_(CERROR("receive error"));
     return;
   }
   if (::strstr(buffer, "HTTP/1.1 200") == NULL) {
-    error_cb_(E_CONNECT_FAILED);
+    error_cb_(string("connect failed: ") + buffer);
     return;
   }
 
@@ -169,7 +179,7 @@ void SocketClient::WorkerThread() {
     pfds[0].fd = sock_fd_;
     pfds[0].revents = 0;
     pfds[0].events = POLLIN | POLLPRI;
-    if (!write_queue_.empty()) {
+    if (!write_queue_.Empty()) {
       pfds[0].events |= POLLOUT;
     }
     pfds[1].fd = pipe_[1];
@@ -197,7 +207,7 @@ void SocketClient::WorkerThread() {
       }
     } else {
       // handle error
-      error_cb_(1);
+      error_cb_(CERROR("poll error"));
       Close();
     }
   }
@@ -221,7 +231,7 @@ void SocketClient::HandleRead() {
     try {
       reader.parse(current_read_packet_->Content(), json);
     } catch (std::exception e) {
-      error_cb_(E_RECV_JSON_FORMAT);
+      error_cb_(string("json format error: ") + e.what());
       Close();
       return;
     }
@@ -229,13 +239,13 @@ void SocketClient::HandleRead() {
     //       json.isMember("topic") &&
     //       json.isMember("to") &&
     //       json["to"] == option_.user_name);
-    message_cb_(json["content"]);
+    message_cb_(json["content"].asString());
     current_read_packet_->Reset();
   }
 }
 
 void SocketClient::HandleWrite() {
-  while (!write_queue_.empty()) {
+  while (!write_queue_.Empty()) {
     PacketPtr pkt;
     write_queue_.Pop(pkt);
     int ret = pkt->Write(sock_fd_);
