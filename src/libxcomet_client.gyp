@@ -8,6 +8,7 @@
       ],
       'include_dirs': [
         '../deps/',
+        '../'
       ],
       'cflags': [
         '-std=c++11 -pthread',
