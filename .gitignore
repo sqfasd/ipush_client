@@ -17,3 +17,4 @@ node_modules
 .git
 *.lo
 *.log
+out
