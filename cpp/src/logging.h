@@ -3,19 +3,17 @@
 
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 #include <sstream>
 #include <thread>
 
-#define LOG_LEVEL xcomet::LOG_INFO
-#define LOG_VERBOSE_LEVEL 3
-
 #define LOG(severity) \
-  if (LOG_LEVEL <= xcomet::LOG_##severity) \
+  if (xcomet::SimpleLogger::LogLevel() <= xcomet::LOG_##severity) \
     xcomet::SimpleLogger(__FILE__, __LINE__, #severity, \
         xcomet::LOG_##severity).Stream()
 
 #define VLOG(v) \
-  if (LOG_VERBOSE_LEVEL >= v) LOG(INFO)
+  if (xcomet::SimpleLogger::LogVerboseLevel() >= v) LOG(INFO)
 
 #define CHECK(condition) \
   if (!(condition)) \
@@ -29,8 +27,30 @@ const int LOG_ERROR = 2;
 const int LOG_ERROR_REPORT = 3;
 const int LOG_FATAL = 4;
 
+typedef void(*PrintFunc)(int level, const char*);
+
 class SimpleLogger {
  public:
+  static void SetPrintFunc(PrintFunc func) {
+    s_print_func_ = func;
+  }
+
+  static void SetLogLevel(int n) {
+    s_log_level_ = n;
+  }
+
+  static int LogLevel() {
+    return s_log_level_;
+  }
+
+  static void SetLogVerboseLevel(int n) {
+    s_log_verbose_level_ = n;
+  }
+
+  static int LogVerboseLevel() {
+    return s_log_verbose_level_;
+  }
+
   SimpleLogger(const char* file, int line, const char* level_str, int level)
       : level_(level) {
     time_t t = ::time(nullptr);
@@ -51,17 +71,17 @@ class SimpleLogger {
   }
   ~SimpleLogger() {
     stream_ << '\n';
-    ::fwrite(stream_.str().c_str(), 1, stream_.str().length(), stderr);
-    if (level_ == LOG_FATAL) {
-      ::fflush(stderr);
-      ::abort();
-    }
+    s_print_func_(level_, stream_.str().c_str());
   }
   std::ostream& Stream() { return stream_; }
 
  private:
   std::ostringstream stream_;
   int level_;
+
+  static PrintFunc s_print_func_;
+  static int s_log_level_;
+  static int s_log_verbose_level_;
 };
 }
 #endif  // SRC_LOGGING_H_

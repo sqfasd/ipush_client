@@ -8,13 +8,14 @@
 #include <thread>
 #include <memory>
 #include "blocking_queue.h"
+#include "deps/jsoncpp/include/json/json.h"
 
 namespace xcomet {
 
 struct ClientOption {
   std::string host;
   int port;
-  std::string user_name;
+  std::string username;
   std::string password;
 };
 
@@ -78,16 +79,37 @@ class SocketClient : public NonCopyable {
     return is_connected_;
   }
 
+  void SetHost(const std::string& host) {
+    option_.host = host;
+  }
+
+  void SetPort(int port) {
+    option_.port = port;
+  }
+
+  void SetUserName(const std::string& username) {
+    option_.username = username;
+  }
+
+  void SetPassword(const std::string& password) {
+    option_.password = password;
+  }
+
   int Connect();
-  int Subscribe(const std::string& topic);
-  int Publish(const std::string& topic, const std::string& message);
+  int Subscribe(const std::string& channel);
+  int Unsubscribe(const std::string& channel);
+  int Publish(const std::string& channel, const std::string& message);
+  int Send(const std::string& user, const std::string& message);
+  int SendHeartbeat();
   void Close();
+  void WaitForClose();
 
  private:
   void WorkerThread();
   void HandleRead();
   void HandleWrite();
   void Notify();
+  void SendJson(const Json::Value& value);
 
   int sock_fd_;
   std::thread worker_thread_;

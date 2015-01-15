@@ -1,41 +1,62 @@
 package com.xuexibao.xcomet;
 
+import android.util.Log;
+
 public class XCometClient {
-  private String mHost = null;
-  private int mPort = -1;
-  private String mUserName = null;
-  private String mPassword = null;
+  private long mNativeHandler = 0;
   private XCometCallback mCallback = null;
-  private bool mIsConnected = false;
 
   public static interface XCometCallback {
     void onConnect();
     void onMessage(String msg);
-    void onError(XCometError err);
+    void onError(String err);
     void onDisconnect();
   }
 
-  public XCometClient() {
+   static {
+     System.loadLibrary("xcomet_client_jni");
+   }
+
+  public XCometClient(XCometCallback cb) {
+    mCallback = cb;
+    mNativeHandler = create();
   }
 
-  public void setHost(String host) {mHost = host;}
-  public void setPort(int port) {mPort = port;}
-  public void setUserName(String userName) {mUserName = userName;}
-  public void setPassword(String password) {mPassword = password;}
-  public void setCallback(XCometCallback cb) {mCallback = cb;}
-
-  public void connect() {
-    // CHECK(mHost != null && mPort =! -1 && mUserName != null && mPassword != null && mCallback != null);
+  public void dispose() {
+    close();
+    destroy();
   }
 
-  public isConnected() {
-    return mIsConnected;
+  public void connectCallback() {
+    mCallback.onConnect();
   }
 
-  public int publish(String msg) {
+  public void messageCallback(String msg) {
+    mCallback.onMessage(msg);
   }
 
-  public int close() {
+  public void errorCallback(String err) {
+    mCallback.onError(err);
   }
 
+  public void disconnectCallback() {
+    mCallback.onDisconnect();
+  }
+
+  public native void setHost(String host);
+  public native void setPort(int port);
+  public native void setUserName(String userName);
+  public native void setPassword(String password);
+
+  public native void destroy();
+  public native int connect();
+  public native int publish(String channel, String msg);
+  public native int send(String user, String msg);
+  public native int subscribe(String channel);
+  public native int unsubscribe(String channel);
+  public native int sendHeartbeat();
+  public native void close();
+  public native void waitForClose();
+
+  private native long create();
 }

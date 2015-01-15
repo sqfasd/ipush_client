@@ -11,7 +11,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include "deps/jsoncpp/include/json/json.h"
 #include "basictypes.h"
 #include "logging.h"
 #include "util.h"
@@ -105,15 +104,19 @@ SocketClient::SocketClient(const ClientOption option)
 }
 
 SocketClient::~SocketClient() {
-  Close();
-  if (worker_thread_.joinable()) {
-    worker_thread_.join();
-  }
+  WaitForClose();
   ::close(pipe_[0]);
   ::close(pipe_[1]);
 }
 
 int SocketClient::Connect() {
+  if (option_.host.empty() ||
+      option_.port <= 0 ||
+      option_.username.empty() ||
+      option_.password.empty()) {
+    LOG(WARNING) << "invalid client option";
+    return -1;
+  }
   worker_thread_ = std::thread(&SocketClient::WorkerThread, this);
   return 0;
 }
@@ -138,7 +141,7 @@ void SocketClient::WorkerThread() {
   ::memset(&server_addr, 0, sizeof(server_addr));
   server_addr.sin_family = AF_INET;
   server_addr.sin_addr.s_addr = ::inet_addr(ip.c_str());
-  server_addr.sin_port = ::htons(option_.port);
+  server_addr.sin_port = htons(option_.port);
   if (::connect(sock_fd_,
                 (struct sockaddr*)&server_addr,
                 sizeof(struct sockaddr)) == -1) {
@@ -153,7 +156,7 @@ void SocketClient::WorkerThread() {
       "User-Agent: mobile_socket_client/0.1.0\r\n"
       "Accept: */*\r\n"
       "\r\n",
-      option_.user_name.c_str(),
+      option_.username.c_str(),
       option_.password.c_str()
       );
   if (::send(sock_fd_, buffer, size, 0) < 0) {
@@ -201,7 +204,7 @@ void SocketClient::WorkerThread() {
         HandleWrite();
       }
       if (pfds[1].revents & POLLIN) {
-        LOG(INFO) << "pipe notify received";
+        VLOG(2) << "pipe notify received";
         char c;
         while (::read(sock_fd_, &c, 1) == 1);
       }
@@ -238,7 +241,7 @@ void SocketClient::HandleRead() {
     // CHECK(json.isMember("content") &&
     //       json.isMember("topic") &&
     //       json.isMember("to") &&
-    //       json["to"] == option_.user_name);
+    //       json["to"] == option_.username);
     message_cb_(json["content"].asString());
     current_read_packet_->Reset();
   }
@@ -255,18 +258,15 @@ void SocketClient::HandleWrite() {
   }
 }
 
-int SocketClient::Publish(const string& topic, const string& message) {
+int SocketClient::Publish(const string& channel, const string& message) {
   Json::Value json;
   json["seq"] = 0;
-  json["sender"] = option_.user_name;
-  json["topic"] = topic;
+  json["from"] = option_.username;
+  json["to"] = channel;
+  json["type"] = "channel";
   json["content"] = message;
-  PacketPtr packet(new Packet());
-  Json::FastWriter writer;
-  packet->SetContent(writer.write(json));
-  write_queue_.Push(packet);
-
-  Notify();
+  SendJson(json);
+  return 0;
 }
 
 void SocketClient::Notify() {
@@ -277,6 +277,56 @@ void SocketClient::Notify() {
 
 void SocketClient::Close() {
   is_connected_ = false;
+  Notify();
+}
+
+void SocketClient::WaitForClose() {
+  if (is_connected_) {
+    Close();
+  }
+  if (worker_thread_.joinable()) {
+    worker_thread_.join();
+  }
+}
+
+int SocketClient::Subscribe(const std::string& channel) {
+  Json::Value json;
+  json["uid"] = option_.username;
+  json["channel_id"] = channel;
+  json["type"] = "sub";
+  SendJson(json);
+  return 0;
+}
+
+int SocketClient::Unsubscribe(const std::string& channel) {
+  Json::Value json;
+  json["uid"] = option_.username;
+  json["channel_id"] = channel;
+  json["type"] = "unsub";
+  SendJson(json);
+  return 0;
+}
+
+int SocketClient::Send(const std::string& user, const std::string& message) {
+  Json::Value json;
+  json["from"] = option_.username;
+  json["to"] = user;
+  json["type"] = "send";
+  json["content"] = message;
+  SendJson(json);
+  return 0;
+}
+
+int SocketClient::SendHeartbeat() {
+  return 0;
+}
+
+void SocketClient::SendJson(const Json::Value& json) {
+  PacketPtr packet(new Packet());
+  Json::FastWriter writer;
+  packet->SetContent(writer.write(json));
+  write_queue_.Push(packet);
+
   Notify();
 }
 

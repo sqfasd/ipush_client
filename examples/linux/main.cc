@@ -10,13 +10,13 @@ using namespace xcomet;
 int main(int argc, char* argv[]) {
   const char* host = "127.0.0.1";
   const int port = 9000;
-  const char* user_name = "user1";
+  const char* user= "user1";
   const char* password = "pwd111";
 
   ClientOption option;
   option.host = host;
   option.port = port;
-  option.user_name = user_name;
+  option.user= user;
   option.password = password;
 
   SocketClient client(option);
