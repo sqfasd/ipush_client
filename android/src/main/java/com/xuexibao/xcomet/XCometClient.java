@@ -23,7 +23,6 @@ public class XCometClient {
   }
 
   public void dispose() {
-    close();
     destroy();
   }
 

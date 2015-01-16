@@ -73,6 +73,7 @@ JOWW(jlong, XCometClient_create)(JNIEnv* env, jobject self) {
     jclass cls = GetClass();
     jmethodID callback = jni->GetMethodID(cls,"disconnectCallback","()V");
     jni->CallVoidMethod(g_self_global_ref_, callback);
+    g_jni_helper_->DetachCurrentEnv();
   });
   client->SetMessageCallback([](const std::string& msg) {
     LOG(INFO) << "receive message: " << msg;

@@ -93,7 +93,7 @@ public class PushService extends Service
 		/* If our process was reaped by the system for any reason we need
 		 * to restore our state with merely a call to onCreate.  We record
 		 * the last "started" value and restore it here if necessary. */
-		handleCrashedService();
+		//handleCrashedService();
 	}
 	
 	private void handleCrashedService()
@@ -139,18 +139,16 @@ public class PushService extends Service
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
 		log("Service started with intent=" + intent);
-		if (intent.getAction().equals(ACTION_STOP) == true)
-		{
+		if (intent.getAction().equals(ACTION_STOP) == true) {
 			stop();
 			stopSelf();
-		}
-		else if (intent.getAction().equals(ACTION_START) == true)
-			start();
-		else if (intent.getAction().equals(ACTION_KEEPALIVE) == true) {
+		} else if (intent.getAction().equals(ACTION_START) == true) {
+            start();
+        } else if (intent.getAction().equals(ACTION_KEEPALIVE) == true) {
             // keepAlive();
+        } else if (intent.getAction().equals(ACTION_RECONNECT) == true) {
+            reconnectIfNecessary();
         }
-		else if (intent.getAction().equals(ACTION_RECONNECT) == true)
-			reconnectIfNecessary();
         return START_STICKY;
 	}
 

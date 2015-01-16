@@ -117,6 +117,10 @@ int SocketClient::Connect() {
     LOG(WARNING) << "invalid client option";
     return -1;
   }
+  if (worker_thread_.joinable()) {
+    LOG(INFO) << "join previous worker thread";
+    worker_thread_.join();
+  }
   worker_thread_ = std::thread(&SocketClient::WorkerThread, this);
   return 0;
 }
@@ -137,6 +141,8 @@ void SocketClient::WorkerThread() {
     return;
   }
   
+  char buffer[1024] = {0};
+  int size;
   struct sockaddr_in server_addr;
   ::memset(&server_addr, 0, sizeof(server_addr));
   server_addr.sin_family = AF_INET;
@@ -146,10 +152,9 @@ void SocketClient::WorkerThread() {
                 (struct sockaddr*)&server_addr,
                 sizeof(struct sockaddr)) == -1) {
     error_cb_(CERROR("connect error"));
-    return;
+    goto clean_and_exit;
   }
-  char buffer[1024] = {0};
-  int size = ::snprintf(
+  size = ::snprintf(
       buffer,
       sizeof(buffer),
       "GET /sub?seq=-1&uid=%s&password=%s HTTP/1.1\r\n"
@@ -157,20 +162,19 @@ void SocketClient::WorkerThread() {
       "Accept: */*\r\n"
       "\r\n",
       option_.username.c_str(),
-      option_.password.c_str()
-      );
+      option_.password.c_str());
   if (::send(sock_fd_, buffer, size, 0) < 0) {
     error_cb_(CERROR("send error"));
-    return;
+    goto clean_and_exit;
   }
   ::memset(buffer, 0, sizeof(buffer));
   if (::recv(sock_fd_, buffer, sizeof(buffer), 0) < 0) {
     error_cb_(CERROR("receive error"));
-    return;
+    goto clean_and_exit;
   }
   if (::strstr(buffer, "HTTP/1.1 200") == NULL) {
     error_cb_(string("connect failed: ") + buffer);
-    return;
+    goto clean_and_exit;
   }
 
   SetNonblock(sock_fd_);
@@ -211,15 +215,18 @@ void SocketClient::WorkerThread() {
     } else {
       // handle error
       error_cb_(CERROR("poll error"));
-      Close();
+      is_connected_ = false;
+      goto clean_and_exit;
     }
   }
 
-  // clean work
+clean_and_exit:
+  LOG(INFO) << "will clean and exit";
   CHECK(is_connected_ == false);
   ::shutdown(sock_fd_, SHUT_RDWR);
   write_queue_.Clear();
   disconnect_cb_();
+  LOG(INFO) << "work thread exited";
 }
 
 void SocketClient::HandleRead() {
