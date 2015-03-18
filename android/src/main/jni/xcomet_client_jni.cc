@@ -30,6 +30,9 @@ static void AndroidLogFunc(int level, const char* str) {
     android_log_level = ANDROID_LOG_FATAL;
   }
   __android_log_write(android_log_level, "xcomet_client_jni", str);
+  if (android_log_level == ANDROID_LOG_FATAL) {
+    ::abort();
+  }
 }
 
 extern "C" jint JNIEXPORT JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
@@ -125,6 +128,13 @@ JOWW(void, XCometClient_setPassword)(JNIEnv* env, jobject self,
   client->SetPassword(env->GetStringUTFChars(password, NULL));
 }
 
+JOWW(void, XCometClient_setKeepaliveInterval)(JNIEnv* env,
+                                              jobject self,
+                                              jint interval) {
+  SocketClient* client = GetSocketClient(env, self);
+  client->SetKeepaliveInterval(interval);
+}
+
 JOWW(int, XCometClient_connect)(JNIEnv* env, jobject self) {
   SocketClient* client = GetSocketClient(env, self);
   return client->Connect();
@@ -155,10 +165,12 @@ JOWW(int, XCometClient_unsubscribe)(JNIEnv* env, jobject self,
   return client->Unsubscribe(env->GetStringUTFChars(channel, NULL));
 }
 
+/*
 JOWW(int, XCometClient_sendHeartbeat)(JNIEnv* env, jobject self) {
   SocketClient* client = GetSocketClient(env, self);
   return client->SendHeartbeat();
 }
+*/
 
 JOWW(void, XCometClient_close)(JNIEnv* env, jobject self) {
   SocketClient* client = GetSocketClient(env, self);

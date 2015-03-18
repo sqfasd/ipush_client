@@ -46,6 +46,7 @@ public class XCometClient {
   public native void setPort(int port);
   public native void setUserName(String userName);
   public native void setPassword(String password);
+  public native void setKeepaliveInterval(int interval);
 
   public native void destroy();
   public native int connect();
@@ -53,7 +54,7 @@ public class XCometClient {
   public native int send(String user, String msg);
   public native int subscribe(String channel);
   public native int unsubscribe(String channel);
-  public native int sendHeartbeat();
+  //public native int sendHeartbeat();
   public native void close();
   public native void waitForClose();
 

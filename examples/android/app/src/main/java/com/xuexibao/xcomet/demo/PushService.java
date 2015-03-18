@@ -45,7 +45,7 @@ public class PushService extends Service
 	private boolean mStarted;
     private XCometClient mConnection;
 
-	private static final long KEEP_ALIVE_INTERVAL = 1000 * 60 * 28;
+	private static final long KEEP_ALIVE_INTERVAL = 1000 * 30;
 
 	private static final long INITIAL_RETRY_INTERVAL = 1000 * 10;
 	private static final long MAXIMUM_RETRY_INTERVAL = 1000 * 60 * 30;
@@ -145,18 +145,22 @@ public class PushService extends Service
 		} else if (intent.getAction().equals(ACTION_START) == true) {
             start();
         } else if (intent.getAction().equals(ACTION_KEEPALIVE) == true) {
-            // keepAlive();
+            keepAlive();
         } else if (intent.getAction().equals(ACTION_RECONNECT) == true) {
             reconnectIfNecessary();
         }
         return START_STICKY;
 	}
 
+    private void keepAlive() {
+    }
+
     private void newConnection() {
         mConnection = new XCometClient(new XCometClient.XCometCallback() {
             @Override
             public void onConnect() {
                 Log.i(TAG, "onConnect");
+                setStarted(true);
             }
 
             @Override
@@ -172,12 +176,14 @@ public class PushService extends Service
             @Override
             public void onDisconnect() {
                 Log.i(TAG, "onDisconnect");
+                setStarted(false);
             }
         });
         mConnection.setHost(HOST);
         mConnection.setPort(PORT);
         mConnection.setUserName("android_user_1");
         mConnection.setPassword("android_password_1");
+        mConnection.setKeepaliveInterval(10);
     }
 	@Override
 	public IBinder onBind(Intent intent)
@@ -200,12 +206,20 @@ public class PushService extends Service
 
 		log("Connecting...");
         newConnection();
-		int ret = mConnection.connect();
-        Log.i(TAG, "connect ret = " + ret);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int ret = mConnection.connect();
+                Log.i(TAG, "connect ret = " + ret);
+            }
+        });
+        //startKeepAlives();
 	}
 
 	private synchronized void stop()
 	{
+        //stopKeepAlives();
 		if (mStarted == false)
 		{
 			Log.w(TAG, "Attempt to stop connection not active.");

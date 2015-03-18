@@ -17,6 +17,7 @@ struct ClientOption {
   int port;
   std::string username;
   std::string password;
+  int keepalive_interval;
 };
 
 class Packet {
@@ -95,21 +96,25 @@ class SocketClient : public NonCopyable {
     option_.password = password;
   }
 
+  void SetKeepaliveInterval(int interval_sec) {
+    keepalive_interval_sec_ = interval_sec;
+  }
+
   int Connect();
   int Subscribe(const std::string& channel);
   int Unsubscribe(const std::string& channel);
   int Publish(const std::string& channel, const std::string& message);
   int Send(const std::string& user, const std::string& message);
-  int SendHeartbeat();
   void Close();
   void WaitForClose();
 
  private:
-  void WorkerThread();
-  void HandleRead();
-  void HandleWrite();
+  void Loop();
+  bool HandleRead();
+  bool HandleWrite();
   void Notify();
   void SendJson(const Json::Value& value);
+  int SendHeartbeat();
 
   int sock_fd_;
   std::thread worker_thread_;
@@ -126,6 +131,7 @@ class SocketClient : public NonCopyable {
   PacketPtr current_read_packet_;
 
   int pipe_[2]; 
+  int keepalive_interval_sec_;
 };
 }
 

@@ -17,6 +17,8 @@
 
 using std::string;
 
+const int DEFAULT_KEEPALIVE_INTERVAL_SEC = 28 * 60L;
+
 #define CERROR(msg) string(msg) + ": " + ::strerror(errno)
 
 namespace xcomet {
@@ -98,7 +100,8 @@ SocketClient::SocketClient(const ClientOption option)
     : sock_fd_(-1),
       option_(option),
       is_connected_(false),
-      current_read_packet_(new Packet()) {
+      current_read_packet_(new Packet()),
+      keepalive_interval_sec_(DEFAULT_KEEPALIVE_INTERVAL_SEC) {
   CHECK(::socketpair(AF_UNIX, SOCK_STREAM, 0, pipe_) == 0);
   SetNonblock(pipe_[1]);
 }
@@ -114,73 +117,74 @@ int SocketClient::Connect() {
       option_.port <= 0 ||
       option_.username.empty() ||
       option_.password.empty()) {
-    LOG(WARNING) << "invalid client option";
+    LOG(ERROR) << "invalid client option";
     return -1;
   }
-  if (worker_thread_.joinable()) {
-    LOG(INFO) << "join previous worker thread";
-    worker_thread_.join();
-  }
-  worker_thread_ = std::thread(&SocketClient::WorkerThread, this);
-  return 0;
-}
 
-void SocketClient::WorkerThread() {
   string ip;
   if (IsIp(option_.host)) {
     ip = option_.host;
   } else {
     if (!GetHostIp(option_.host, ip)) {
-      error_cb_("invalid host");
-      return;
+      LOG(ERROR) << "invalid host";
+      return -2;
     }
   }
   sock_fd_ = ::socket(AF_INET, SOCK_STREAM, 0);
   if (sock_fd_== -1) {
-    error_cb_(CERROR("socket error"));
-    return;
+    LOG(ERROR) << CERROR("socket error");
+    return -3;
   }
-  
+
   char buffer[1024] = {0};
-  int size;
   struct sockaddr_in server_addr;
   ::memset(&server_addr, 0, sizeof(server_addr));
   server_addr.sin_family = AF_INET;
   server_addr.sin_addr.s_addr = ::inet_addr(ip.c_str());
   server_addr.sin_port = htons(option_.port);
+
   if (::connect(sock_fd_,
                 (struct sockaddr*)&server_addr,
                 sizeof(struct sockaddr)) == -1) {
-    error_cb_(CERROR("connect error"));
-    goto clean_and_exit;
+    LOG(ERROR) << CERROR("connect error");
+    return -4;
   }
-  size = ::snprintf(
+  int size = ::snprintf(
       buffer,
       sizeof(buffer),
-      "GET /sub?seq=-1&uid=%s&password=%s HTTP/1.1\r\n"
+      "GET /connect?seq=-1&uid=%s&password=%s HTTP/1.1\r\n"
       "User-Agent: mobile_socket_client/0.1.0\r\n"
       "Accept: */*\r\n"
       "\r\n",
       option_.username.c_str(),
       option_.password.c_str());
   if (::send(sock_fd_, buffer, size, 0) < 0) {
-    error_cb_(CERROR("send error"));
-    goto clean_and_exit;
+    LOG(ERROR) << CERROR("send error");
+    return -5;
   }
   ::memset(buffer, 0, sizeof(buffer));
   if (::recv(sock_fd_, buffer, sizeof(buffer), 0) < 0) {
-    error_cb_(CERROR("receive error"));
-    goto clean_and_exit;
+    LOG(ERROR) << CERROR("receive error");
+    return -6;
   }
   if (::strstr(buffer, "HTTP/1.1 200") == NULL) {
-    error_cb_(string("connect failed: ") + buffer);
-    goto clean_and_exit;
+    LOG(INFO) << (string("connect failed: ") + buffer);
+    return -7;
   }
 
   SetNonblock(sock_fd_);
+  
+  if (worker_thread_.joinable()) {
+    LOG(INFO) << "join previous worker thread";
+    worker_thread_.join();
+  }
+  worker_thread_ = std::thread(&SocketClient::Loop, this);
+  return 0;
+}
+
+void SocketClient::Loop() {
   is_connected_ = true;
   connect_cb_();
-
   while (is_connected_) {
     struct pollfd pfds[2];
     pfds[0].fd = sock_fd_;
@@ -193,19 +197,24 @@ void SocketClient::WorkerThread() {
     pfds[1].revents = 0;
     pfds[1].events = POLLIN;
 
+    CHECK(keepalive_interval_sec_ >= 1) << "keepalive less than 30s";
     static const int ONE_SECOND = 1000;
-    static const int TIMEOUT_MS = 30 * ONE_SECOND;
-    int ret = ::poll(pfds, 2, TIMEOUT_MS);
+    int timeout_ms = keepalive_interval_sec_ * ONE_SECOND;
+    int ret = ::poll(pfds, 2, timeout_ms);
     if (ret == 0) {
       // no events
-      // SendHeartBeat();
+      SendHeartbeat();
     } else if (ret > 0) {
       // events come
       if (pfds[0].revents & POLLIN) {
-        HandleRead();
+        if (!HandleRead()) {
+          break;
+        }
       }
       if (pfds[0].revents & POLLOUT) {
-        HandleWrite();
+        if (!HandleWrite()) {
+          break;
+        }
       }
       if (pfds[1].revents & POLLIN) {
         VLOG(2) << "pipe notify received";
@@ -216,11 +225,10 @@ void SocketClient::WorkerThread() {
       // handle error
       error_cb_(CERROR("poll error"));
       is_connected_ = false;
-      goto clean_and_exit;
+      break;
     }
   }
 
-clean_and_exit:
   LOG(INFO) << "will clean and exit";
   CHECK(is_connected_ == false);
   ::shutdown(sock_fd_, SHUT_RDWR);
@@ -229,21 +237,20 @@ clean_and_exit:
   LOG(INFO) << "work thread exited";
 }
 
-void SocketClient::HandleRead() {
+bool SocketClient::HandleRead() {
   // CHECK sock_fd_
   int ret = current_read_packet_->Read(sock_fd_);
   if (ret == 0) {
-    Close();
-    return;
+    LOG(ERROR) << "read nothing";
+    return false;
   } else if (current_read_packet_->HasReadAll()) {
     Json::Reader reader;
     Json::Value json;
     try {
       reader.parse(current_read_packet_->Content(), json);
     } catch (std::exception e) {
-      error_cb_(string("json format error: ") + e.what());
-      Close();
-      return;
+      LOG(ERROR) << (string("json format error: ") + e.what());
+      return false;
     }
     // CHECK(json.isMember("content") &&
     //       json.isMember("topic") &&
@@ -252,23 +259,27 @@ void SocketClient::HandleRead() {
     message_cb_(json["content"].asString());
     current_read_packet_->Reset();
   }
+  return true;
 }
 
-void SocketClient::HandleWrite() {
+bool SocketClient::HandleWrite() {
   while (!write_queue_.Empty()) {
     PacketPtr pkt;
     write_queue_.Pop(pkt);
     int ret = pkt->Write(sock_fd_);
     if (ret != pkt->Size()) {
       // TODO deal with uncomplete write, wirte left bytes next time
+      LOG(INFO) << "write size error: " << ret;
+      return false;
     }
   }
+  return true;
 }
 
 int SocketClient::Publish(const string& channel, const string& message) {
   Json::Value json;
   json["seq"] = 0;
-  json["from"] = option_.username;
+  // json["from"] = option_.username;
   json["to"] = channel;
   json["type"] = "channel";
   json["content"] = message;
@@ -298,7 +309,7 @@ void SocketClient::WaitForClose() {
 
 int SocketClient::Subscribe(const std::string& channel) {
   Json::Value json;
-  json["uid"] = option_.username;
+  // json["uid"] = option_.username;
   json["channel_id"] = channel;
   json["type"] = "sub";
   SendJson(json);
@@ -307,7 +318,7 @@ int SocketClient::Subscribe(const std::string& channel) {
 
 int SocketClient::Unsubscribe(const std::string& channel) {
   Json::Value json;
-  json["uid"] = option_.username;
+  // json["uid"] = option_.username;
   json["channel_id"] = channel;
   json["type"] = "unsub";
   SendJson(json);
@@ -316,7 +327,7 @@ int SocketClient::Unsubscribe(const std::string& channel) {
 
 int SocketClient::Send(const std::string& user, const std::string& message) {
   Json::Value json;
-  json["from"] = option_.username;
+  // json["from"] = option_.username;
   json["to"] = user;
   json["type"] = "send";
   json["content"] = message;
@@ -325,6 +336,15 @@ int SocketClient::Send(const std::string& user, const std::string& message) {
 }
 
 int SocketClient::SendHeartbeat() {
+  LOG(INFO) << "SendHeartbeat";
+  Json::Value json;
+  json["type"] = "noop";
+  
+  PacketPtr packet(new Packet());
+  Json::FastWriter writer;
+  packet->SetContent(writer.write(json));
+  write_queue_.Push(packet);
+  HandleWrite();
   return 0;
 }
 
