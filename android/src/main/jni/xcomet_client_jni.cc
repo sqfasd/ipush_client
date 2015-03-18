@@ -10,9 +10,9 @@
 
 using namespace xcomet;
 
-#define JOWW(rettype, name) extern "C" rettype JNIEXPORT JNICALL Java_com_xuexibao_xcomet_##name
+#define JOWW(rettype, name) extern "C" rettype JNIEXPORT JNICALL Java_com_liveaa_net_##name
 
-static const char* XCOMETCLIENT_CLASS_NAME = "com/xuexibao/xcomet/XCometClient";
+static const char* XCOMETCLIENT_CLASS_NAME = "com/liveaa/net/XCometClient";
 static JniHelper* g_jni_helper_ = NULL;
 static jobject g_self_global_ref_;
 

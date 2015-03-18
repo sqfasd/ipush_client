@@ -1,12 +1,12 @@
-package com.xuexibao.xcomet;
+package com.liveaa.net;
 
 import android.util.Log;
 
 public class XCometClient {
   private long mNativeHandler = 0;
-  private XCometCallback mCallback = null;
+  private Callback mCallback = null;
 
-  public static interface XCometCallback {
+  public static interface Callback {
     void onConnect();
     void onMessage(String msg);
     void onError(String err);
@@ -17,7 +17,7 @@ public class XCometClient {
      System.loadLibrary("xcomet_client_jni");
    }
 
-  public XCometClient(XCometCallback cb) {
+  public XCometClient(Callback cb) {
     mCallback = cb;
     mNativeHandler = create();
   }

@@ -25,7 +25,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.util.Log;
-import com.xuexibao.xcomet.XCometClient;
+import com.liveaa.net.XCometClient;
 
 public class PushService extends Service
 {
@@ -156,7 +156,7 @@ public class PushService extends Service
     }
 
     private void newConnection() {
-        mConnection = new XCometClient(new XCometClient.XCometCallback() {
+        mConnection = new XCometClient(new XCometClient.Callback() {
             @Override
             public void onConnect() {
                 Log.i(TAG, "onConnect");
