@@ -181,3 +181,8 @@ JOWW(void, XCometClient_waitForClose)(JNIEnv* env, jobject self) {
   SocketClient* client = GetSocketClient(env, self);
   client->WaitForClose();
 }
+
+JOWW(bool, XCometClient_isConnected)(JNIEnv* env, jobject self) {
+  SocketClient* client = GetSocketClient(env, self);
+  return client->isConnected();
+}

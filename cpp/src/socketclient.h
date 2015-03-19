@@ -107,6 +107,9 @@ class SocketClient : public NonCopyable {
   int Send(const std::string& user, const std::string& message);
   void Close();
   void WaitForClose();
+  bool isConnected() {
+    return is_connected_;
+  }
 
  private:
   void Loop();

@@ -160,6 +160,7 @@ public class PushService extends Service
             @Override
             public void onConnect() {
                 Log.i(TAG, "onConnect");
+                Log.i(TAG, "isConnected = " + mConnection.isConnected());
                 setStarted(true);
             }
 

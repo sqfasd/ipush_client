@@ -57,6 +57,7 @@ public class XCometClient {
   //public native int sendHeartbeat();
   public native void close();
   public native void waitForClose();
+  public native boolean isConnected();
 
   private native long create();
 }

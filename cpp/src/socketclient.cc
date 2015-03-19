@@ -224,13 +224,12 @@ void SocketClient::Loop() {
     } else {
       // handle error
       error_cb_(CERROR("poll error"));
-      is_connected_ = false;
       break;
     }
   }
 
+  is_connected_ = false;
   LOG(INFO) << "will clean and exit";
-  CHECK(is_connected_ == false);
   ::shutdown(sock_fd_, SHUT_RDWR);
   write_queue_.Clear();
   disconnect_cb_();
@@ -244,19 +243,19 @@ bool SocketClient::HandleRead() {
     LOG(ERROR) << "read nothing";
     return false;
   } else if (current_read_packet_->HasReadAll()) {
-    Json::Reader reader;
-    Json::Value json;
-    try {
-      reader.parse(current_read_packet_->Content(), json);
-    } catch (std::exception e) {
-      LOG(ERROR) << (string("json format error: ") + e.what());
-      return false;
-    }
+    // Json::Reader reader;
+    // Json::Value json;
+    // try {
+    //   reader.parse(current_read_packet_->Content(), json);
+    // } catch (std::exception e) {
+    //   LOG(ERROR) << (string("json format error: ") + e.what());
+    //   return false;
+    // }
     // CHECK(json.isMember("content") &&
     //       json.isMember("topic") &&
     //       json.isMember("to") &&
     //       json["to"] == option_.username);
-    message_cb_(json["content"].asString());
+    message_cb_(current_read_packet_->Content());
     current_read_packet_->Reset();
   }
   return true;
