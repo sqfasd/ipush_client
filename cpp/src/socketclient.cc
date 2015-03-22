@@ -141,6 +141,7 @@ SocketClient::~SocketClient() {
 }
 
 int SocketClient::Connect() {
+  WaitForClose();
   if (option_.host.empty() ||
       option_.port <= 0 ||
       option_.username.empty() ||
@@ -202,10 +203,6 @@ int SocketClient::Connect() {
 
   SetNonblock(sock_fd_);
   
-  if (worker_thread_.joinable()) {
-    LOG(INFO) << "join previous worker thread";
-    worker_thread_.join();
-  }
   worker_thread_ = std::thread(&SocketClient::Loop, this);
   return 0;
 }
@@ -271,8 +268,8 @@ bool SocketClient::HandleRead() {
       LOG(INFO) << "read eof, connection closed";
       return false;
     } else if (ret < 0) {
-      LOG(INFO) << CERROR("read error");
-      return true;
+      VLOG(3) << CERROR("read error");
+      break;
     } else {
       CHECK(current_read_packet_->HasReadAll());
       Json::Reader reader;
