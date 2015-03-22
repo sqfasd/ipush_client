@@ -29,8 +29,8 @@ class Packet {
   bool HasReadAll() const {
     return content_.size() == len_;
   }
-  void SetContent(const std::string& str) {
-    content_ = str;
+  void SetContent(std::string str) {
+    content_.swap(str);
     len_ = content_.size();
   }
   int Size() const {
@@ -52,6 +52,15 @@ class Packet {
   int left_;
   // int type_;
   std::string content_;
+  enum WriteState {
+    NONE,
+    DATA_LEN,
+    DATA_BODY,
+  };
+  WriteState state_;
+  static const int MAX_DATA_LEN = 20;
+  char data_len_buf_[MAX_DATA_LEN];
+  int buf_start_;
 };
 
 typedef std::function<void ()> ConnectCallback;
@@ -61,7 +70,7 @@ typedef std::function<void (const std::string&)> ErrorCallback;
 
 class SocketClient : public NonCopyable {
  public:
-  SocketClient(const ClientOption option);
+  SocketClient(const ClientOption& option);
   ~SocketClient();
 
   void SetConnectCallback(const ConnectCallback& cb) {
@@ -75,9 +84,6 @@ class SocketClient : public NonCopyable {
   }
   void SetErrorCallback(const ErrorCallback& cb) {
     error_cb_ = cb;
-  }
-  bool IsConnected() {
-    return is_connected_;
   }
 
   void SetHost(const std::string& host) {
@@ -104,7 +110,6 @@ class SocketClient : public NonCopyable {
   int Subscribe(const std::string& channel);
   int Unsubscribe(const std::string& channel);
   int Publish(const std::string& channel, const std::string& message);
-  int Send(const std::string& user, const std::string& message);
   void Close();
   void WaitForClose();
   bool isConnected() {
@@ -118,6 +123,7 @@ class SocketClient : public NonCopyable {
   void Notify();
   void SendJson(const Json::Value& value);
   int SendHeartbeat();
+  int SendAck();
 
   int sock_fd_;
   std::thread worker_thread_;
@@ -135,6 +141,7 @@ class SocketClient : public NonCopyable {
 
   int pipe_[2]; 
   int keepalive_interval_sec_;
+  int last_seq_;
 };
 }
 

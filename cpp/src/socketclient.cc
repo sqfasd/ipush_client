@@ -23,10 +23,8 @@ const int DEFAULT_KEEPALIVE_INTERVAL_SEC = 28 * 60L;
 
 namespace xcomet {
 
-static const int MAX_DATA_LEN = 20;
-
 Packet::Packet()
-    : len_(0), left_(0) {
+    : len_(0), left_(0), state_(NONE), buf_start_(0) {
 }
 
 Packet::~Packet() {
@@ -86,22 +84,52 @@ int Packet::Read(int fd) {
 }
 
 int Packet::Write(int fd) {
-  CHECK(len_ > 0);
-  char buf[MAX_DATA_LEN] = {0};
-  int n = ::snprintf(buf, MAX_DATA_LEN, "%x\r\n", (uint32)content_.size());
-  CHECK(n < MAX_DATA_LEN + 2);
-  int ret = ::write(fd, buf, n);
-  CHECK(ret == n);
-  ret = ::write(fd, content_.c_str(), content_.size());
-  return ret;
+  while (true) {
+    if (state_ == NONE) {
+      ::memset(data_len_buf_, 0, sizeof(data_len_buf_));
+      int n = ::snprintf(data_len_buf_,
+                         MAX_DATA_LEN,
+                         "%x\r\n",
+                         (uint32)len_);
+      CHECK(n < MAX_DATA_LEN + 2);
+      state_ = DATA_LEN;
+      left_ = n;
+      buf_start_ = 0;
+      continue;
+    } else if (state_ == DATA_LEN) {
+      int ret = ::write(fd, data_len_buf_ + buf_start_, left_);
+      if (ret < left_) {
+        left_ = left_ - ret;
+        buf_start_ = buf_start_ + ret;
+        return ret;
+      } else {
+        left_ = len_;
+        buf_start_ = 0;
+        state_ = DATA_BODY;
+        continue;
+      }
+    } else if (state_ == DATA_BODY) {
+      int ret = ::write(fd, content_.c_str() + buf_start_, left_);
+      if (ret < left_) {
+        left_ = left_ - ret;
+        buf_start_ = buf_start_ + ret;
+        return ret;
+      } else {
+        return len_;
+      }
+    }
+  }
+  CHECK(false) << "should not come here";
+  return -1;
 }
 
-SocketClient::SocketClient(const ClientOption option)
+SocketClient::SocketClient(const ClientOption& option)
     : sock_fd_(-1),
       option_(option),
       is_connected_(false),
       current_read_packet_(new Packet()),
-      keepalive_interval_sec_(DEFAULT_KEEPALIVE_INTERVAL_SEC) {
+      keepalive_interval_sec_(DEFAULT_KEEPALIVE_INTERVAL_SEC),
+      last_seq_(0) {
   CHECK(::socketpair(AF_UNIX, SOCK_STREAM, 0, pipe_) == 0);
   SetNonblock(pipe_[1]);
 }
@@ -152,7 +180,7 @@ int SocketClient::Connect() {
   int size = ::snprintf(
       buffer,
       sizeof(buffer),
-      "GET /connect?seq=-1&uid=%s&password=%s HTTP/1.1\r\n"
+      "GET /connect?uid=%s&password=%s HTTP/1.1\r\n"
       "User-Agent: mobile_socket_client/0.1.0\r\n"
       "Accept: */*\r\n"
       "\r\n",
@@ -219,7 +247,7 @@ void SocketClient::Loop() {
       if (pfds[1].revents & POLLIN) {
         VLOG(2) << "pipe notify received";
         char c;
-        while (::read(sock_fd_, &c, 1) == 1);
+        while (::read(pfds[1].fd, &c, 1) == 1);
       }
     } else {
       // handle error
@@ -237,38 +265,57 @@ void SocketClient::Loop() {
 }
 
 bool SocketClient::HandleRead() {
-  // CHECK sock_fd_
-  int ret = current_read_packet_->Read(sock_fd_);
-  if (ret == 0) {
-    LOG(ERROR) << "read nothing";
-    return false;
-  } else if (current_read_packet_->HasReadAll()) {
-    // Json::Reader reader;
-    // Json::Value json;
-    // try {
-    //   reader.parse(current_read_packet_->Content(), json);
-    // } catch (std::exception e) {
-    //   LOG(ERROR) << (string("json format error: ") + e.what());
-    //   return false;
-    // }
-    // CHECK(json.isMember("content") &&
-    //       json.isMember("topic") &&
-    //       json.isMember("to") &&
-    //       json["to"] == option_.username);
-    message_cb_(current_read_packet_->Content());
-    current_read_packet_->Reset();
+  while (true) {
+    int ret = current_read_packet_->Read(sock_fd_);
+    if (ret == 0) {
+      LOG(INFO) << "read eof, connection closed";
+      return false;
+    } else if (ret < 0) {
+      LOG(INFO) << CERROR("read error");
+      return true;
+    } else {
+      CHECK(current_read_packet_->HasReadAll());
+      Json::Reader reader;
+      Json::Value json;
+      try {
+        reader.parse(current_read_packet_->Content(), json);
+      } catch (std::exception e) {
+        LOG(ERROR) << (string("json format error: ") + e.what());
+        return false;
+      }
+      message_cb_(current_read_packet_->Content());
+      current_read_packet_->Reset();
+      if (json.isMember("seq") && json["seq"].asInt() > 0) {
+        int seq = json["seq"].asInt();
+        if (seq <= last_seq_) {
+          LOG(WARNING) << "receive previous seq: " << seq;
+        } else {
+          last_seq_ = seq;
+        }
+      }
+    }
   }
+  SendAck();
   return true;
 }
 
 bool SocketClient::HandleWrite() {
+  VLOG(5) << "HandleWrite: size = " << write_queue_.Size();
   while (!write_queue_.Empty()) {
-    PacketPtr pkt;
-    write_queue_.Pop(pkt);
+    PacketPtr& pkt = const_cast<PacketPtr&>(write_queue_.Front());
     int ret = pkt->Write(sock_fd_);
-    if (ret != pkt->Size()) {
-      // TODO deal with uncomplete write, wirte left bytes next time
-      LOG(INFO) << "write size error: " << ret;
+    if (ret == pkt->Size()) {
+      PacketPtr tmp;
+      bool ok = write_queue_.TryPop(tmp);
+      if (!ok) {
+        LOG(WARNING) << "packet maybe popped in other thread, dangerous !";
+      }
+      continue;
+    } else if (ret < pkt->Size() && ret > 0) {
+      LOG(INFO) << "write not complete: " << ret;
+      return true;
+    } else {
+      LOG(ERROR) << "write error: " << ret;
       return false;
     }
   }
@@ -277,11 +324,10 @@ bool SocketClient::HandleWrite() {
 
 int SocketClient::Publish(const string& channel, const string& message) {
   Json::Value json;
-  json["seq"] = 0;
-  // json["from"] = option_.username;
+  json["from"] = option_.username;
   json["to"] = channel;
-  json["type"] = "channel";
-  json["content"] = message;
+  json["type"] = "msg";
+  json["body"] = message;
   SendJson(json);
   return 0;
 }
@@ -308,8 +354,8 @@ void SocketClient::WaitForClose() {
 
 int SocketClient::Subscribe(const std::string& channel) {
   Json::Value json;
-  // json["uid"] = option_.username;
-  json["channel_id"] = channel;
+  json["from"] = option_.username;
+  json["channel"] = channel;
   json["type"] = "sub";
   SendJson(json);
   return 0;
@@ -317,19 +363,9 @@ int SocketClient::Subscribe(const std::string& channel) {
 
 int SocketClient::Unsubscribe(const std::string& channel) {
   Json::Value json;
-  // json["uid"] = option_.username;
-  json["channel_id"] = channel;
+  json["from"] = option_.username;
+  json["channel"] = channel;
   json["type"] = "unsub";
-  SendJson(json);
-  return 0;
-}
-
-int SocketClient::Send(const std::string& user, const std::string& message) {
-  Json::Value json;
-  // json["from"] = option_.username;
-  json["to"] = user;
-  json["type"] = "send";
-  json["content"] = message;
   SendJson(json);
   return 0;
 }
@@ -338,7 +374,7 @@ int SocketClient::SendHeartbeat() {
   LOG(INFO) << "SendHeartbeat";
   Json::Value json;
   json["type"] = "noop";
-  
+
   PacketPtr packet(new Packet());
   Json::FastWriter writer;
   packet->SetContent(writer.write(json));
@@ -354,6 +390,20 @@ void SocketClient::SendJson(const Json::Value& json) {
   write_queue_.Push(packet);
 
   Notify();
+}
+
+int SocketClient::SendAck() {
+  Json::Value json;
+  json["from"] = option_.username;
+  json["seq"] = last_seq_;
+  json["type"] = "ack";
+
+  PacketPtr packet(new Packet());
+  Json::FastWriter writer;
+  packet->SetContent(writer.write(json));
+  write_queue_.Push(packet);
+  HandleWrite();
+  return 0;
 }
 
 }

@@ -64,14 +64,12 @@ JOWW(jlong, XCometClient_create)(JNIEnv* env, jobject self) {
   SocketClient* client = new SocketClient(option);
   g_self_global_ref_ = static_cast<jobject>(env->NewGlobalRef(self));
   client->SetConnectCallback([]() {
-    LOG(INFO) << "connected";
     JNIEnv* jni= g_jni_helper_->GetAttachedEnv();
     jclass cls = GetClass();
     jmethodID callback = jni->GetMethodID(cls,"connectCallback","()V");
     jni->CallVoidMethod(g_self_global_ref_, callback);
   });
   client->SetDisconnectCallback([]() {
-    LOG(INFO) << "disconnected";
     JNIEnv* jni= g_jni_helper_->GetAttachedEnv();
     jclass cls = GetClass();
     jmethodID callback = jni->GetMethodID(cls,"disconnectCallback","()V");
@@ -79,7 +77,6 @@ JOWW(jlong, XCometClient_create)(JNIEnv* env, jobject self) {
     g_jni_helper_->DetachCurrentEnv();
   });
   client->SetMessageCallback([](const std::string& msg) {
-    LOG(INFO) << "receive message: " << msg;
     JNIEnv* jni= g_jni_helper_->GetAttachedEnv();
     jclass cls = GetClass();
     jmethodID callback = jni->GetMethodID(cls,
@@ -87,9 +84,9 @@ JOWW(jlong, XCometClient_create)(JNIEnv* env, jobject self) {
                                           "(Ljava/lang/String;)V");
     jstring jstr = jni->NewStringUTF(msg.c_str());
     jni->CallVoidMethod(g_self_global_ref_, callback, jstr);
+    jni->DeleteLocalRef(jstr);
   });
   client->SetErrorCallback([](const std::string& error) {
-    LOG(INFO) << ": " << error;
     JNIEnv* jni= g_jni_helper_->GetAttachedEnv();
     jclass cls = GetClass();
     jmethodID callback = jni->GetMethodID(cls,
@@ -97,6 +94,7 @@ JOWW(jlong, XCometClient_create)(JNIEnv* env, jobject self) {
                                           "(Ljava/lang/String;)V");
     jstring jstr = jni->NewStringUTF(error.c_str());
     jni->CallVoidMethod(g_self_global_ref_, callback, jstr);
+    jni->DeleteLocalRef(jstr);
   });
   return JlongFromPointer(client);
 }
@@ -145,13 +143,6 @@ JOWW(int, XCometClient_publish)(JNIEnv* env, jobject self,
   SocketClient* client = GetSocketClient(env, self);
   return client->Publish(env->GetStringUTFChars(channel, NULL),
                          env->GetStringUTFChars(msg, NULL));
-}
-
-JOWW(int, XCometClient_send)(JNIEnv* env, jobject self,
-                             jstring user, jstring msg) {
-  SocketClient* client = GetSocketClient(env, self);
-  return client->Send(env->GetStringUTFChars(user, NULL),
-                      env->GetStringUTFChars(msg, NULL));
 }
 
 JOWW(int, XCometClient_subscribe)(JNIEnv* env, jobject self, jstring channel) {
