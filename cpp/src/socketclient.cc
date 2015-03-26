@@ -155,9 +155,10 @@ int SocketClient::Connect() {
     ip = option_.host;
   } else {
     if (!GetHostIp(option_.host, ip)) {
-      LOG(ERROR) << "invalid host";
+      LOG(ERROR) << "failed to get ip from host: " << option_.host;
       return -2;
     }
+    VLOG(3) << "get ip: " << ip;
   }
   sock_fd_ = ::socket(AF_INET, SOCK_STREAM, 0);
   if (sock_fd_== -1) {
@@ -323,7 +324,17 @@ bool SocketClient::HandleWrite() {
 int SocketClient::Publish(const string& channel, const string& message) {
   Json::Value json;
   json["from"] = option_.username;
-  json["to"] = channel;
+  json["channel"] = channel;
+  json["type"] = "cmsg";
+  json["body"] = message;
+  SendJson(json);
+  return 0;
+}
+
+int SocketClient::Send(const string& to, const string& message) {
+  Json::Value json;
+  json["from"] = option_.username;
+  json["to"] = to;
   json["type"] = "msg";
   json["body"] = message;
   SendJson(json);

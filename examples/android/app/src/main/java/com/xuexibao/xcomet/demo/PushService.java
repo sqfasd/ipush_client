@@ -31,7 +31,7 @@ public class PushService extends Service
 {
 	public static final String TAG = "PushService";
 
-	private static final String HOST = "192.168.2.3";
+	private static final String HOST = "scomet.91xuexibao.com";
 	private static final int PORT = 9000;
 
 	private static final String ACTION_START = "com.xuexibao.xcomet.demo.START";

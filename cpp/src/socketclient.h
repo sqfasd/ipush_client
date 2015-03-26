@@ -110,6 +110,7 @@ class SocketClient : public NonCopyable {
   int Subscribe(const std::string& channel);
   int Unsubscribe(const std::string& channel);
   int Publish(const std::string& channel, const std::string& message);
+  int Send(const std::string& to, const std::string& message);
   void Close();
   void WaitForClose();
   bool isConnected() {

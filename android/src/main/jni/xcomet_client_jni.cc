@@ -145,6 +145,13 @@ JOWW(int, XCometClient_publish)(JNIEnv* env, jobject self,
                          env->GetStringUTFChars(msg, NULL));
 }
 
+JOWW(int, XCometClient_send)(JNIEnv* env, jobject self,
+                                jstring to, jstring msg) {
+  SocketClient* client = GetSocketClient(env, self);
+  return client->Send(env->GetStringUTFChars(to, NULL),
+                         env->GetStringUTFChars(msg, NULL));
+}
+
 JOWW(int, XCometClient_subscribe)(JNIEnv* env, jobject self, jstring channel) {
   SocketClient* client = GetSocketClient(env, self);
   return client->Subscribe(env->GetStringUTFChars(channel, NULL));
