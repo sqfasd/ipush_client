@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Main extends Activity
 {
-	public static final String TAG = "Main";
+	private static final String TAG = "Main";
+    private static Main instance = null;
+
+    private TextView textView = null;
 
 	private final OnClickListener mClicked = new OnClickListener()
 	{
@@ -26,12 +30,22 @@ public class Main extends Activity
 			case R.id.stop:
                 PushService.actionStop(Main.this);
 				break;
-			case R.id.ping:
-                PushService.actionPing(Main.this);
-				break;
 			}
 		}
 	};
+
+    public static Main Instance() {
+        return instance;
+    }
+
+    public void AppendMessage(final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                textView.append(msg);
+            }
+        });
+    }
 
 	@Override
 	public void onCreate(Bundle icicle)
@@ -41,6 +55,8 @@ public class Main extends Activity
 
 		findViewById(R.id.start).setOnClickListener(mClicked);
 		findViewById(R.id.stop).setOnClickListener(mClicked);
-		findViewById(R.id.ping).setOnClickListener(mClicked);
+        textView = (TextView)findViewById(R.id.message_view);
+
+        instance = this;
 	}
 }

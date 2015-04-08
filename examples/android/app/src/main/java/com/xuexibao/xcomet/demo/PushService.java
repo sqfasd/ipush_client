@@ -167,6 +167,7 @@ public class PushService extends Service
             @Override
             public void onMessage(String msg) {
                 Log.i(TAG, "onMessage: " + msg);
+                Main.Instance().AppendMessage(msg);
             }
 
             @Override
