@@ -8,7 +8,7 @@
 #include <thread>
 #include <memory>
 #include "blocking_queue.h"
-#include "deps/jsoncpp/include/json/json.h"
+#include "message.h"
 
 namespace xcomet {
 
@@ -17,7 +17,26 @@ struct ClientOption {
   int port;
   std::string username;
   std::string password;
-  int keepalive_interval;
+};
+
+const int MAX_BUFFER_SIZE = 1024;
+
+class BufferReader {
+ public:
+  BufferReader();
+  ~BufferReader();
+  int Read(int fd, char* addr, int len);
+  int ReadLine(int fd, char* addr);
+  int Size() {return end_ - start_;}
+  void Print();
+
+ private:
+  int Read(int fd);
+  void Shrink();
+  int FindCRLF();
+  char buf_[MAX_BUFFER_SIZE];
+  int start_;
+  int end_;
 };
 
 class Packet {
@@ -26,27 +45,35 @@ class Packet {
   ~Packet();
   int Read(int fd);
   int Write(int fd);
-  bool HasReadAll() const {
-    return content_.size() == len_;
-  }
-  void SetContent(std::string str) {
+  void SetContent(std::string& str) {
     content_.swap(str);
+    content_.append("\r\n");
     len_ = content_.size();
   }
   int Size() const {
     return len_;
   }
-  const std::string& Content() const {
+  std::string& Content() {
     return content_;
   }
   void Reset() {
     len_ = 0;
     left_ = 0;
     content_.clear();
+    state_ = NONE;
+    ::memset(data_len_buf_, 0, sizeof(data_len_buf_));
+    buf_start_ = 0;
+    rstate_ = RS_HEADER;
   }
 
  private:
   int ReadDataLen(int fd);
+
+  enum ReadState {
+    RS_HEADER,
+    RS_BODY,
+  } rstate_;
+  BufferReader reader_;
 
   int len_;
   int left_;
@@ -122,7 +149,7 @@ class SocketClient : public NonCopyable {
   bool HandleRead();
   bool HandleWrite();
   void Notify();
-  void SendJson(const Json::Value& value);
+  void SendMessage(const Message& msg);
   int SendHeartbeat();
   int SendAck();
 

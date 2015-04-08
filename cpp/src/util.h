@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "deps/jsoncpp/include/json/json.h"
 
 namespace xcomet {
 
@@ -35,6 +36,10 @@ inline bool GetHostIp(const std::string& host, std::string& ip) {
   }
   ip.assign(buf);
   return true;
+}
+
+inline void SerializeJson(const Json::Value& json, string& data) {
+  data = Json::FastWriter().write(json);
 }
 
 }
