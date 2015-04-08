@@ -306,7 +306,7 @@ void SocketClient::Loop() {
     pfds[1].revents = 0;
     pfds[1].events = POLLIN;
 
-    CHECK(keepalive_interval_sec_ >= 1) << "keepalive less than 30s";
+    CHECK(keepalive_interval_sec_ >= 30) << "keepalive less than 30s";
     static const int ONE_SECOND = 1000;
     int timeout_ms = keepalive_interval_sec_ * ONE_SECOND;
     int ret = ::poll(pfds, 2, timeout_ms);
