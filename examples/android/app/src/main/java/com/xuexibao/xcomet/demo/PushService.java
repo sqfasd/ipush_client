@@ -32,7 +32,7 @@ public class PushService extends Service
 	public static final String TAG = "PushService";
 
 	private static final String HOST = "scomet.91xuexibao.com";
-	private static final int PORT = 9000;
+	private static final int PORT = 9004;
 
 	private static final String ACTION_START = "com.xuexibao.xcomet.demo.START";
 	private static final String ACTION_STOP = "com.xuexibao.xcomet.demo.STOP";
@@ -183,9 +183,9 @@ public class PushService extends Service
         });
         mConnection.setHost(HOST);
         mConnection.setPort(PORT);
-        mConnection.setUserName("android_user_1");
+        mConnection.setUserName("user2");
         mConnection.setPassword("android_password_1");
-        mConnection.setKeepaliveInterval(10);
+        mConnection.setKeepaliveInterval(30);
     }
 	@Override
 	public IBinder onBind(Intent intent)

@@ -3,6 +3,7 @@
 
 #include <fcntl.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include <string>
 #include <netdb.h>
 #include <sys/socket.h>
@@ -40,6 +41,19 @@ inline bool GetHostIp(const std::string& host, std::string& ip) {
 
 inline void SerializeJson(const Json::Value& json, string& data) {
   data = Json::FastWriter().write(json);
+}
+
+inline bool ParseIpPort(const string& addr, string& ip, int& port) {
+  int ip_start = addr.find("//") + 2;
+  int port_start = addr.find(":", ip_start);
+  int port_end = addr.find("/", port_start);
+  if (ip_start == string::npos || port_start == string::npos ||
+      port_end == string::npos) {
+    return false;
+  }
+  ip = addr.substr(ip_start, port_start-ip_start);
+  port = ::atoi(addr.substr(port_start+1, port_end-port_start).c_str());
+  return true;
 }
 
 }

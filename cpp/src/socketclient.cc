@@ -280,9 +280,31 @@ int SocketClient::Connect() {
     LOG(ERROR) << CERROR("receive error");
     return -6;
   }
+  VLOG(3) << "response: " << buffer;
   if (::strstr(buffer, "HTTP/1.1 200") == NULL) {
-    LOG(INFO) << (string("connect failed: ") + buffer);
-    return -7;
+    const char* location = ::strstr(buffer, "HTTP/1.1 303");
+    LOG(INFO) << location;
+    if (location != NULL) {
+      const char* start = ::strstr(location, "http://");
+      const char* end = ::strstr(start, "\r\n");
+      LOG(INFO) << start;
+      LOG(INFO) << end;
+      if (start == NULL || end == NULL) {
+        LOG(ERROR) << "incorrect redirect location: " << location;
+        return -8;
+      }
+      string url = string(start, end - start);
+      LOG(INFO) << url;
+      if (!ParseIpPort(url, option_.host, option_.port)) {
+        LOG(INFO) << "incorrect redirect location: " << location;
+        return -8;
+      }
+      LOG(INFO) << "redirect to: " << url;
+      return Connect();
+    } else {
+      LOG(ERROR) << (string("connect failed: ") + buffer);
+      return -7;
+    }
   }
 
   SetNonblock(sock_fd_);
@@ -340,6 +362,7 @@ void SocketClient::Loop() {
   is_connected_ = false;
   LOG(INFO) << "will clean and exit";
   ::shutdown(sock_fd_, SHUT_RDWR);
+  sock_fd_ = -1;
   disconnect_cb_();
   LOG(INFO) << "work thread exited";
 }
@@ -436,6 +459,9 @@ void SocketClient::Close() {
 void SocketClient::WaitForClose() {
   if (is_connected_) {
     Close();
+  } else if (sock_fd_ != -1) {
+    ::shutdown(sock_fd_, SHUT_RDWR);
+    sock_fd_ = -1;
   }
   if (worker_thread_.joinable()) {
     worker_thread_.join();
