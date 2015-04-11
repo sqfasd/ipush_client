@@ -58,6 +58,7 @@ public class XCometClient {
   public native void close();
   public native void waitForClose();
   public native boolean isConnected();
+  public native void setDebugLevel(int level);
 
   private native long create();
 }

@@ -38,7 +38,7 @@ static void AndroidLogFunc(int level, const char* str) {
 extern "C" jint JNIEXPORT JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
   SimpleLogger::SetPrintFunc(AndroidLogFunc);
   SimpleLogger::SetLogLevel(LOG_INFO);
-  SimpleLogger::SetLogVerboseLevel(3);  //TODO release should be 1
+  SimpleLogger::SetLogVerboseLevel(1);
   LOG(INFO) << "jni onload";
   g_jni_helper_ = new JniHelper(jvm);
   JNIEnv* env = g_jni_helper_->GetAttachedEnv();
@@ -183,4 +183,8 @@ JOWW(void, XCometClient_waitForClose)(JNIEnv* env, jobject self) {
 JOWW(bool, XCometClient_isConnected)(JNIEnv* env, jobject self) {
   SocketClient* client = GetSocketClient(env, self);
   return client->isConnected();
+}
+
+JOWW(bool, XCometClient_setDebugLevel)(JNIEnv* env, jobject self, jint level) {
+  SimpleLogger::SetLogVerboseLevel(level);
 }

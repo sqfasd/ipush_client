@@ -283,20 +283,20 @@ int SocketClient::Connect() {
   VLOG(3) << "response: " << buffer;
   if (::strstr(buffer, "HTTP/1.1 200") == NULL) {
     const char* location = ::strstr(buffer, "HTTP/1.1 303");
-    LOG(INFO) << location;
+    VLOG(3) << "location: " << location;
     if (location != NULL) {
       const char* start = ::strstr(location, "http://");
       const char* end = ::strstr(start, "\r\n");
-      LOG(INFO) << start;
-      LOG(INFO) << end;
+      VLOG(4) << "location url start: " << start;
+      VLOG(4) << "location url end: " <<  end;
       if (start == NULL || end == NULL) {
         LOG(ERROR) << "incorrect redirect location: " << location;
         return -8;
       }
       string url = string(start, end - start);
-      LOG(INFO) << url;
+      VLOG(3) << "location url: " <<  url;
       if (!ParseIpPort(url, option_.host, option_.port)) {
-        LOG(INFO) << "incorrect redirect location: " << location;
+        LOG(ERROR) << "incorrect redirect location: " << location;
         return -8;
       }
       LOG(INFO) << "redirect to: " << url;
@@ -386,19 +386,20 @@ bool SocketClient::HandleRead() {
         LOG(WARNING) << "read message invalid: "
                      << current_read_packet_->Content();
       }
+      VLOG(3) << "Read message: " << msg;
       message_cb_(current_read_packet_->Content());
       current_read_packet_->Reset();
       if (msg.HasSeq() && msg.Seq() > 0) {
         int seq = msg.Seq();
         if (seq <= last_seq_) {
-          LOG(WARNING) << "receive previous seq: " << seq;
+          LOG(WARNING) << "receive previous seq: " << seq << ", " << last_seq_;
         } else {
           last_seq_ = seq;
+          SendAck();
         }
       }
     }
   }
-  SendAck();
   return true;
 }
 
@@ -508,7 +509,7 @@ void SocketClient::SendMessage(const Message& msg) {
 
 int SocketClient::SendAck() {
   Message msg;
-  msg.SetFrom(option_.username);
+  // msg.SetFrom(option_.username);
   msg.SetSeq(last_seq_);
   msg.SetType(Message::T_ACK);
 
