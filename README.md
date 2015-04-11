@@ -31,6 +31,7 @@ mConnection.setPort(9000);
 mConnection.setUserName("android_user_1");
 mConnection.setPassword("android_password_1");
 mConnection.setKeepaliveInterval(300);
+mConnection.setDebugLevel(5);
 ```
 
 ## 编译
