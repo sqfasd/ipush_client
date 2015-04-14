@@ -34,6 +34,12 @@ BufferReader::~BufferReader() {
 
 const int ERROR_NOMORE_DATA = -100;
 
+void BufferReader::AddToBuffer(const char* ptr, int len) {
+  CHECK(len < (MAX_BUFFER_SIZE - end_) && len > 0);
+  ::memcpy(buf_ + end_, ptr, len);
+  end_ += len;
+}
+
 int BufferReader::Read(int fd) {
   if (Size() < 10 || end_ == sizeof(buf_)) {
     Shrink();
@@ -209,7 +215,6 @@ SocketClient::SocketClient(const ClientOption& option)
     : sock_fd_(-1),
       option_(option),
       is_connected_(false),
-      current_read_packet_(new Packet()),
       keepalive_interval_sec_(DEFAULT_KEEPALIVE_INTERVAL_SEC),
       last_seq_(0) {
   CHECK(::socketpair(AF_UNIX, SOCK_STREAM, 0, pipe_) == 0);
@@ -276,7 +281,8 @@ int SocketClient::Connect() {
   }
   // TODO(qingfeng) handle message after header
   ::memset(buffer, 0, sizeof(buffer));
-  if (::recv(sock_fd_, buffer, sizeof(buffer), 0) < 0) {
+  int recvlen = 0;
+  if ((recvlen = ::recv(sock_fd_, buffer, sizeof(buffer), 0)) < 0) {
     LOG(ERROR) << CERROR("receive error");
     return -6;
   }
@@ -307,8 +313,14 @@ int SocketClient::Connect() {
     }
   }
 
+  current_read_packet_.reset(new Packet());
+  const char* data_start = ::strstr(buffer, "\r\n\r\n") + 4;
+  if (data_start - buffer < recvlen) {
+    VLOG(5) << "data along with response header: " << data_start;
+    current_read_packet_->AddToBuffer(
+        data_start, buffer + recvlen - data_start);
+  }
   SetNonblock(sock_fd_);
-  
   worker_thread_ = std::thread(&SocketClient::Loop, this);
   return 0;
 }
@@ -317,6 +329,10 @@ void SocketClient::Loop() {
   is_connected_ = true;
   connect_cb_();
   while (is_connected_) {
+    // process the data along with response header
+    if (!HandleRead()) {
+      break;
+    }
     struct pollfd pfds[2];
     pfds[0].fd = sock_fd_;
     pfds[0].revents = 0;

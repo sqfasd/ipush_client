@@ -28,7 +28,7 @@ class BufferReader {
   int Read(int fd, char* addr, int len);
   int ReadLine(int fd, char* addr);
   int Size() {return end_ - start_;}
-  void Print();
+  void AddToBuffer(const char* ptr, int len);
 
  private:
   int Read(int fd);
@@ -64,6 +64,9 @@ class Packet {
     ::memset(data_len_buf_, 0, sizeof(data_len_buf_));
     buf_start_ = 0;
     rstate_ = RS_HEADER;
+  }
+  void AddToBuffer(const char* ptr, int len) {
+    reader_.AddToBuffer(ptr, len);
   }
 
  private:
