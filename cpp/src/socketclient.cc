@@ -17,11 +17,12 @@
 
 using std::string;
 
-const int DEFAULT_KEEPALIVE_INTERVAL_SEC = 28 * 60L;
-
 #define CERROR(msg) string(msg) + ": " + ::strerror(errno)
 
 namespace xcomet {
+
+const int DEFAULT_KEEPALIVE_INTERVAL_SEC = 28 * 60L;
+const int RECONNECT_INTERVAL_SEC = 3;
 
 BufferReader::BufferReader() {
   ::memset(buf_, 0, sizeof(buf_));
@@ -233,7 +234,7 @@ int SocketClient::Connect() {
       option_.port <= 0 ||
       option_.username.empty() ||
       option_.password.empty()) {
-    LOG(ERROR) << "invalid client option";
+    LOG(ERROR) << "invalid client option: " << option_;
     return -1;
   }
 
@@ -342,7 +343,7 @@ void SocketClient::Loop() {
     }
     pfds[1].fd = pipe_[1];
     pfds[1].revents = 0;
-    pfds[1].events = POLLIN;
+    pfds[1].events = POLLIN | POLLPRI;
 
     CHECK(keepalive_interval_sec_ >= 30) << "keepalive less than 30s";
     static const int ONE_SECOND = 1000;
@@ -353,7 +354,11 @@ void SocketClient::Loop() {
       SendHeartbeat();
     } else if (ret > 0) {
       // events come
-      if (pfds[0].revents & POLLIN) {
+      if (pfds[0].revents & (POLLERR | POLLNVAL)) {
+        LOG(ERROR) << "poll error events";
+        break;
+      }
+      if (pfds[0].revents & (POLLIN | POLLPRI | POLLRDHUP)) {
         if (!HandleRead()) {
           break;
         }
@@ -381,6 +386,26 @@ void SocketClient::Loop() {
   sock_fd_ = -1;
   disconnect_cb_();
   LOG(INFO) << "work thread exited";
+  // use high level reconnect strategy
+  // Reconnect();
+}
+
+void SocketClient::Reconnect() {
+  std::thread th([this]() {
+    if (is_connected_) {
+      return;
+    }
+    LOG(INFO) << "will reconnect after "
+              << RECONNECT_INTERVAL_SEC << " seconds";
+    ::sleep(RECONNECT_INTERVAL_SEC);
+    int ret = Connect();
+    VLOG(3) << "connect ret = " << ret;
+    if (ret != 0) {
+      LOG(ERROR) << "connect still failed with code: " << ret;
+      Reconnect();
+    }
+  });
+  th.detach();
 }
 
 bool SocketClient::HandleRead() {
@@ -400,7 +425,9 @@ bool SocketClient::HandleRead() {
       Message msg = Message::UnserializeString(current_read_packet_->Content());
       if(msg.Empty() || !msg.HasType()) {
         LOG(WARNING) << "read message invalid: "
-                     << current_read_packet_->Content();
+                     << current_read_packet_->Content()
+                     << ", read ret=" << ret;
+        return false;
       }
       VLOG(3) << "Read message: " << msg;
       message_cb_(current_read_packet_->Content());
@@ -474,6 +501,7 @@ void SocketClient::Close() {
 }
 
 void SocketClient::WaitForClose() {
+  VLOG(3) << "WaitForClose()";
   if (is_connected_) {
     Close();
   } else if (sock_fd_ != -1) {
@@ -481,6 +509,7 @@ void SocketClient::WaitForClose() {
     sock_fd_ = -1;
   }
   if (worker_thread_.joinable()) {
+    VLOG(3) << "join worker thread";
     worker_thread_.join();
   }
 }

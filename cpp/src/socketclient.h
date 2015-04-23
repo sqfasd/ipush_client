@@ -1,6 +1,7 @@
 #ifndef SRC_SOCKETCLIENT_H_
 #define SRC_SOCKETCLIENT_H_
 
+#include <iostream>
 #include <string>
 #include <functional>
 #include <atomic>
@@ -18,6 +19,14 @@ struct ClientOption {
   std::string username;
   std::string password;
 };
+
+inline ostream& operator<<(ostream& os, const ClientOption& co) {
+  os << "ClientOption(host: " << co.host << ","
+     << "port: " << co.port << ","
+     << "username: " << co.username << ","
+     << "password: " << co.password;
+  return os;
+}
 
 const int MAX_BUFFER_SIZE = 1024;
 
@@ -148,6 +157,7 @@ class SocketClient : public NonCopyable {
   }
 
  private:
+  void Reconnect();
   void Loop();
   bool HandleRead();
   bool HandleWrite();
