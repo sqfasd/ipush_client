@@ -354,10 +354,10 @@ void SocketClient::Loop() {
       SendHeartbeat();
     } else if (ret > 0) {
       // events come
-      if (pfds[0].revents & (POLLERR | POLLNVAL)) {
-        LOG(ERROR) << "poll error events";
-        break;
-      }
+      // if (pfds[0].revents & (POLLERR | POLLNVAL)) {
+      //   LOG(ERROR) << "poll error events";
+      //   break;
+      // }
       if (pfds[0].revents & (POLLIN | POLLPRI | POLLRDHUP)) {
         if (!HandleRead()) {
           break;
