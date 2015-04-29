@@ -58,7 +58,7 @@ class SimpleLogger {
     char time_buf[20] = {0};
     snprintf(time_buf, sizeof(time_buf), "%d%02d%02d:%02d%02d%02d",
         1900 + tm->tm_year,
-        tm->tm_mon,
+        tm->tm_mon + 1,
         tm->tm_mday,
         tm->tm_hour,
         tm->tm_min,
