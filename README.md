@@ -32,6 +32,10 @@ mConnection.setUserName("android_user_1");
 mConnection.setPassword("android_password_1");
 mConnection.setKeepaliveInterval(300);
 mConnection.setDebugLevel(5);
+int ret = mConnection.connect();
+if (ret != 0) {
+    Logi(TAG, "connect failed");
+}
 ```
 
 ## 编译
