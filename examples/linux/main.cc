@@ -8,15 +8,19 @@ using namespace std;
 using namespace xcomet;
 
 int main(int argc, char* argv[]) {
-  const char* host = "127.0.0.1";
-  const int port = 9000;
-  const char* user= "user1";
-  const char* password = "pwd111";
+  if (argc != 5) {
+    cerr << "usage: " << argv[0] << "<host> <port> <user> <password>\n";
+    return -1;
+  }
+  const char* host = argv[1];
+  const int port = std::stoi(argv[2]);
+  const char* user= argv[3];
+  const char* password = argv[4];
 
   ClientOption option;
   option.host = host;
   option.port = port;
-  option.user= user;
+  option.username = user;
   option.password = password;
 
   SocketClient client(option);
@@ -33,6 +37,7 @@ int main(int argc, char* argv[]) {
     cout << "error: " << error << endl;
   });
   cout << "print any key to close ..." << endl;
+  client.SetKeepaliveInterval(30);
   client.Connect();
   getchar();
   client.Close();
