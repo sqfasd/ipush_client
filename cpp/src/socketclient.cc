@@ -358,7 +358,7 @@ void SocketClient::Loop() {
       //   LOG(ERROR) << "poll error events";
       //   break;
       // }
-      if (pfds[0].revents & (POLLIN | POLLPRI | POLLRDHUP)) {
+      if (pfds[0].revents & (POLLIN | POLLPRI)) {
         if (!HandleRead()) {
           break;
         }
