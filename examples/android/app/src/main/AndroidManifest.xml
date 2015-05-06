@@ -18,7 +18,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".PushService"></service>
+
+        <receiver
+            android:name=".MessageReceiver"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.PACKAGE_RESTARTED" />
+                <action android:name="com.xuexibao.android.push.MESSAGE_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.xuexibao.android.push.XPushService"
+            android:exported="true"
+            android:persistent="true" >
+        </service>
     </application>
 </manifest>
 
