@@ -22,24 +22,36 @@ public class XCometClient {
         mNativeHandler = create();
     }
 
+    public void setCallback(Callback cb) {
+        mCallback = cb;
+    }
+
     public void dispose() {
         destroy();
     }
 
     public void connectCallback() {
-        mCallback.onConnect();
+        if (mCallback != null) {
+            mCallback.onConnect();
+        }
     }
 
     public void messageCallback(String msg) {
-        mCallback.onMessage(msg);
+        if (mCallback != null) {
+            mCallback.onMessage(msg);
+        }
     }
 
     public void errorCallback(String err) {
-        mCallback.onError(err);
+        if (mCallback != null) {
+            mCallback.onError(err);
+        }
     }
 
     public void disconnectCallback() {
-        mCallback.onDisconnect();
+        if (mCallback != null) {
+            mCallback.onDisconnect();
+        }
     }
 
     public native void setHost(String host);

@@ -51,7 +51,11 @@ public class XPushManager {
         @Override
         public void onDisconnect() {
             VLog.d(3, TAG, "onDisconnect");
-            setState(State.Disconnected);
+            if (mState == State.Disconnecting) {
+                setState(State.Disconnected);
+            } else {
+                startPush(mContext);
+            }
         }
 
         @Override
@@ -76,6 +80,7 @@ public class XPushManager {
 
     protected static synchronized void dispose() {
         if (mInstance != null) {
+            mInstance.mPushClient.setCallback(null);
             mInstance.mPushClient.dispose();
             mInstance.mPushClient = null;
             mInstance = null;
@@ -101,6 +106,8 @@ public class XPushManager {
     }
 
     public void disconnect() {
+        cancelSchedule();
+        setState(State.Disconnecting);
         mPushClient.close();
     }
 
@@ -119,16 +126,28 @@ public class XPushManager {
         connect();
     }
 
-    private void scheduleReconnect() {
-        if (++mRetryCount < MAX_RETRY_COUNT) {
-            if (mReconnectHandler == null) {
-                mReconnectHandler = new Handler();
-            }
+    private void cancelSchedule() {
+        if (mReconnectHandler != null) {
             mReconnectHandler.removeCallbacks(mReconnectRunnable);
-            VLog.d(3, TAG, "scheduleReconnect(): scheduling reconnect in 10 seconds");
-            mReconnectHandler.postDelayed(mReconnectRunnable, 10000);
+        }
+    }
+
+    private void doScheduleReconnect() {
+        VLog.d(3, TAG, "doScheduleReconnect(): scheduling reconnect in 10 seconds");
+        if (mReconnectHandler == null) {
+            mReconnectHandler = new Handler();
+        }
+        mReconnectHandler.postDelayed(mReconnectRunnable, 10000);
+    }
+
+    private void scheduleReconnect() {
+        setState(State.Retrying);
+        if (++mRetryCount < MAX_RETRY_COUNT) {
+            cancelSchedule();
+            doScheduleReconnect();
         } else {
             VLog.d(3, TAG, "has exceed max retry count, will stop retry, wait for next chance");
+            setState(State.Disconnected);
         }
     }
 
@@ -158,7 +177,6 @@ public class XPushManager {
             VLog.d(3, TAG, "connect success, waiting form callback");
         } else {
             VLog.d(3, TAG, "connect failed with code " + ret);
-            setState(State.Retrying);
             scheduleReconnect();
         }
     }
