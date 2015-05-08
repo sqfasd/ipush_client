@@ -1,0 +1,26 @@
+//
+//  xcomet.pch
+//  xcomet
+//
+//  Created by kimziv on 15/5/7.
+//  Copyright (c) 2015年 kimziv. All rights reserved.
+//
+
+#ifndef xcomet_xcomet_pch
+#define xcomet_xcomet_pch
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import <Availability.h>
+
+#ifndef __IPHONE_6_0
+#warning "This project uses features only available in iOS SDK 6.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "XCDefines.h"
+#endif
+#endif
