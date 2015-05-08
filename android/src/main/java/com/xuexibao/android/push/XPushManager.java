@@ -66,7 +66,7 @@ public class XPushManager {
     };
 
     public static synchronized void startPush(Context context) {
-        XPushConfig.setInited();
+        XPushConfig.setInited(context);
         Intent i = new Intent(context, XPushService.class);
         i.setAction(Constants.ACTION_START_SERVICE);
         context.startService(i);
@@ -158,6 +158,9 @@ public class XPushManager {
 
     private void connect() {
         VLog.d(3, TAG, "connect()");
+        if (!XPushConfig.isInited(mContext)) {
+            // will reload config from shardpreference
+        }
         mPushClient.setDebugLevel(VLog.getDebugLevel());
         mPushClient.setHost(XPushConfig.getServerHost());
         mPushClient.setPort(XPushConfig.getServerPort());

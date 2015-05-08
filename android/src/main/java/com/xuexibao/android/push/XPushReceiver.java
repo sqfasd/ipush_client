@@ -27,7 +27,7 @@ public abstract  class XPushReceiver extends BroadcastReceiver {
             }
         } else {
             Intent i = new Intent(context, XPushService.class);
-            if (XPushConfig.isInited()) {
+            if (XPushConfig.isInited(context)) {
                 i.setAction(Constants.ACTION_START_SERVICE);
                 context.startService(i);
             } else {
