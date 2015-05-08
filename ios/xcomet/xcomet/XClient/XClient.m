@@ -12,6 +12,7 @@
 #import "XCMessage.h"
 #import "XCModule.h"
 #import "XCAutoPing.h"
+#import "XCAutoReconnect.h"
 
 // Log levels: off, error, warn, info, verbose
 #if DEBUG
@@ -45,6 +46,15 @@ static const int XCLogLevel = XC_LOG_LEVEL_WARN;
 
 NSString *const XClientErrorDomain = @"XCStreamErrorDomain";
 NSString *const XCStreamDidChangeMyJIDNotification = @"XCStreamDidChangeMyJID";
+
+inline int hexstr2int(NSString *hexstr)
+{
+    if (!hexstr || hexstr.length==0) {
+        return 0;
+    }
+    int number = (int)strtol(hexstr.UTF8String, NULL, 16);
+    return number;
+}
 
 const NSTimeInterval XClientTimeoutNone = -1;
 
@@ -92,10 +102,13 @@ enum XCStreamConfig
     GCDMulticastDelegate <XClientDelegate> *multicastDelegate;
     
     XCAutoPing *autoPing;
+    XCAutoReconnect *autoReconnect;
+    UIBackgroundTaskIdentifier bgTask;
 }
 @end
 
 @implementation XClient
+@synthesize clientOption;
 //
 //-(instancetype)init
 //{
@@ -137,13 +150,55 @@ enum XCStreamConfig
     //idTracker = [[XMPPIDTracker alloc] initWithStream:self dispatchQueue:xmppQueue];
     
    // receipts = [[NSMutableArray alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ntfDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ntfBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ntfWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+     [self performSelector:@selector(startMonitorReconnect) withObject:nil afterDelay:3];
 }
 
--(instancetype)initWithOption:(XClientOption *)option
+-(void)ntfDidEnterBackground:(NSNotification *)noti
+{
+//    UIApplication *app =  [UIApplication sharedApplication];
+//    [app beginBackgroundTaskWithExpirationHandler:^{
+//        [self startPing];
+//    }];
+   // [self disconnect];
+
+
+        UIApplication *app = [UIApplication sharedApplication];
+        
+        //create new uiBackgroundTask
+        bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+            XCLog(@"beginBackgroundTaskWithExpirationHandler");
+            [self disconnect];
+            [app endBackgroundTask:bgTask];
+            bgTask = UIBackgroundTaskInvalid;
+        }];
+    [self startPing];
+        //and create new timer with async call:
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//            //run function methodRunAfterBackground
+//            NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(methodRunAfterBackground) userInfo:nil repeats:NO];
+//            [[NSRunLoop currentRunLoop] addTimer:t forMode:NSDefaultRunLoopMode];
+//            [[NSRunLoop currentRunLoop] run];
+//        });
+}
+
+-(void)ntfBecomeActive:(NSNotification *)noti
+{
+    //[self startMonitorReconnect];
+    [self connect];
+}
+
+-(void)ntfWillTerminate:(NSNotification *)noti
+{
+    [self disconnect];
+}
+
+-(instancetype)init
 {
     self=[super init];
     if (self) {
-        clientOption=option;
         [self commonInit];
         // Initialize socket
         asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:xcQueue];
@@ -164,7 +219,7 @@ enum XCStreamConfig
     
     [asyncSocket setDelegate:nil delegateQueue:NULL];
     [asyncSocket disconnect];
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -475,7 +530,7 @@ enum XCStreamConfig
                               "User-Agent: mobile_socket_client/0.1.0\r\n"
                               "Accept: */*\r\n"
                               "\r\n",clientOption.userName,clientOption.password];
-        NSData *outData= [authString dataUsingEncoding:NSUTF8StringEncoding];//[NSData dataWithBytes:buffer length:size];
+        NSData *outData= [authString dataUsingEncoding:NSUTF8StringEncoding];
         [self sendData:outData];
     }};
     
@@ -727,8 +782,13 @@ enum XCStreamConfig
     {
         [self startConnectTimeout:timeout];
     }
-    
     return result;
+}
+
+-(void)connect
+{
+    NSError *error=nil;
+    [self connectWithTimeout:XClientTimeoutNone error:&error];
 }
 
 - (BOOL)connectWithTimeout:(NSTimeInterval)timeout error:(NSError **)errPtr
@@ -946,8 +1006,7 @@ enum XCStreamConfig
 //}
 
 #pragma mark --Handle Read && Write
-
--(void)handleRead:(NSData *)data
+-(void)handleReadLine:(NSData *)data
 {
     if (!data || data.length==0) {
         return;
@@ -955,13 +1014,13 @@ enum XCStreamConfig
     @autoreleasepool {
         NSString *response= [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSRange speratorRange = [response rangeOfString:@"\r\n\r\n"];
-        NSString *body=nil;
+       //NSString *body=nil;
         if (speratorRange.location!=NSNotFound) {
-             NSString *header=[response substringToIndex:speratorRange.location];
+            NSString *header=[response substringToIndex:speratorRange.location];
             if ([header rangeOfString:STATUS_200].location!=NSNotFound) {
-                 body=[response substringFromIndex:speratorRange.location+speratorRange.length];
+                //body=[response substringFromIndex:speratorRange.location+speratorRange.length];
             }else if ([header rangeOfString:STATUS_303].location!=NSNotFound) {
-               NSRange locRange = [header rangeOfString:@"http://"];
+                NSRange locRange = [header rangeOfString:@"http://"];
                 
                 if (locRange.location!=NSNotFound) {
                     NSString *locStr=[header substringFromIndex:locRange.location+locRange.length];
@@ -971,7 +1030,7 @@ enum XCStreamConfig
                         clientOption.host=[locStr substringToIndex:portRange.location];
                         clientOption.port=[[locStr substringWithRange:NSMakeRange(portRange.location+1, speratorRange.location-portRange.location-1)] integerValue];
                     }else{
-                       
+                        
                         if (slashRange.location!=NSNotFound) {
                             clientOption.host=[locStr substringToIndex:slashRange.location];
                             clientOption.port=80;
@@ -981,26 +1040,92 @@ enum XCStreamConfig
             }else if ([header rangeOfString:STATUS_400].location!=NSNotFound) {
                 [self disconnect];
             }
-            XCLog(@"header:%@",header);
-            
+            // XCLog(@"header:%@",header);
             
         }else{
-            body=response;
-        }
-        NSArray *components = [body componentsSeparatedByString:@"\r\n"];
-        
-        [components enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *line=obj;
-            if (idx%2==1) {
+            NSString *line=[response stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            if ([line hasPrefix:@"{"]) {
                 XCMessage *msg=[XCMessage fromJsonData:[line dataUsingEncoding:NSUTF8StringEncoding]];
-                lastSeq_=msg.seq;
-            }
-            if (components.lastObject==obj) {
+                 lastSeq_=msg.seq;
                 [self sendAck];
+            }else{
+//                if ([@"0" isEqualToString:line]) {
+//                    [self disconnect];
+//                }
+               //int len= hexstr2int(line);
+                //toto
             }
-        }];
+           // body=response;
+            //NSArray *components = [body componentsSeparatedByString:@"\r\n"];
+            
+//            [components enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//                NSString *line=obj;
+//                if (idx%2==1) {
+//                    XCMessage *msg=[XCMessage fromJsonData:[line dataUsingEncoding:NSUTF8StringEncoding]];
+//                    lastSeq_=msg.seq;
+//                }
+//                if (components.lastObject==obj) {
+//                    //[self sendAck];
+//                }
+//            }];
+            
+        }
     }
 }
+//-(void)handleRead:(NSData *)data
+//{
+//    if (!data || data.length==0) {
+//        return;
+//    }
+//    @autoreleasepool {
+//        NSString *response= [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//        NSRange speratorRange = [response rangeOfString:@"\r\n\r\n"];
+//        NSString *body=nil;
+//        if (speratorRange.location!=NSNotFound) {
+//             NSString *header=[response substringToIndex:speratorRange.location];
+//            if ([header rangeOfString:STATUS_200].location!=NSNotFound) {
+//                 body=[response substringFromIndex:speratorRange.location+speratorRange.length];
+//            }else if ([header rangeOfString:STATUS_303].location!=NSNotFound) {
+//               NSRange locRange = [header rangeOfString:@"http://"];
+//                
+//                if (locRange.location!=NSNotFound) {
+//                    NSString *locStr=[header substringFromIndex:locRange.location+locRange.length];
+//                    NSRange portRange=[locStr rangeOfString:@":"];
+//                    NSRange slashRange=[locStr rangeOfString:@"/"];
+//                    if (portRange.location!=NSNotFound) {
+//                        clientOption.host=[locStr substringToIndex:portRange.location];
+//                        clientOption.port=[[locStr substringWithRange:NSMakeRange(portRange.location+1, speratorRange.location-portRange.location-1)] integerValue];
+//                    }else{
+//                       
+//                        if (slashRange.location!=NSNotFound) {
+//                            clientOption.host=[locStr substringToIndex:slashRange.location];
+//                            clientOption.port=80;
+//                        }
+//                    }
+//                }
+//            }else if ([header rangeOfString:STATUS_400].location!=NSNotFound) {
+//                [self disconnect];
+//            }
+//           // XCLog(@"header:%@",header);
+//            
+//            
+//        }else{
+//            body=response;
+//        }
+//        NSArray *components = [body componentsSeparatedByString:@"\r\n"];
+//        
+//        [components enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//            NSString *line=obj;
+//            if (idx%2==1) {
+//                XCMessage *msg=[XCMessage fromJsonData:[line dataUsingEncoding:NSUTF8StringEncoding]];
+//                lastSeq_=msg.seq;
+//            }
+//            if (components.lastObject==obj) {
+//                //[self sendAck];
+//            }
+//        }];
+//    }
+//}
 
 -(void)handleWrite
 {
@@ -1011,20 +1136,67 @@ enum XCStreamConfig
 #pragma mark -- AutoPing
 -(void)startPing
 {
+    dispatch_block_t block=^{
     if (!autoPing) {
         autoPing=[[XCAutoPing alloc] init];
     }
     [autoPing startPingIntervalTimerWithHandler:^{
+        if ([UIApplication sharedApplication].applicationState==UIApplicationStateBackground) {
+             XCLog(@"backgroundTimeRemaining:%f",[UIApplication sharedApplication].backgroundTimeRemaining);
+        }
+        
         [self sendHeartbeat];
+       
     }];
+    };
+    if (dispatch_get_specific(xcQueueTag)) {
+        block();
+    }else{
+        dispatch_async(xcQueue, block);
+    }
 }
 
 -(void)stopPing
 {
+     dispatch_block_t block=^{
     if (autoPing) {
         [autoPing stopPingIntervalTimer];
         autoPing=nil;
+    }};
+    if (dispatch_get_specific(xcQueueTag)) {
+        block();
+    }else{
+        dispatch_async(xcQueue, block);
     }
+}
+
+#pragma mark -- AutoReconnect
+-(void)startMonitorReconnect
+{
+    dispatch_block_t block=^{
+        if (!autoReconnect) {
+            autoReconnect=[[XCAutoReconnect alloc] init];
+        }
+        [autoReconnect startMonitoringWithHostName:clientOption.host withHandler:^(GCNetworkReachabilityStatus status) {
+            XCLog(@"GCNetworkReachabilityStatus:%i",status);
+            if (status==GCNetworkReachabilityStatusNotReachable) {
+                UIApplication *app=[UIApplication sharedApplication];
+                if (app.applicationState==UIApplicationStateBackground) {
+                    [app endBackgroundTask:bgTask];
+                    //[self disconnect];
+                }
+                
+            }else{
+              [self connect];
+            }
+        }];
+    };
+    
+    if (dispatch_get_specific(xcQueueTag))
+        block();
+    else
+        dispatch_async(xcQueue, block);
+
 }
 
 
@@ -1037,7 +1209,9 @@ enum XCStreamConfig
 {
     //XCLogTrace();
      NSLog(@"didConnectToHost:%@",host);
-    [asyncSocket readDataWithTimeout:TIMEOUT_XC_READ_STREAM tag:TAG_XC_READ_STREAM];
+    [asyncSocket readDataToData:[GCDAsyncSocket DoubleCRLFData] withTimeout:TIMEOUT_XC_READ_STREAM tag:TAG_XC_READ_STREAM];
+    //[asyncSocket readDataWithTimeout:TIMEOUT_XC_READ_STREAM tag:TAG_XC_READ_STREAM];
+    //[asyncSocket readDataToLength:1024*4 withTimeout:-1 tag:TAG_XC_READ_STREAM];
     // This method is invoked on the xmppQueue.
     //
     // The TCP connection is now established.
@@ -1094,11 +1268,13 @@ enum XCStreamConfig
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
 {
     //XCLogTrace();
-    NSLog(@"didReadData:%@",data);
+    //NSLog(@"didReadData:%@",data);
     NSLog(@"didReadDataToString:%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-    [self handleRead:data];
-    [asyncSocket readDataWithTimeout:TIMEOUT_XC_READ_STREAM tag:TAG_XC_READ_STREAM];
+    [self handleReadLine:data];
+    //[asyncSocket readDataWithTimeout:TIMEOUT_XC_READ_STREAM tag:TAG_XC_READ_STREAM];
+    [asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:TIMEOUT_XC_READ_STREAM tag:TAG_XC_READ_STREAM];
 }
+
 /**
  * Called after data with the given tag has been successfully sent.
  **/

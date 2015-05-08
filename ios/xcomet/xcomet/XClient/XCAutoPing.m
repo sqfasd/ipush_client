@@ -15,7 +15,7 @@ static  int XCLogLevel = XC_LOG_LEVEL_INFO | XC_LOG_FLAG_SEND_RECV | XC_LOG_FLAG
 static const int XCLogLevel = XC_LOG_LEVEL_WARN;
 #endif
 
-#define kDefaultPingInterval 30
+#define kDefaultPingInterval 10
 
 @interface XCAutoPing ()
 {
@@ -100,38 +100,6 @@ static const int XCLogLevel = XC_LOG_LEVEL_WARN;
 #pragma mark Ping Interval
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- (void)handlePingIntervalTimerFire
-{
-//    if (awaitingPingResponse) return;
-//    
-//    BOOL sendPing = NO;
-//    
-//    if (lastReceiveTime == 0)
-//    {
-//        sendPing = YES;
-//    }
-//    else
-//    {
-//        NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
-//        NSTimeInterval elapsed = (now - lastReceiveTime);
-//        
-//        XMPPLogTrace2(@"%@: %@ - elapsed(%f)", [self class], THIS_METHOD, elapsed);
-//        
-//        sendPing = ((elapsed < 0) || (elapsed >= pingInterval));
-//    }
-//    
-//    if (sendPing)
-//    {
-//        awaitingPingResponse = YES;
-//        
-//        if (targetJID)
-//            [xmppPing sendPingToJID:targetJID withTimeout:pingTimeout];
-//        else
-//            [xmppPing sendPingToServerWithTimeout:pingTimeout];
-//        
-//        [multicastDelegate xmppAutoPingDidSendPing:self];
-//    }
-}
 
 - (void)startPingIntervalTimerWithHandler:(void(^)())handler
 {

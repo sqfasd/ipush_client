@@ -31,7 +31,7 @@ typedef NS_ENUM(NSUInteger, XClientStartTLSPolicy) {
 extern const NSTimeInterval XClientTimeoutNone;
 @interface XClient : NSObject<GCDAsyncSocketDelegate>
 
--(instancetype)initWithOption:(XClientOption *)option;
+//-(instancetype)initWithOption:(XClientOption *)option;
 
 #if TARGET_OS_IPHONE
 
@@ -66,6 +66,8 @@ extern const NSTimeInterval XClientTimeoutNone;
  * If this method returns YES, then it is ready for you to start sending and receiving elements.
  **/
 - (BOOL)isConnected;
+
+@property (readwrite, strong)XClientOption* clientOption;
 
 @property (readwrite, copy) NSString *hostName;
 

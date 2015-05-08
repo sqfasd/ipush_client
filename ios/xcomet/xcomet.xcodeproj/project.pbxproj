@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D0903F81AFC5CBC00B66FE8 /* XCAutoReconnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0903F71AFC5CBC00B66FE8 /* XCAutoReconnect.m */; };
+		1D0903FC1AFC5D4C00B66FE8 /* GCNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0903FB1AFC5D4C00B66FE8 /* GCNetworkReachability.m */; };
 		1D425AE81AF78FC60096C5E2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D425AE71AF78FC60096C5E2 /* main.m */; };
 		1D425AEB1AF78FC60096C5E2 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D425AEA1AF78FC60096C5E2 /* AppDelegate.mm */; };
 		1D425AEE1AF78FC60096C5E2 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D425AED1AF78FC60096C5E2 /* ViewController.mm */; };
@@ -53,6 +55,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1D0903F61AFC5CBC00B66FE8 /* XCAutoReconnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCAutoReconnect.h; sourceTree = "<group>"; };
+		1D0903F71AFC5CBC00B66FE8 /* XCAutoReconnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCAutoReconnect.m; sourceTree = "<group>"; };
+		1D0903FA1AFC5D4C00B66FE8 /* GCNetworkReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCNetworkReachability.h; sourceTree = "<group>"; };
+		1D0903FB1AFC5D4C00B66FE8 /* GCNetworkReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCNetworkReachability.m; sourceTree = "<group>"; };
 		1D425AE21AF78FC60096C5E2 /* xcomet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xcomet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D425AE61AF78FC60096C5E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D425AE71AF78FC60096C5E2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -168,6 +174,15 @@
 				1E4BC437FBCBE3C56225C76F /* Pods-xcomet.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		1D0903F91AFC5D4C00B66FE8 /* GCNetworkReachability */ = {
+			isa = PBXGroup;
+			children = (
+				1D0903FA1AFC5D4C00B66FE8 /* GCNetworkReachability.h */,
+				1D0903FB1AFC5D4C00B66FE8 /* GCNetworkReachability.m */,
+			);
+			path = GCNetworkReachability;
 			sourceTree = "<group>";
 		};
 		1D425AD91AF78FC60096C5E2 = {
@@ -327,6 +342,7 @@
 		1D47656A1AF9C2B8002D031B /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				1D0903F91AFC5D4C00B66FE8 /* GCNetworkReachability */,
 				1D47656B1AF9C2B8002D031B /* GCDAsyncSocket */,
 			);
 			path = Vendors;
@@ -348,6 +364,8 @@
 				1D47659F1AFB4DB0002D031B /* Core */,
 				1D4765A01AFB5073002D031B /* XCAutoPing.h */,
 				1D4765A11AFB5073002D031B /* XCAutoPing.m */,
+				1D0903F61AFC5CBC00B66FE8 /* XCAutoReconnect.h */,
+				1D0903F71AFC5CBC00B66FE8 /* XCAutoReconnect.m */,
 				1D4765A31AFB5106002D031B /* XCReconnect.h */,
 				1D4765A41AFB5106002D031B /* XCReconnect.m */,
 			);
@@ -440,7 +458,7 @@
 						CreatedOnToolsVersion = 6.2;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -552,8 +570,10 @@
 				1D45F7701AF89184005D7B99 /* logging.cc in Sources */,
 				1D425AE81AF78FC60096C5E2 /* main.m in Sources */,
 				1D47657D1AFB16AF002D031B /* XCChunkParser.m in Sources */,
+				1D0903F81AFC5CBC00B66FE8 /* XCAutoReconnect.m in Sources */,
 				1D47657A1AFA4C23002D031B /* XCPacket.m in Sources */,
 				1D45F76D1AF89184005D7B99 /* json_writer.cpp in Sources */,
+				1D0903FC1AFC5D4C00B66FE8 /* GCNetworkReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

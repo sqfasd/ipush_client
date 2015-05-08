@@ -46,15 +46,11 @@
 - (void)setupXClient
 {
     NSAssert(_xclient == nil, @"Method setupStream invoked multiple times");
-    XClientOption *option=[XClientOption new];
-    option.host = @"182.92.113.188";
-    option.port = 9000;
-    option.userName= @"user527";
-    option.password = @"pwd520";
-    _xclient = [[XClient alloc] initWithOption:option];
+
+    _xclient = [[XClient alloc] init];
     _xclient.enableBackgroundingOnSocket = YES;
-    XCReconnect *reconnect=[[XCReconnect alloc] init];
-    [reconnect activate:_xclient];
+//    XCReconnect *reconnect=[[XCReconnect alloc] init];
+//    [reconnect activate:_xclient];
     
 }
 
@@ -77,6 +73,12 @@
     // if (myJID == nil || myPassword == nil) {
     //    return NO;
     //}
+    XClientOption *option=[XClientOption new];
+    option.host = @"182.92.113.188";
+    option.port = 9000;
+    option.userName= @"user527";
+    option.password = @"pwd520";
+    _xclient.clientOption=option;
     [_xclient setHostName:@"182.92.113.188"];
     [_xclient setHostPort:9000];
     
