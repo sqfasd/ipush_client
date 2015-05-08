@@ -12,6 +12,7 @@
 #import "XClientOption.h"
 
 @class XCModule;
+@class XCMessage;
 extern NSString *const XClientErrorDomain;
 
 typedef NS_ENUM(NSUInteger, XClientErrorCode) {
@@ -33,8 +34,6 @@ extern const NSTimeInterval XClientTimeoutNone;
 
 //-(instancetype)initWithOption:(XClientOption *)option;
 
-#if TARGET_OS_IPHONE
-
 /**
  * If set, the kCFStreamNetworkServiceTypeVoIP flags will be set on the underlying CFRead/Write streams.
  *
@@ -42,7 +41,6 @@ extern const NSTimeInterval XClientTimeoutNone;
  **/
 @property (readwrite, assign) BOOL enableBackgroundingOnSocket;
 
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark State
@@ -67,18 +65,13 @@ extern const NSTimeInterval XClientTimeoutNone;
  **/
 - (BOOL)isConnected;
 
-@property (readwrite, strong)XClientOption* clientOption;
+//@property (readwrite, strong)XClientOption* clientOption;
 
 @property (readwrite, copy) NSString *hostName;
-
-/**
- * The port the xmpp server is running on.
- * If you do not explicitly set the port, the default port will be used.
- * If you set the port to zero, the default port will be used.
- *
- * The default port is 9000.
- **/
 @property (readwrite, assign) UInt16 hostPort;
+
+@property(readwrite, copy)NSString *username;
+@property(readwrite, copy)NSString *password;
 
 /**
  * Connects to the configured hostName on the configured hostPort.
@@ -297,7 +290,7 @@ extern const NSTimeInterval XClientTimeoutNone;
  * and after the stream features have been received, and any required features have been fullfilled.
  * At this point it's safe to begin communication with the server.
  **/
-- (void)xmppStreamDidConnect:(XClient *)sender;
+- (void)xclientDidConnect:(XClient *)sender;
 
 /**
  * This method is called after registration of a new user has successfully finished.
@@ -365,6 +358,7 @@ extern const NSTimeInterval XClientTimeoutNone;
 // **/
 //- (XMPPIQ *)xmppStream:(XClient *)sender willReceiveIQ:(XMPPIQ *)iq;
 //- (XMPPMessage *)xmppStream:(XClient *)sender willReceiveMessage:(XMPPMessage *)message;
+- (XCMessage *)xclient:(XClient *)sender didReceiveMessage:(XCMessage *)message;
 //- (XMPPPresence *)xmppStream:(XClient *)sender willReceivePresence:(XMPPPresence *)presence;
 //
 ///**
@@ -491,7 +485,7 @@ extern const NSTimeInterval XClientTimeoutNone;
  *
  * @see xmppStreamConnectDidTimeout:
  **/
-- (void)xmppStreamDidDisconnect:(XClient *)sender withError:(NSError *)error;
+- (void)xclientDidDisconnect:(XClient *)sender withError:(NSError *)error;
 //
 ///**
 // * This method is only used in P2P mode when the connectTo:withAddress: method was used.

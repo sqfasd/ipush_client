@@ -27,8 +27,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xM-IU-8Lw">
-                                <rect key="frame" x="57" y="71" width="34" height="30"/>
-                                <state key="normal" title="send">
+                                <rect key="frame" x="57" y="71" width="64" height="30"/>
+                                <state key="normal" title="sendMsg">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -42,6 +42,15 @@
                                 </state>
                                 <connections>
                                     <action selector="closeBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vBJ-mM-fzI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A7C-0Q-9sB">
+                                <rect key="frame" x="57" y="161" width="35" height="30"/>
+                                <state key="normal" title="Push">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendTest:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IS0-lk-plj"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -21,6 +21,10 @@ static  int XCLogLevel = XC_LOG_LEVEL_INFO | XC_LOG_FLAG_SEND_RECV | XC_LOG_FLAG
 static const int XCLogLevel = XC_LOG_LEVEL_WARN;
 #endif
 
+#define  DEFAULT_HOST  @"182.92.113.188"
+#define  DEFAULT_PORT 9000
+
+
 #define  STATUS_200 @"HTTP/1.1 200"
 #define  STATUS_303 @"HTTP/1.1 303"
 #define  STATUS_400 @"HTTP/1.1 400"
@@ -81,7 +85,7 @@ enum XCStreamConfig
     dispatch_queue_t xcQueue;
     void *xcQueueTag;
     
-    XClientOption* clientOption;
+    //XClientOption* clientOption;
     GCDAsyncSocket *asyncSocket;
     uint64_t numberOfBytesSent;
     uint64_t numberOfBytesReceived;
@@ -91,6 +95,8 @@ enum XCStreamConfig
     
     NSString *hostName;
     UInt16 hostPort;
+    NSString *username;
+    NSString *password;
     
     dispatch_source_t connectTimer;
     XClientState state;
@@ -108,7 +114,9 @@ enum XCStreamConfig
 @end
 
 @implementation XClient
-@synthesize clientOption;
+
+//@synthesize username=_username;
+//@synthesize password=_password;
 //
 //-(instancetype)init
 //{
@@ -129,8 +137,8 @@ enum XCStreamConfig
 //    willSendPresenceQueue = dispatch_queue_create("xmpp.willSendPresence", DISPATCH_QUEUE_SERIAL);
 //    
 //    didReceiveIqQueue = dispatch_queue_create("xmpp.didReceiveIq", DISPATCH_QUEUE_SERIAL);
-//    
-//    multicastDelegate = (GCDMulticastDelegate <XMPPStreamDelegate> *)[[GCDMulticastDelegate alloc] init];
+//
+    multicastDelegate = (GCDMulticastDelegate <XClientDelegate> *)[[GCDMulticastDelegate alloc] init];
     
     state = STATE_XC_DISCONNECTED;
     
@@ -140,7 +148,8 @@ enum XCStreamConfig
     numberOfBytesSent = 0;
     numberOfBytesReceived = 0;
     
-    hostPort = 9000;
+    hostName=DEFAULT_HOST;
+    hostPort = DEFAULT_PORT;
 //    keepAliveInterval = DEFAULT_KEEPALIVE_INTERVAL;
 //    keepAliveData = [@" " dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -259,6 +268,8 @@ enum XCStreamConfig
     }
 }
 
+
+
 - (void)setHostName:(NSString *)newHostName
 {
     if (dispatch_get_specific(xcQueueTag))
@@ -307,6 +318,56 @@ enum XCStreamConfig
         block();
     else
         dispatch_async(xcQueue, block);
+}
+
+-(NSString *)username
+{
+    if (dispatch_get_specific(xcQueueTag)) {
+        return username;
+    }else{
+        __block NSString *result;
+        dispatch_sync(xcQueue, ^{
+            result=username;
+        });
+        return result;
+    }
+}
+
+-(void)setUsername:(NSString *)newUsername
+{
+    dispatch_block_t block=^{
+        username=newUsername;
+    };
+    if (dispatch_get_specific(xcQueueTag)) {
+        block();
+    }else{
+        dispatch_async(xcQueue, block);
+    }
+}
+
+-(NSString *)password
+{
+    if (dispatch_get_specific(xcQueueTag)) {
+        return password;
+    }else{
+        __block NSString *result;
+        dispatch_sync(xcQueue, ^{
+            result=password;
+        });
+        return result;
+    }
+}
+
+-(void)setPassword:(NSString *)newPassword
+{
+    dispatch_block_t block=^{
+        password=newPassword;
+    };
+    if (dispatch_get_specific(xcQueueTag)) {
+        block();
+    }else{
+        dispatch_async(xcQueue, block);
+    }
 }
 
 #if TARGET_OS_IPHONE
@@ -438,7 +499,7 @@ enum XCStreamConfig
  *
  * This method exists for backwards compatibility, and may disappear in future versions.
  **/
-- (BOOL)authenticateWithUserID:(NSString *)userId password:(NSString *)password error:(NSError **)errPtr
+- (BOOL)authenticateWithUserID:(NSString *)userId password:(NSString *)pwd error:(NSError **)errPtr
 {
     //XMPPLogTrace();
     
@@ -485,7 +546,7 @@ enum XCStreamConfig
         NSString *authString=[NSString stringWithFormat: @"GET /connect?uid=%@&password=%@ HTTP/1.1\r\n"
                               "User-Agent: mobile_socket_client/0.1.0\r\n"
                               "Accept: */*\r\n"
-                              "\r\n",userId,password];
+                              "\r\n",userId, pwd];
         NSData *outData= [authString dataUsingEncoding:NSUTF8StringEncoding];//[NSData dataWithBytes:buffer length:size];
         [self sendData:outData];
     }};
@@ -529,7 +590,7 @@ enum XCStreamConfig
         NSString *authString=[NSString stringWithFormat: @"GET /connect?uid=%@&password=%@ HTTP/1.1\r\n"
                               "User-Agent: mobile_socket_client/0.1.0\r\n"
                               "Accept: */*\r\n"
-                              "\r\n",clientOption.userName,clientOption.password];
+                              "\r\n",username,password];
         NSData *outData= [authString dataUsingEncoding:NSUTF8StringEncoding];
         [self sendData:outData];
     }};
@@ -584,19 +645,12 @@ enum XCStreamConfig
 
 -(void)sendMessage:(NSString *)content to:(NSString *)to {
     XCMessage *msg=[XCMessage new];
-    msg.from=clientOption.userName;
+    msg.from=username;
     msg.to=to;
     msg.type=T_MESSAGE;
     msg.body=content;
     [self sendData:[msg toPacketData]];
 }
-//static NSData * messageToData(Message &msg)
-//{
-//    string str =  *(Message::Serialize(msg));
-//    const char * cStr= str.c_str();
-//    NSData *msgData=[[NSData alloc] initWithBytes:cStr length:strlen(cStr)];
-//    return msgData;
-//}
 
 -(void)sendAck {
     XCMessage *msg=[XCMessage new];
@@ -794,11 +848,16 @@ enum XCStreamConfig
 - (BOOL)connectWithTimeout:(NSTimeInterval)timeout error:(NSError **)errPtr
 {
     //XCLogTrace();
-    
+
     __block BOOL result = NO;
     __block NSError *err = nil;
     
     dispatch_block_t block = ^{ @autoreleasepool {
+        if (!username || username.length==0 || !password || password.length==0) {
+            XCLog(@"username and password must not be empty before connect");
+            result = NO;
+            return_from_block;
+        }
         
         if (state != STATE_XC_DISCONNECTED)
         {
@@ -1014,10 +1073,10 @@ enum XCStreamConfig
     @autoreleasepool {
         NSString *response= [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSRange speratorRange = [response rangeOfString:@"\r\n\r\n"];
-       //NSString *body=nil;
         if (speratorRange.location!=NSNotFound) {
             NSString *header=[response substringToIndex:speratorRange.location];
             if ([header rangeOfString:STATUS_200].location!=NSNotFound) {
+                [multicastDelegate xclientDidConnect:self];
                 //body=[response substringFromIndex:speratorRange.location+speratorRange.length];
             }else if ([header rangeOfString:STATUS_303].location!=NSNotFound) {
                 NSRange locRange = [header rangeOfString:@"http://"];
@@ -1027,13 +1086,13 @@ enum XCStreamConfig
                     NSRange portRange=[locStr rangeOfString:@":"];
                     NSRange slashRange=[locStr rangeOfString:@"/"];
                     if (portRange.location!=NSNotFound) {
-                        clientOption.host=[locStr substringToIndex:portRange.location];
-                        clientOption.port=[[locStr substringWithRange:NSMakeRange(portRange.location+1, speratorRange.location-portRange.location-1)] integerValue];
+                        self.hostName=[locStr substringToIndex:portRange.location];
+                         self.hostPort=[[locStr substringWithRange:NSMakeRange(portRange.location+1, speratorRange.location-portRange.location-1)] integerValue];
                     }else{
                         
                         if (slashRange.location!=NSNotFound) {
-                            clientOption.host=[locStr substringToIndex:slashRange.location];
-                            clientOption.port=80;
+                            self.hostName=[locStr substringToIndex:slashRange.location];
+                            self.hostPort=80;
                         }
                     }
                 }
@@ -1041,34 +1100,21 @@ enum XCStreamConfig
                 [self disconnect];
             }
             // XCLog(@"header:%@",header);
-            
         }else{
             NSString *line=[response stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             if ([line hasPrefix:@"{"]) {
                 XCMessage *msg=[XCMessage fromJsonData:[line dataUsingEncoding:NSUTF8StringEncoding]];
                  lastSeq_=msg.seq;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [multicastDelegate xclient:self didReceiveMessage:msg];
+                });
                 [self sendAck];
             }else{
 //                if ([@"0" isEqualToString:line]) {
 //                    [self disconnect];
 //                }
                //int len= hexstr2int(line);
-                //toto
             }
-           // body=response;
-            //NSArray *components = [body componentsSeparatedByString:@"\r\n"];
-            
-//            [components enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//                NSString *line=obj;
-//                if (idx%2==1) {
-//                    XCMessage *msg=[XCMessage fromJsonData:[line dataUsingEncoding:NSUTF8StringEncoding]];
-//                    lastSeq_=msg.seq;
-//                }
-//                if (components.lastObject==obj) {
-//                    //[self sendAck];
-//                }
-//            }];
-            
         }
     }
 }
@@ -1177,7 +1223,7 @@ enum XCStreamConfig
         if (!autoReconnect) {
             autoReconnect=[[XCAutoReconnect alloc] init];
         }
-        [autoReconnect startMonitoringWithHostName:clientOption.host withHandler:^(GCNetworkReachabilityStatus status) {
+        [autoReconnect startMonitoringWithHostName:hostName withHandler:^(GCNetworkReachabilityStatus status) {
             XCLog(@"GCNetworkReachabilityStatus:%i",status);
             if (status==GCNetworkReachabilityStatusNotReachable) {
                 UIApplication *app=[UIApplication sharedApplication];
@@ -1290,12 +1336,12 @@ enum XCStreamConfig
  **/
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err
 {
-    NSLog(@"socketDidDisconnect:%@",err);
+    XCLogInfo(@"socketDidDisconnect:%@",err);
    
     // XCLogTrace();
     // This method is invoked on the xmppQueue.
     
-    XCLogTrace();
+   // XCLogTrace();
     
     [self endConnectTimeout];
     
@@ -1311,6 +1357,7 @@ enum XCStreamConfig
     //    }
     
      [self stopPing];
+    [multicastDelegate xclientDidDisconnect:self withError:err];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

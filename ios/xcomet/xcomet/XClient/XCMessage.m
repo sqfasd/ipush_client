@@ -69,36 +69,41 @@
 -(NSData*)toJsonData
 {
     //NSDictionary *dic=@{kXC_FROM:_from};
-    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
-    if (_from) {
-        [dic setObject:_from forKey:kXC_FROM];
-    }
-    if (_to) {
-        [dic setObject:_to forKey:kXC_TO];
-    }
-    if (_seq!=-1) {
-        [dic setObject:@(_seq) forKey:kXC_SEQ];
-    }
-    if (_type!=-1) {
-        [dic setObject:@(_type) forKey:kXC_TYPE];
-    }
-    if (_user) {
-        [dic setObject:_user forKey:kXC_USER];
-    }
-    if (_channel) {
-        [dic setObject:_channel forKey:kXC_CHANNEL];
-    }
-    if (_body) {
-        [dic setObject:_body forKey:kXC_BODY];
-    }
+   
+    if (_type==T_HEARTBEAT) {
+        return [@" " dataUsingEncoding:NSUTF8StringEncoding];
+    }else{
+         NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+        if (_from) {
+            [dic setObject:_from forKey:kXC_FROM];
+        }
+        if (_to) {
+            [dic setObject:_to forKey:kXC_TO];
+        }
+        if (_seq!=-1) {
+            [dic setObject:@(_seq) forKey:kXC_SEQ];
+        }
+        if (_type!=-1) {
+            [dic setObject:@(_type) forKey:kXC_TYPE];
+        }
+        if (_user) {
+            [dic setObject:_user forKey:kXC_USER];
+        }
+        if (_channel) {
+            [dic setObject:_channel forKey:kXC_CHANNEL];
+        }
+        if (_body) {
+            [dic setObject:_body forKey:kXC_BODY];
+        }
 
-    if ([NSJSONSerialization isValidJSONObject:dic]) {
-        NSError *error=nil;
-        NSData *data=[NSJSONSerialization dataWithJSONObject:dic options:0 error:&error];
-        return data;
+        if ([NSJSONSerialization isValidJSONObject:dic]) {
+            NSError *error=nil;
+            NSData *data=[NSJSONSerialization dataWithJSONObject:dic options:0 error:&error];
+            return data;
+        }
+        return nil;
     }
-
-    return nil;
+    
 }
 //static const int MAX_DATA_LEN = 20;
 
@@ -106,16 +111,6 @@
 {
     NSData *msgData=[self toJsonData];
     NSMutableData *packetData=[NSMutableData data];
-    //char data_len_buf_[MAX_DATA_LEN];
-    //std::memset(data_len_buf_, 0, sizeof(data_len_buf_));
-//    int n = ::snprintf(data_len_buf_,
-//                       MAX_DATA_LEN,
-//                       "%x\r\n",
-//                       (uint32)len_-2);
-    //CHECK(n < MAX_DATA_LEN);
-
-    //char *chunck=
- 
     NSString *len=[NSString stringWithFormat:@"%lx\r\n",(unsigned long)msgData.length];
     [packetData appendData:[len dataUsingEncoding:NSUTF8StringEncoding]];
     [packetData appendData:msgData];

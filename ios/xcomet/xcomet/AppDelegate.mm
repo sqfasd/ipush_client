@@ -16,6 +16,11 @@
 //#include <netinet/in.h>
 #include "socketclient.h"
 #import "XClient.h"
+
+// iOS系统
+#define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
+#define IS_IOS7_AND_UP (IOS_VERSION >= 7.0)
+#define IS_IOS8_AND_UP (IOS_VERSION >= 8.0)
 using namespace std;
 using namespace xcomet;
 static  SocketClient *client;
@@ -87,6 +92,19 @@ void test() {
 ////    });
 //    [self setupXClient];
 //    [self connect];
+//    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
+//        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeSound|UIUserNotificationTypeBadge
+//                                                                                                              categories:nil]];
+//    }
+    // 6. 注册Push
+    if (!IS_IOS8_AND_UP) {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
+    }
+    else {
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeSound|UIUserNotificationTypeBadge categories:nil]];
+    }
+
     return YES;
 }
 
@@ -184,7 +202,7 @@ void test() {
 
 - (void)scheduleInCurrentThread
 {
-    test();
+   // test();
     //[inputstream scheduleInRunLoop:[NSRunLoop currentRunLoop]
     //                       forMode:NSRunLoopCommonModes];
 }
@@ -204,10 +222,16 @@ void test() {
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [UIApplication sharedApplication].applicationIconBadgeNumber=0;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    XCLog(@"didReceiveLocalNotification:%@",notification.description);
 }
 
 @end

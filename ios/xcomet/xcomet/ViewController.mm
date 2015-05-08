@@ -9,9 +9,12 @@
 #import "ViewController.h"
 #import "XClient.h"
 #import  "XCReconnect.h"
-@interface ViewController ()
+#import "XCMessage.h"
+@interface ViewController ()<XClientDelegate>
 {
     XClient *_xclient;
+    NSOperationQueue *_operationQueue;
+    UILocalNotification *localNotification;
 }
 @end
 
@@ -19,6 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _operationQueue=[[NSOperationQueue alloc] init];
     [self setupXClient];
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -49,9 +53,7 @@
 
     _xclient = [[XClient alloc] init];
     _xclient.enableBackgroundingOnSocket = YES;
-//    XCReconnect *reconnect=[[XCReconnect alloc] init];
-//    [reconnect activate:_xclient];
-    
+    [_xclient addDelegate:self delegateQueue:dispatch_get_main_queue()];
 }
 
 - (BOOL)connect
@@ -60,28 +62,10 @@
 //        return YES;
 //    }
     
-    // NSString *myJID = [[NSUserDefaults standardUserDefaults] stringForKey:kXMPPmyJID];
-    //NSString *myPassword = [[NSUserDefaults standardUserDefaults] stringForKey:kXMPPmyPassword];
-    
-    //
-    // If you don't want to use the Settings view to set the JID,
-    // uncomment the section below to hard code a JID and password.
-    //
-    // myJID = @"user@gmail.com/xmppframework";
-    // myPassword = @"";
-    
-    // if (myJID == nil || myPassword == nil) {
-    //    return NO;
-    //}
-    XClientOption *option=[XClientOption new];
-    option.host = @"182.92.113.188";
-    option.port = 9000;
-    option.userName= @"user527";
-    option.password = @"pwd520";
-    _xclient.clientOption=option;
-    [_xclient setHostName:@"182.92.113.188"];
-    [_xclient setHostPort:9000];
-    
+    _xclient.username= @"user527";
+    _xclient.password = @"pwd520";
+//    _xclient.clientOption=option;
+
     NSError *error = nil;
     if (![_xclient connectWithTimeout:XClientTimeoutNone error:&error])
     {
@@ -99,4 +83,65 @@
     
     return YES;
 }
+
+-(IBAction)sendTest:(id)sender
+{
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://182.92.113.188:9001/pub?to=user527&from=test"]];
+    request.HTTPMethod=@"POST";
+    request.HTTPBody= [@"{\"type\":1040,\"ct\":\"湖北432\",\"td\":\"55266c351267419c34f168aa\",\"content\":\"4422\",\"url\":\"www.baidu.com\"}" dataUsingEncoding:NSUTF8StringEncoding];
+    [NSURLConnection sendAsynchronousRequest:request queue:_operationQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        XCLog(@"response:%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    }];
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark XMPPStream Delegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-(void)xclientDidConnect:(XClient *)sender
+{
+    XCLog(@"xclientDidConnect");
+}
+
+- (XCMessage *)xclient:(XClient *)sender didReceiveMessage:(XCMessage *)message
+{
+    //DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+    
+    // A simple example of inbound message handling.
+    if (message.type==T_MESSAGE) {
+        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+        {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:message.from
+                                                                message:message.body
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+        else
+        {
+            //[[UIApplication sharedApplication] cancelAllLocalNotifications];
+            // We are not active, so use a local notification instead
+//            if (localNotification) {
+//                [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
+//            }
+            localNotification = [[UILocalNotification alloc] init];
+            localNotification.alertAction = @"Ok";
+            localNotification.alertBody =message.body;// [NSString stringWithFormat:@"From: %@\n\n%@",message.from,message.body];
+            localNotification.soundName = UILocalNotificationDefaultSoundName;
+            localNotification.applicationIconBadgeNumber=[UIApplication sharedApplication].applicationIconBadgeNumber+1;
+           // [[UIApplication sharedApplication]  scheduleLocalNotification:localNotification];
+            [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+        }
+
+    }
+    
+    return nil;
+}
+
+- (void)xclientDidDisconnect:(XClient *)sender withError:(NSError *)error
+{
+      XCLog(@"xclientDidDisconnect withError:%@",error);
+}
+
 @end
