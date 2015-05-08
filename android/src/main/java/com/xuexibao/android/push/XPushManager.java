@@ -63,13 +63,13 @@ public class XPushManager {
 
     public static synchronized void startPush(Context context) {
         XPushConfig.setInited();
-        Intent i = new Intent();
+        Intent i = new Intent(context, XPushService.class);
         i.setAction(Constants.ACTION_START_SERVICE);
         context.startService(i);
     }
 
     public static synchronized void stopPush(Context context) {
-        Intent i = new Intent();
+        Intent i = new Intent(context, XPushService.class);
         i.setAction(Constants.ACTION_STOP_SERVICE);
         context.startService(i);
     }
