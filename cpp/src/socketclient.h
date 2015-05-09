@@ -141,7 +141,7 @@ class SocketClient : public NonCopyable {
     option_.password = password;
   }
 
-  void SetKeepaliveInterval(int interval_sec) {
+  void SetKeepAliveIntervalSec(int interval_sec) {
     keepalive_interval_sec_ = interval_sec;
   }
 

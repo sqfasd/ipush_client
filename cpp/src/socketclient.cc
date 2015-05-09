@@ -534,11 +534,13 @@ int SocketClient::Unsubscribe(const std::string& channel) {
 
 int SocketClient::SendHeartbeat() {
   LOG(INFO) << "SendHeartbeat";
-  Message msg;
-  msg.SetType(Message::T_HEARTBEAT);
+  //Message msg;
+  //msg.SetType(Message::T_HEARTBEAT);
 
   PacketPtr packet(new Packet());
-  packet->SetContent(*(Message::Serialize(msg)));
+  //packet->SetContent(*(Message::Serialize(msg)));
+  string heartbeat_msg(" ");
+  packet->SetContent(heartbeat_msg);
   write_queue_.Push(packet);
   HandleWrite();
   return 0;
