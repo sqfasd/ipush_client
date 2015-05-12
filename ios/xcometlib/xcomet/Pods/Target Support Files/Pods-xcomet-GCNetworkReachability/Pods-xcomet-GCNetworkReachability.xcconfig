@@ -1,0 +1,1 @@
+PODS_XCOMET_GCNETWORKREACHABILITY_OTHER_LDFLAGS = -framework "SystemConfiguration"
