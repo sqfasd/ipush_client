@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="IAr-5w-cAH" customClass="MDQueUpdFailView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view alpha="0.30000001192092896" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9JO-GH-PMs">
+                    <rect key="frame" x="0.0" y="29" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.8784313725490196" green="0.83137254901960789" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="GBZ-sD-Kp1"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="updRetry" translatesAutoresizingMaskIntoConstraints="NO" id="8H6-56-Fz7">
+                    <rect key="frame" x="215" y="5" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="Iib-eo-DpH"/>
+                        <constraint firstAttribute="height" constant="20" id="ph1-va-5wG"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100道题目上传失败" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zBz-9p-cjC">
+                    <rect key="frame" x="85" y="6" width="122" height="18"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="18" id="G5D-hP-vDV"/>
+                        <constraint firstAttribute="width" constant="122" id="V2e-3q-4x0"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="0.92941176470588238" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="zBz-9p-cjC" secondAttribute="centerX" constant="14" id="Aai-VV-mLi"/>
+                <constraint firstAttribute="trailing" secondItem="9JO-GH-PMs" secondAttribute="trailing" id="YpD-Sx-fXZ"/>
+                <constraint firstAttribute="centerY" secondItem="zBz-9p-cjC" secondAttribute="centerY" id="cls-ug-TU9"/>
+                <constraint firstAttribute="centerY" secondItem="8H6-56-Fz7" secondAttribute="centerY" id="fXF-yc-VJf"/>
+                <constraint firstAttribute="bottom" secondItem="9JO-GH-PMs" secondAttribute="bottom" id="kJt-Q4-kim"/>
+                <constraint firstItem="8H6-56-Fz7" firstAttribute="leading" secondItem="zBz-9p-cjC" secondAttribute="trailing" constant="8" id="u9b-hC-Slp"/>
+                <constraint firstItem="9JO-GH-PMs" firstAttribute="leading" secondItem="IAr-5w-cAH" secondAttribute="leading" id="yQS-vC-1uC"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="infoL" destination="zBz-9p-cjC" id="a8i-RR-yVl"/>
+            </connections>
+            <point key="canvasLocation" x="603" y="399"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="updRetry" width="20" height="20"/>
+    </resources>
+</document>

@@ -1,0 +1,6 @@
+framework module xcomet {
+  umbrella header "xcomet.h"
+
+  export *
+  module * { export * }
+}
