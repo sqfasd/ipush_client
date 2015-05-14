@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1C48ADB0E27AFCBC3E7AE350 /* libPods-XuexiBaoFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0329B5B7F3A8D947E999C06 /* libPods-XuexiBaoFramework.a */; };
+		1DEB58B01B04B57700248D57 /* xcomet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DEB58AF1B04B57700248D57 /* xcomet.framework */; };
+		1DEB58B61B04BA2D00248D57 /* XClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DEB58B21B04BA2D00248D57 /* XClient.h */; };
+		1DEB58B71B04BA2D00248D57 /* XCMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DEB58B31B04BA2D00248D57 /* XCMessage.h */; };
+		1DEB58B81B04BA2D00248D57 /* xcomet.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DEB58B41B04BA2D00248D57 /* xcomet.h */; };
+		1DEB58B91B04BA2D00248D57 /* xcomet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DEB58B51B04BA2D00248D57 /* xcomet.a */; };
 		DA4C84001B033351001390A9 /* Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83831B033351001390A9 /* Header.h */; };
 		DA4C84011B033351001390A9 /* Header.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83841B033351001390A9 /* Header.m */; };
 		DA4C84021B033351001390A9 /* MDEditPhotoViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83871B033351001390A9 /* MDEditPhotoViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -63,9 +68,6 @@
 		DA4C84431B033351001390A9 /* MDQueListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83D41B033351001390A9 /* MDQueListViewController.m */; };
 		DA4C84441B033351001390A9 /* libTalkingData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4C83D71B033351001390A9 /* libTalkingData.a */; };
 		DA4C84451B033351001390A9 /* TalkingData.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83D81B033351001390A9 /* TalkingData.h */; };
-		DA4C84461B033351001390A9 /* readme.html in Resources */ = {isa = PBXBuildFile; fileRef = DA4C83DA1B033351001390A9 /* readme.html */; };
-		DA4C84471B033351001390A9 /* readme.md in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83DB1B033351001390A9 /* readme.md */; };
-		DA4C84481B033351001390A9 /* xcomet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4C83DC1B033351001390A9 /* xcomet.framework */; };
 		DA4C844A1B033351001390A9 /* LOTLib.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83DE1B033351001390A9 /* LOTLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA4C844B1B033351001390A9 /* LOTLib.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83DF1B033351001390A9 /* LOTLib.m */; };
 		DA4C844C1B033351001390A9 /* NSData+ImageContentType.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83E11B033351001390A9 /* NSData+ImageContentType.h */; };
@@ -203,6 +205,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1DEB58AF1B04B57700248D57 /* xcomet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = xcomet.framework; path = XuexiBaoFramework/Dependencies/xcomet/xcomet.framework; sourceTree = "<group>"; };
+		1DEB58B21B04BA2D00248D57 /* XClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XClient.h; sourceTree = "<group>"; };
+		1DEB58B31B04BA2D00248D57 /* XCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCMessage.h; sourceTree = "<group>"; };
+		1DEB58B41B04BA2D00248D57 /* xcomet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xcomet.h; sourceTree = "<group>"; };
+		1DEB58B51B04BA2D00248D57 /* xcomet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = xcomet.a; sourceTree = "<group>"; };
 		324D1441C70374D0EAC1969D /* Pods-XuexiBaoFramework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XuexiBaoFramework.release.xcconfig"; path = "Pods/Target Support Files/Pods-XuexiBaoFramework/Pods-XuexiBaoFramework.release.xcconfig"; sourceTree = "<group>"; };
 		590B38F294AE3A1E851FDFEE /* Pods-XuexiBaoFramework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XuexiBaoFramework.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XuexiBaoFramework/Pods-XuexiBaoFramework.debug.xcconfig"; sourceTree = "<group>"; };
 		B0329B5B7F3A8D947E999C06 /* libPods-XuexiBaoFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-XuexiBaoFramework.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -268,9 +275,6 @@
 		DA4C83D41B033351001390A9 /* MDQueListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDQueListViewController.m; sourceTree = "<group>"; };
 		DA4C83D71B033351001390A9 /* libTalkingData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTalkingData.a; sourceTree = "<group>"; };
 		DA4C83D81B033351001390A9 /* TalkingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkingData.h; sourceTree = "<group>"; };
-		DA4C83DA1B033351001390A9 /* readme.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = readme.html; sourceTree = "<group>"; };
-		DA4C83DB1B033351001390A9 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
-		DA4C83DC1B033351001390A9 /* xcomet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = xcomet.framework; sourceTree = "<group>"; };
 		DA4C83DD1B033351001390A9 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = images.xcassets; path = ../XuexiBaoFramework/images.xcassets; sourceTree = "<group>"; };
 		DA4C83DE1B033351001390A9 /* LOTLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTLib.h; sourceTree = "<group>"; };
 		DA4C83DF1B033351001390A9 /* LOTLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTLib.m; sourceTree = "<group>"; };
@@ -420,9 +424,10 @@
 				DA4C85201B03646E001390A9 /* libpubshare.a in Frameworks */,
 				DA4C84791B033827001390A9 /* UIKit.framework in Frameworks */,
 				DA4C84771B03381A001390A9 /* CoreTelephony.framework in Frameworks */,
+				1DEB58B91B04BA2D00248D57 /* xcomet.a in Frameworks */,
 				DA4C84761B033814001390A9 /* AdSupport.framework in Frameworks */,
+				1DEB58B01B04B57700248D57 /* xcomet.framework in Frameworks */,
 				DA4C84441B033351001390A9 /* libTalkingData.a in Frameworks */,
-				DA4C84481B033351001390A9 /* xcomet.framework in Frameworks */,
 				1C48ADB0E27AFCBC3E7AE350 /* libPods-XuexiBaoFramework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,6 +458,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1DEB58B11B04BA2D00248D57 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				1DEB58B21B04BA2D00248D57 /* XClient.h */,
+				1DEB58B31B04BA2D00248D57 /* XCMessage.h */,
+				1DEB58B41B04BA2D00248D57 /* xcomet.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
 		7D67180DD08F7001C1BD55EA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -465,6 +480,7 @@
 		DA4C83511B032818001390A9 = {
 			isa = PBXGroup;
 			children = (
+				1DEB58AF1B04B57700248D57 /* xcomet.framework */,
 				DA4C835D1B032818001390A9 /* XuexiBaoFramework */,
 				DA4C837C1B0331CC001390A9 /* XuexiBaoBundle */,
 				DA4C835C1B032818001390A9 /* Products */,
@@ -752,9 +768,8 @@
 		DA4C83D91B033351001390A9 /* xcomet */ = {
 			isa = PBXGroup;
 			children = (
-				DA4C83DA1B033351001390A9 /* readme.html */,
-				DA4C83DB1B033351001390A9 /* readme.md */,
-				DA4C83DC1B033351001390A9 /* xcomet.framework */,
+				1DEB58B11B04BA2D00248D57 /* include */,
+				1DEB58B51B04BA2D00248D57 /* xcomet.a */,
 			);
 			path = xcomet;
 			sourceTree = "<group>";
@@ -1026,6 +1041,7 @@
 				DA4C85431B03693A001390A9 /* MDUserUtil.h in Headers */,
 				DA4C84BF1B0338E1001390A9 /* _MDQuestionV2.h in Headers */,
 				DA4C85371B036571001390A9 /* MDEmptyMainView.h in Headers */,
+				1DEB58B81B04BA2D00248D57 /* xcomet.h in Headers */,
 				DA4C84EF1B033D28001390A9 /* EGOCache.h in Headers */,
 				DA4C84381B033351001390A9 /* UIColor+Extension.h in Headers */,
 				DA4C842E1B033351001390A9 /* SVIndefiniteAnimatedView.h in Headers */,
@@ -1082,6 +1098,7 @@
 				DA4C844C1B033351001390A9 /* NSData+ImageContentType.h in Headers */,
 				DA4C852E1B036540001390A9 /* MDNoNetHeader.h in Headers */,
 				DA4C85561B036A27001390A9 /* Reachability.h in Headers */,
+				1DEB58B61B04BA2D00248D57 /* XClient.h in Headers */,
 				DA4C853B1B0365A7001390A9 /* UIImage+Extension.h in Headers */,
 				DA4C84081B033351001390A9 /* CLClippingTool.h in Headers */,
 				DA4C84F51B033D67001390A9 /* MDNetworking.h in Headers */,
@@ -1091,6 +1108,7 @@
 				DA4C84321B033351001390A9 /* SVProgressHUD.h in Headers */,
 				DA4C85851B037EBD001390A9 /* UIImageView+Extension.h in Headers */,
 				DA4C84521B033351001390A9 /* SDWebImageDecoder.h in Headers */,
+				1DEB58B71B04BA2D00248D57 /* XCMessage.h in Headers */,
 				DA4C85951B038D3D001390A9 /* UIAlertView+Blocks.h in Headers */,
 				DA4C85011B0347D5001390A9 /* MDQuestionCell.h in Headers */,
 				DA4C845D1B033351001390A9 /* UIButton+WebCache.h in Headers */,
@@ -1186,7 +1204,6 @@
 				DA4C85321B036540001390A9 /* MDQueUpdFailView.xib in Resources */,
 				DA4C84051B033351001390A9 /* ic_left_rotate@2x.png in Resources */,
 				DA4C85551B036A27001390A9 /* LICENCE.txt in Resources */,
-				DA4C84461B033351001390A9 /* readme.html in Resources */,
 				DA4C84061B033351001390A9 /* ic_right_rotate@2x.png in Resources */,
 				DA4C84041B033351001390A9 /* album_btn@2x.png in Resources */,
 			);
@@ -1335,7 +1352,6 @@
 				DA4C844B1B033351001390A9 /* LOTLib.m in Sources */,
 				DA4C845E1B033351001390A9 /* UIButton+WebCache.m in Sources */,
 				DA4C856B1B036AB8001390A9 /* MDBgAutoRefreshQuestions.m in Sources */,
-				DA4C84471B033351001390A9 /* readme.md in Sources */,
 				DA4C85571B036A27001390A9 /* Reachability.m in Sources */,
 				DA4C84371B033351001390A9 /* MDExtension.m in Sources */,
 			);
@@ -1460,6 +1476,7 @@
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/TalkingData",
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/PubShare",
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/LibImgCD",
+					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/xcomet",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1510,6 +1527,7 @@
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/TalkingData",
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/PubShare",
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/LibImgCD",
+					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/xcomet",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
