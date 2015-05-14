@@ -10,9 +10,9 @@
 
 using namespace xcomet;
 
-#define JOWW(rettype, name) extern "C" rettype JNIEXPORT JNICALL Java_com_liveaa_net_##name
+#define JOWW(rettype, name) extern "C" rettype JNIEXPORT JNICALL Java_com_xuexibao_xcomet_##name
 
-static const char* XCOMETCLIENT_CLASS_NAME = "com/liveaa/net/XCometClient";
+static const char* XCOMETCLIENT_CLASS_NAME = "com/xuexibao/xcomet/XCometClient";
 static JniHelper* g_jni_helper_ = NULL;
 static jobject g_self_global_ref_;
 
@@ -126,11 +126,11 @@ JOWW(void, XCometClient_setPassword)(JNIEnv* env, jobject self,
   client->SetPassword(env->GetStringUTFChars(password, NULL));
 }
 
-JOWW(void, XCometClient_setKeepaliveInterval)(JNIEnv* env,
+JOWW(void, XCometClient_setKeepAliveIntervalSec)(JNIEnv* env,
                                               jobject self,
                                               jint interval) {
   SocketClient* client = GetSocketClient(env, self);
-  client->SetKeepaliveInterval(interval);
+  client->SetKeepAliveIntervalSec(interval);
 }
 
 JOWW(int, XCometClient_connect)(JNIEnv* env, jobject self) {
