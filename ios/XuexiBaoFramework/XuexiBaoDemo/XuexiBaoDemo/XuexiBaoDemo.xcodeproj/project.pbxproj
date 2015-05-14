@@ -517,6 +517,7 @@
 				DAAB06421B04A6330043E7C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DAAB06431B04A6330043E7C3 /* Build configuration list for PBXNativeTarget "XuexiBaoDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +526,7 @@
 				DAAB06451B04A6330043E7C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
