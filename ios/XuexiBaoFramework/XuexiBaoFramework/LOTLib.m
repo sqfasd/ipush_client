@@ -9,9 +9,9 @@
 
 
 #import "LOTLib.h"
-#import <xcomet/xcomet.h>
+//#import <xcomet/xcomet.h>
 
-
+#import "xcomet.h"
 
 
 @interface LOTLib ()<XClientDelegate>
