@@ -43,7 +43,7 @@
     return self;
 }
 
-- (void)doInit {
+- (void)startWithAppKey:(NSString *)appKey secret:(NSString *)secret {
     // 1. TalkingData统计
     [TalkingData sessionStarted:@"B3EC7279F87374F9F4856095ED0A2998" withChannelId:@"TalkingData"];
     [TalkingData setExceptionReportEnabled:NO];
@@ -51,6 +51,9 @@
     // 2. 初始化Push模块
     self.xClient.enableBackgroundingOnSocket = YES;
     [self.xClient addDelegate:self delegateQueue:dispatch_get_main_queue()];
+    
+    // 3. 初始化CoreData
+    [[MDCoreDataUtil sharedInstance] initCoreData];
 }
 
 

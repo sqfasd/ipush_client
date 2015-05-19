@@ -29,15 +29,6 @@
       buildConfiguration = "Debug">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DA4C835A1B032818001390A9"
-            BuildableName = "XuexiBaoFramework.framework"
-            BlueprintName = "XuexiBaoFramework"
-            ReferencedContainer = "container:XuexiBaoFramework.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"

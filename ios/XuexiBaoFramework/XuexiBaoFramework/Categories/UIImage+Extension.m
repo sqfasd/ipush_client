@@ -11,6 +11,16 @@
 
 @implementation UIImage (Extension)
 
++ (UIImage *)imageWithName:(NSString *)name inBundle:(NSBundle *)bundle {
+    if (!bundle) {
+        return [UIImage imageNamed:@"name"];
+    }
+    
+    NSString *imgPath = [bundle pathForResource:name ofType:@"png"];
+    
+    return [UIImage imageWithContentsOfFile:imgPath];
+}
+
 + (UIImage *)imageWithColor:(UIColor *)color
 {
 //    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);

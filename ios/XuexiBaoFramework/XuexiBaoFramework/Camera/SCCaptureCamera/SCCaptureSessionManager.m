@@ -892,7 +892,7 @@ typedef enum : NSUInteger {
     if ([device hasFlash]) {
         if (_flashType == FLASH_TYPE_ON) {
             device.flashMode = AVCaptureFlashModeAuto;
-            imgStr = @"camera_flash_auto"; //@"flashing_auto.png";
+            imgStr = XXBRSRC_NAME(@"camera_flash_auto"); //@"flashing_auto.png";
             if ([device hasTorch]) {
                 [device setTorchMode: AVCaptureTorchModeOff];
             }
@@ -932,7 +932,7 @@ typedef enum : NSUInteger {
 //        } else {
         if (_flashType == FLASH_TYPE_OFF) {
             device.flashMode = AVCaptureFlashModeOff; //AVCaptureFlashModeOn;
-            imgStr = @"camera_flash_on"; //@"flashing_on.png";
+            imgStr = XXBRSRC_NAME(@"camera_flash_on"); //@"flashing_on.png";
             if ([device hasTorch]) {
                 [device setTorchMode: AVCaptureTorchModeOn];
             }
@@ -941,7 +941,7 @@ typedef enum : NSUInteger {
         }
         else if (_flashType == FLASH_TYPE_ON) {
             device.flashMode = AVCaptureFlashModeAuto;
-            imgStr = @"camera_flash_auto"; //@"flashing_auto.png";
+            imgStr = XXBRSRC_NAME(@"camera_flash_auto"); //@"flashing_auto.png";
             if ([device hasTorch]) {
                 [device setTorchMode: AVCaptureTorchModeOff];
             }
@@ -950,7 +950,7 @@ typedef enum : NSUInteger {
         }
         else if (_flashType == FLASH_TYPE_AUTO) {
             device.flashMode = AVCaptureFlashModeOff;
-            imgStr = @"camera_flash_off"; //@"flashing_off.png";
+            imgStr = XXBRSRC_NAME(@"camera_flash_off"); //@"flashing_off.png";
             if ([device hasTorch]) {
                 [device setTorchMode: AVCaptureTorchModeOff];
             }

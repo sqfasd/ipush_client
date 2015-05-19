@@ -36,6 +36,6 @@
  *  尽可能在App运行早期调用
  *  推荐：UIApplicationDelegate -> didFinishLaunchingWithOptions
  */
-- (void)doInit;
+- (void)startWithAppKey:(NSString *)appKey secret:(NSString *)secret;
 
 @end

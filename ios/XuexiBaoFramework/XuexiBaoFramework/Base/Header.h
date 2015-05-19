@@ -296,6 +296,9 @@ dispatch_sync(dispatch_get_main_queue(), block);\
 #define XXBFRAMEWORK_BUNDLE [NSBundle bundleWithPath:XXBFRAMEWORK_BUNDLEPATH]
 #define LOTSTORYBOARD [UIStoryboard storyboardWithName:@"LOTStoryboard" bundle:XXBFRAMEWORK_BUNDLE]
 
+#define XXBBUNDLEPATH @"XuexiBaoBundle.bundle/"
+#define XXBRSRC_NAME(x) [NSString stringWithFormat:@"%@%@", XXBBUNDLEPATH, x]
+
 
 #define UD_APP_VER @"udappver"
 #define UD_TEMP_APP_VER @"temp_ud_app_ver"

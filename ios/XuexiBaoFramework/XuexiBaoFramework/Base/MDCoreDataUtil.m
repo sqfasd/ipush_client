@@ -26,7 +26,10 @@
 
 -(void)initCoreData
 {
-    [MagicalRecord setupAutoMigratingCoreDataStack];
+    [MagicalRecord setDefaultModelNamed:XXBRSRC_NAME(@"education.momd")];
+    [MagicalRecord setupCoreDataStackWithInMemoryStore];
+    
+//    [MagicalRecord setupAutoMigratingCoreDataStack];
 }
 
 

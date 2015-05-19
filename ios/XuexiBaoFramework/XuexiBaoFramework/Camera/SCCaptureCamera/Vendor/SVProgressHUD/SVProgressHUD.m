@@ -379,11 +379,11 @@ static const CGFloat TipViewHeight = 90;            //背景框高度
             SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
             SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
         }
-        SVProgressHUDOwnerSuccessImage = [UIImage imageNamed:@"hud_success"];
-        SVProgressHUDOwnerErrorImage = [UIImage imageNamed:@"hud_error"];
-        SVProgressHUDOwnerSuccessTipImage = [UIImage imageNamed:@"hud_success_cartoon"];
-        SVProgressHUDOwnerErrorTipImage = [UIImage imageNamed:@"hud_error_cartoon"];
-        SVProgressHUDOwnerLoadingTipImage = [UIImage imageNamed:@"hud_loading_cartoon"];
+        SVProgressHUDOwnerSuccessImage = [UIImage imageNamed:XXBRSRC_NAME(@"hud_success")];
+        SVProgressHUDOwnerErrorImage = [UIImage imageNamed:XXBRSRC_NAME(@"hud_error")];
+        SVProgressHUDOwnerSuccessTipImage = [UIImage imageNamed:XXBRSRC_NAME(@"hud_success_cartoon")];
+        SVProgressHUDOwnerErrorTipImage = [UIImage imageNamed:XXBRSRC_NAME(@"hud_error_cartoon")];
+        SVProgressHUDOwnerLoadingTipImage = [UIImage imageNamed:XXBRSRC_NAME(@"hud_loading_cartoon")];
         SVProgressHUDBusyingImage = nil; //[UIImage sd_animatedGIFNamed:@"loading"];
         
         SVProgressHUDRingThickness = 2;
@@ -1311,16 +1311,6 @@ static const CGFloat TipViewHeight = 90;            //背景框高度
     [self.activityIndiV startAnimating];
     self.activityIndiV.hidden = NO;
     
-//    self.imageView.image = nil;
-//    
-//    if(self.imageView.animationImages == nil){
-//        NSArray *images=[NSArray arrayWithObjects:[UIImage imageNamed:@"LoadingImage1"],[UIImage imageNamed:@"LoadingImage2"],[UIImage imageNamed:@"LoadingImage3"],[UIImage imageNamed:@"LoadingImage4"],[UIImage imageNamed:@"LoadingImage5"],[UIImage imageNamed:@"LoadingImage6"], nil];
-//        self.imageView.animationImages = images;
-//    }
-//    self.imageView.animationDuration = 0.4;
-//    self.imageView.animationRepeatCount = 0;
-//    [self.imageView startAnimating];
-
     self.hudView.backgroundColor = [UIColor clearColor];
 }
 

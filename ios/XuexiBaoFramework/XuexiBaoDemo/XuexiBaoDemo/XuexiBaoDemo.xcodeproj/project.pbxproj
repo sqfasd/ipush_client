@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1DEB58BB1B04CB5300248D57 /* XuexiBaoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DEB58AD1B04B4F400248D57 /* XuexiBaoFramework.framework */; };
 		1DEB58BD1B04CB8200248D57 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DEB58BC1B04CB8200248D57 /* libc++.dylib */; };
 		DAAB06231B04A6330043E7C3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB06221B04A6330043E7C3 /* main.m */; };
 		DAAB06261B04A6330043E7C3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB06251B04A6330043E7C3 /* AppDelegate.m */; };
@@ -25,6 +24,8 @@
 		DAAB06601B04ACB90043E7C3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAB065F1B04ACB90043E7C3 /* CoreTelephony.framework */; };
 		DAAB06621B04ACC80043E7C3 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAB06611B04ACC80043E7C3 /* CoreMotion.framework */; };
 		DAAB06661B04AD0B0043E7C3 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAB06651B04AD0B0043E7C3 /* ImageIO.framework */; };
+		DAAB06FB1B0616270043E7C3 /* XuexiBaoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAB06F81B0616210043E7C3 /* XuexiBaoFramework.framework */; };
+		DAAB07171B08D6DF0043E7C3 /* XuexiBaoBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DAAB06FA1B0616210043E7C3 /* XuexiBaoBundle.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,10 +36,37 @@
 			remoteGlobalIDString = DAAB061C1B04A6330043E7C3;
 			remoteInfo = XuexiBaoDemo;
 		};
+		DAAB06F71B0616210043E7C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DAAB06F21B0616210043E7C3 /* XuexiBaoFramework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA4C835B1B032818001390A9;
+			remoteInfo = XuexiBaoFramework;
+		};
+		DAAB06F91B0616210043E7C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DAAB06F21B0616210043E7C3 /* XuexiBaoFramework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA4C837B1B0331CB001390A9;
+			remoteInfo = XuexiBaoBundle;
+		};
+		DAAB06FE1B061D260043E7C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DAAB06F21B0616210043E7C3 /* XuexiBaoFramework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DA4C835A1B032818001390A9;
+			remoteInfo = XuexiBaoFramework;
+		};
+		DAAB070C1B062A930043E7C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DAAB06F21B0616210043E7C3 /* XuexiBaoFramework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DA4C837A1B0331CB001390A9;
+			remoteInfo = XuexiBaoBundle;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1DEB58AD1B04B4F400248D57 /* XuexiBaoFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XuexiBaoFramework.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/XuexiBaoFramework-ahgxxsvxlhadvcdcbvmgqykizyiz/Build/Products/Debug-iphoneos/XuexiBaoFramework.framework"; sourceTree = "<group>"; };
 		1DEB58BC1B04CB8200248D57 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		DAAB061D1B04A6330043E7C3 /* XuexiBaoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XuexiBaoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAB06211B04A6330043E7C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -66,6 +94,7 @@
 		DAAB06651B04AD0B0043E7C3 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		DAAB06671B04AD200043E7C3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DAAB06691B04AD2A0043E7C3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		DAAB06F21B0616210043E7C3 /* XuexiBaoFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = XuexiBaoFramework.xcodeproj; path = ../../XuexiBaoFramework.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,8 +102,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAAB06FB1B0616270043E7C3 /* XuexiBaoFramework.framework in Frameworks */,
 				1DEB58BD1B04CB8200248D57 /* libc++.dylib in Frameworks */,
-				1DEB58BB1B04CB5300248D57 /* XuexiBaoFramework.framework in Frameworks */,
 				DAAB06661B04AD0B0043E7C3 /* ImageIO.framework in Frameworks */,
 				DAAB06621B04ACC80043E7C3 /* CoreMotion.framework in Frameworks */,
 				DAAB06601B04ACB90043E7C3 /* CoreTelephony.framework in Frameworks */,
@@ -100,6 +129,7 @@
 		DAAB06141B04A6330043E7C3 = {
 			isa = PBXGroup;
 			children = (
+				DAAB06F21B0616210043E7C3 /* XuexiBaoFramework.xcodeproj */,
 				DAAB061F1B04A6330043E7C3 /* XuexiBaoDemo */,
 				DAAB066C1B04AE660043E7C3 /* Frameworks */,
 				DAAB06391B04A6330043E7C3 /* XuexiBaoDemoTests */,
@@ -161,7 +191,6 @@
 			isa = PBXGroup;
 			children = (
 				1DEB58BC1B04CB8200248D57 /* libc++.dylib */,
-				1DEB58AD1B04B4F400248D57 /* XuexiBaoFramework.framework */,
 				DAAB06691B04AD2A0043E7C3 /* QuartzCore.framework */,
 				DAAB06671B04AD200043E7C3 /* UIKit.framework */,
 				DAAB06651B04AD0B0043E7C3 /* ImageIO.framework */,
@@ -179,6 +208,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DAAB06F31B0616210043E7C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DAAB06F81B0616210043E7C3 /* XuexiBaoFramework.framework */,
+				DAAB06FA1B0616210043E7C3 /* XuexiBaoBundle.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -193,6 +231,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				DAAB070D1B062A930043E7C3 /* PBXTargetDependency */,
+				DAAB06FF1B061D260043E7C3 /* PBXTargetDependency */,
 			);
 			name = XuexiBaoDemo;
 			productName = XuexiBaoDemo;
@@ -246,6 +286,12 @@
 			mainGroup = DAAB06141B04A6330043E7C3;
 			productRefGroup = DAAB061E1B04A6330043E7C3 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DAAB06F31B0616210043E7C3 /* Products */;
+					ProjectRef = DAAB06F21B0616210043E7C3 /* XuexiBaoFramework.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				DAAB061C1B04A6330043E7C3 /* XuexiBaoDemo */,
@@ -254,11 +300,29 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		DAAB06F81B0616210043E7C3 /* XuexiBaoFramework.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = XuexiBaoFramework.framework;
+			remoteRef = DAAB06F71B0616210043E7C3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DAAB06FA1B0616210043E7C3 /* XuexiBaoBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = XuexiBaoBundle.bundle;
+			remoteRef = DAAB06F91B0616210043E7C3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		DAAB061B1B04A6330043E7C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAAB07171B08D6DF0043E7C3 /* XuexiBaoBundle.bundle in Resources */,
 				DAAB062C1B04A6330043E7C3 /* Main.storyboard in Resources */,
 				DAAB06311B04A6330043E7C3 /* LaunchScreen.xib in Resources */,
 				DAAB062E1B04A6330043E7C3 /* Images.xcassets in Resources */,
@@ -300,6 +364,16 @@
 			isa = PBXTargetDependency;
 			target = DAAB061C1B04A6330043E7C3 /* XuexiBaoDemo */;
 			targetProxy = DAAB06371B04A6330043E7C3 /* PBXContainerItemProxy */;
+		};
+		DAAB06FF1B061D260043E7C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = XuexiBaoFramework;
+			targetProxy = DAAB06FE1B061D260043E7C3 /* PBXContainerItemProxy */;
+		};
+		DAAB070D1B062A930043E7C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = XuexiBaoBundle;
+			targetProxy = DAAB070C1B062A930043E7C3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -407,6 +481,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/XuexiBaoFramework-ahgxxsvxlhadvcdcbvmgqykizyiz/Build/Products/Debug-iphoneos",
+					"$(PROJECT_DIR)/XuexiBaoDemo/XuexiBaoFramework",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/XuexiBaoFramework-cuzcybjpgoxvxdahzbtyjbgkjqqy/Build/Products/Debug-iphoneos",
+					"/Users/wangjun/WorkSpace/xuexibao_sdk/xcomet_client/ios/XuexiBaoFramework/build/Release-iphoneos",
+					/Users/wangjun/Desktop,
 				);
 				INFOPLIST_FILE = XuexiBaoDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -422,6 +500,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/XuexiBaoFramework-ahgxxsvxlhadvcdcbvmgqykizyiz/Build/Products/Debug-iphoneos",
+					"$(PROJECT_DIR)/XuexiBaoDemo/XuexiBaoFramework",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/XuexiBaoFramework-cuzcybjpgoxvxdahzbtyjbgkjqqy/Build/Products/Debug-iphoneos",
+					"/Users/wangjun/WorkSpace/xuexibao_sdk/xcomet_client/ios/XuexiBaoFramework/build/Release-iphoneos",
+					/Users/wangjun/Desktop,
 				);
 				INFOPLIST_FILE = XuexiBaoDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

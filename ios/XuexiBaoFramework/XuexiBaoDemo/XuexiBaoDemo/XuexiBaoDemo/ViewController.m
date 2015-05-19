@@ -7,9 +7,7 @@
 //
 
 #import "ViewController.h"
-#import <XuexiBaoFramework/LOTLib.h>
-#import <XuexiBaoFramework/SCCaptureCameraController.h>
-#import <XuexiBaoFramework/SCNavigationController.h>
+#import <XuexiBaoFramework/XuexiBaoFramework.h>
 
 
 
@@ -21,7 +19,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view, typically from a nib.
+    [[LOTLib sharedInstance] startWithAppKey:@"" secret:@""];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,9 +37,14 @@
         return;
     }
     
-    SCNavigationController *nav = [[SCNavigationController alloc] init];
-    nav.scNaigationDelegate = self;
-    [nav showCameraWithParentController:self isPro:YES];
+    
+    [self presentViewController:[MDQueListViewController sharedInstance] animated:YES completion:^{
+        
+    }];
+    
+//    SCNavigationController *nav = [[SCNavigationController alloc] init];
+//    nav.scNaigationDelegate = self;
+//    [nav showCameraWithParentController:self isPro:YES];
 
 }
 

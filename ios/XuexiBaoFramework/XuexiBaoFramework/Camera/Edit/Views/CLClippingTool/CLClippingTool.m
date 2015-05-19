@@ -303,21 +303,21 @@
 
     switch (tag) {
         case CROPCORNER_LEFTTOP:
-            imgV.image = [UIImage imageNamed:@"crop_lt"];
+            imgV.image = [UIImage imageNamed:XXBRSRC_NAME(@"crop_lt")];
             frame.origin.x = frame.origin.y = 18;
             break;
         case CROPCORNER_LEFTBOTTOM:
-            imgV.image = [UIImage imageNamed:@"crop_lb"];
+            imgV.image = [UIImage imageNamed:XXBRSRC_NAME(@"crop_lb")];
             frame.origin.x = 18;
             frame.origin.y = -19;
             break;
         case CROPCORNER_RIGHTTOP:
-            imgV.image = [UIImage imageNamed:@"crop_rt"];
+            imgV.image = [UIImage imageNamed:XXBRSRC_NAME(@"crop_rt")];
             frame.origin.x = -20;
             frame.origin.y = 18;
             break;
         case CROPCORNER_RIGHTBOTTOM:
-            imgV.image = [UIImage imageNamed:@"crop_rb"];
+            imgV.image = [UIImage imageNamed:XXBRSRC_NAME(@"crop_rb")];
             frame.origin.x = frame.origin.y = -19;
             break;
             

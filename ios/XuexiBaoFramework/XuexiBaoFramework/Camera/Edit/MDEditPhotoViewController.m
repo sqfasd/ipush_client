@@ -162,6 +162,16 @@
 }
 
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (UIStatusBarAnimation )preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

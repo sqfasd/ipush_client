@@ -18,7 +18,6 @@ FOUNDATION_EXPORT const unsigned char XuexiBaoFrameworkVersionString[];
 #import <XuexiBaoFramework/LOTLib.h>
 #import <XuexiBaoFramework/SCCaptureCameraController.h>
 #import <XuexiBaoFramework/SCNavigationController.h>
-//#import <XuexiBaoFramework/MDQeustionDetailViewController.h>
-//#import <XuexiBaoFramework/MDQueListViewController.h>
+#import <XuexiBaoFramework/MDQueListViewController.h>
 
 

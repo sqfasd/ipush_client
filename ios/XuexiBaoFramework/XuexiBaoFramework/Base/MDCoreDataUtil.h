@@ -112,7 +112,9 @@ typedef enum : NSUInteger {
  };
  }
  */
--(void)updateQueWhenNotificationRecevied:(NSDictionary *)data completion:(MRSaveCompletionHandler)completion;
+//-(void)updateQueWhenNotificationRecevied:(NSDictionary *)data completion:(MRSaveCompletionHandler)completion;
+
+
 /*
  {
  "status" : 0,

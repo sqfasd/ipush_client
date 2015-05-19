@@ -18,6 +18,7 @@
 #import "MDExtension.h"
 #import "UIColor+Extension.h"
 #import "SCCaptureSessionManager.h"
+#import "UIImage+Extension.h"
 
 
 
@@ -120,7 +121,7 @@
         UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, CAMERA_TOPVIEW_HEIGHT, self.view.frame.size.width, self.view.frame.size.width)];
         imgView.clipsToBounds = YES;
         imgView.contentMode = UIViewContentModeScaleAspectFill;
-        imgView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"meizi" ofType:@"jpg"]];
+        imgView.image = [UIImage imageWithContentsOfFile:[XXBFRAMEWORK_BUNDLE pathForResource:@"meizi" ofType:@"jpg"]];
         [self.view addSubview:imgView];
         
         return;
@@ -357,10 +358,10 @@
         _helperImgV.contentMode = UIViewContentModeScaleAspectFill;
         UIImage *img = nil;
         if (IS_IPHONE_4) {
-            img = [UIImage imageNamed:@"camera_help_960.jpg"];
+            img = [UIImage imageNamed:XXBRSRC_NAME(@"camera_help_960.jpg")];
         }
         else {
-            img = [UIImage imageNamed:@"camera_help_1136.jpg"];
+            img = [UIImage imageNamed:XXBRSRC_NAME(@"camera_help_1136.jpg")];
         }
         
         _helperImgV.image = img;
@@ -391,12 +392,34 @@
     if (!_cameraBtnLoadingImgV) {
         _cameraBtnLoadingImgV = [[UIImageView alloc] initWithFrame:CGRectMake((SC_APP_SIZE.width + 2 - 60) / 2, 0, 60, 60)];
         _cameraBtnLoadingImgV.backgroundColor = [UIColor clearColor];
-        _cameraBtnLoadingImgV.animationImages = @[[UIImage imageNamed:@"camera_loading_1"],
-                                                  [UIImage imageNamed:@"camera_loading_2"],
-                                                  [UIImage imageNamed:@"camera_loading_3"],
-                                                  [UIImage imageNamed:@"camera_loading_4"],
-                                                  [UIImage imageNamed:@"camera_loading_5"],
-                                                  [UIImage imageNamed:@"camera_loading_6"]
+
+        
+        // tim.wangj.test
+//        NSError *error = nil;
+//        BOOL result = NO;
+//        UIImage *image = [UIImage imageNamed:@"XuexiBaoBundle.bundle/camera_loading_1"];
+//        
+//        NSLog(@"xuexibaobundlepath: %@", XXBFRAMEWORK_BUNDLEPATH);
+//        NSLog(@"bundle: %@", XXBFRAMEWORK_BUNDLE);
+//        result = [XXBFRAMEWORK_BUNDLE loadAndReturnError:&error];
+//        MDLog(@"XXBFRAMEWORK_BUNDLE load: %d %@", result, error.debugDescription);
+//
+//        NSBundle *loadBundle = [[NSBundle alloc] initWithPath:XXBFRAMEWORK_BUNDLEPATH];
+//        result = [loadBundle loadAndReturnError:&error];
+//        MDLog(@"loadAndReturnError: %d %@", result, error);
+//        
+//        NSString *imgPath = [loadBundle pathForResource:@"camera_loading_1" ofType:@"png"];
+//        
+//        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"cn.xuexibao.bundle"];
+//        imgPath = [bundle pathForResource:@"camera_loading_1" ofType:@"png"];
+
+        
+        _cameraBtnLoadingImgV.animationImages = @[[UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_1")],
+                                                  [UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_2")],
+                                                  [UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_3")],
+                                                  [UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_4")],
+                                                  [UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_5")],
+                                                  [UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_6")]
                                                   ];
         _cameraBtnLoadingImgV.animationDuration = 0.7;
         _cameraBtnLoadingImgV.animationRepeatCount = 0;
@@ -522,9 +545,9 @@
     CGRect cameraBtnFrame = CGRectMake((SC_APP_SIZE.width + 2 - cameraBtnLength) / 2, 0, 60, 60);
     //    CGRect cameraBtnFrame = CGRectMake((SC_APP_SIZE.width - cameraBtnLength) / 2, (_bottomContainerView.frame.size.height - downH - cameraBtnLength) / 2 , 87, 76);
     UIButton *cameraBtn = [self buildButton:cameraBtnFrame
-                               normalImgStr:@"camera_55"
-                            highlightImgStr:@"camera_55_h"
-                             selectedImgStr:@"camera_55_h"
+                               normalImgStr:XXBRSRC_NAME(@"camera_55")
+                            highlightImgStr:XXBRSRC_NAME(@"camera_55_h")
+                             selectedImgStr:XXBRSRC_NAME(@"camera_55_h")
                                      action:@selector(takePictureBtnPressed:)
                                  parentView:_bottomContainerView];
     cameraBtn.showsTouchWhenHighlighted = YES;
@@ -552,9 +575,9 @@
     
     // 相册按钮
     UIButton *btn = [self buildButton:CGRectMake(_bottomContainerView.bounds.origin.x + 5, _bottomContainerView.bounds.size.height - CAMERA_MENU_BTN_SIZE, CAMERA_MENU_BTN_SIZE, CAMERA_MENU_BTN_SIZE)
-                         normalImgStr:@"camera_album"
-                      highlightImgStr:@"camera_album_h"
-                       selectedImgStr:@"camera_album_h"
+                         normalImgStr:XXBRSRC_NAME(@"camera_album")
+                      highlightImgStr:XXBRSRC_NAME(@"camera_album_h")
+                       selectedImgStr:XXBRSRC_NAME(@"camera_album_h")
                                action:NSSelectorFromString(@"albumBtnPressed:")
                            parentView:_bottomContainerView];
     [_bottomContainerView bringSubviewToFront:btn];
@@ -564,9 +587,9 @@
     
     // 关闭按钮
     btn = [self buildButton:CGRectMake(_bottomContainerView.bounds.size.width - CAMERA_MENU_BTN_SIZE - 5, _bottomContainerView.bounds.size.height - CAMERA_MENU_BTN_SIZE, CAMERA_MENU_BTN_SIZE, CAMERA_MENU_BTN_SIZE)
-               normalImgStr:@"camera_cancle"
-            highlightImgStr:@"camera_cancle_h"
-             selectedImgStr:@"camera_cancle_h"
+               normalImgStr:XXBRSRC_NAME(@"camera_cancle")
+            highlightImgStr:XXBRSRC_NAME(@"camera_cancle_h")
+             selectedImgStr:XXBRSRC_NAME(@"camera_cancle_h")
                      action:NSSelectorFromString(@"dismissBtnPressed:")
                  parentView:_bottomContainerView];
     [_bottomContainerView bringSubviewToFront:btn];
@@ -577,9 +600,9 @@
     if (!self.isProMode) {
         // 前置相机按钮
         btn = [self buildButton:CGRectMake(10, 10, CAMERA_MENU_BTN_SIZE, CAMERA_MENU_BTN_SIZE)
-                   normalImgStr:@"camera_around.png"
-                highlightImgStr:@""
-                 selectedImgStr:@"camera_around.png"
+                   normalImgStr:XXBRSRC_NAME(@"camera_around.png")
+                highlightImgStr:XXBRSRC_NAME(@"")
+                 selectedImgStr:XXBRSRC_NAME(@"camera_around.png")
                          action:NSSelectorFromString(@"switchCameraBtnPressed:")
                      parentView:_topContainerView];
         btn.showsTouchWhenHighlighted = YES;
@@ -589,9 +612,9 @@
     
     // 闪光灯按钮
     btn = [self buildButton:CGRectMake(0, 0, CAMERA_TOP_BTN_SIZE + 10, CAMERA_TOP_BTN_SIZE + 10)
-               normalImgStr:[normalArr objectAtIndex:2]
-            highlightImgStr:[highlightArr objectAtIndex:2]
-             selectedImgStr:[selectedArr objectAtIndex:2]
+               normalImgStr:XXBRSRC_NAME([normalArr objectAtIndex:2])
+            highlightImgStr:XXBRSRC_NAME([highlightArr objectAtIndex:2])
+             selectedImgStr:XXBRSRC_NAME([selectedArr objectAtIndex:2])
                      action:NSSelectorFromString([actionArr objectAtIndex:2])
                  parentView:_topContainerView];
     btn.showsTouchWhenHighlighted = YES;
@@ -604,9 +627,9 @@
     
     // 拍题攻略按钮
     btn = [self buildButton:CGRectMake(SCREEN_WIDTH - CAMERA_TOP_BTN_SIZE - 10, 0, CAMERA_TOP_BTN_SIZE + 10, CAMERA_TOP_BTN_SIZE + 10)
-               normalImgStr:[normalArr objectAtIndex:3]
-            highlightImgStr:[highlightArr objectAtIndex:3]
-             selectedImgStr:[selectedArr objectAtIndex:3]
+               normalImgStr:XXBRSRC_NAME([normalArr objectAtIndex:3])
+            highlightImgStr:XXBRSRC_NAME([highlightArr objectAtIndex:3])
+             selectedImgStr:XXBRSRC_NAME([selectedArr objectAtIndex:3])
                      action:NSSelectorFromString([actionArr objectAtIndex:3])
                  parentView:_topContainerView];
     //    [_cameraBtnSet addObject:btn];
@@ -696,7 +719,7 @@
     //imgV.image = [UIImage sd_animatedGIFNamed:@"loading"];
     imgV.hidden = YES;
     
-    NSArray *images=[NSArray arrayWithObjects:[UIImage imageNamed:@"LoadingImage1"],[UIImage imageNamed:@"LoadingImage2"],[UIImage imageNamed:@"LoadingImage3"],[UIImage imageNamed:@"LoadingImage4"],[UIImage imageNamed:@"LoadingImage5"],[UIImage imageNamed:@"LoadingImage6"], nil];
+    NSArray *images=[NSArray arrayWithObjects:[UIImage imageNamed:XXBRSRC_NAME(@"LoadingImage1")],[UIImage imageNamed:XXBRSRC_NAME(@"LoadingImage2")],[UIImage imageNamed:XXBRSRC_NAME(@"LoadingImage3")],[UIImage imageNamed:XXBRSRC_NAME(@"LoadingImage4")],[UIImage imageNamed:XXBRSRC_NAME(@"LoadingImage5")],[UIImage imageNamed:XXBRSRC_NAME(@"LoadingImage6")], nil];
     imgV.animationImages = images;
     imgV.animationDuration = 0.3;
     [imgV startAnimating];
@@ -1023,10 +1046,8 @@ void c_slideAlpha() {
         [_captureManager closeFlashIfPossible:_flashButton];
         
         // 如果是拍题模式：
-        if (self.isProMode) {
-            NSString *xxbBPath = XXBFRAMEWORK_BUNDLEPATH;
-            
-            MDEditPhotoViewController *editViewController = [[MDEditPhotoViewController alloc] initWithNibName:@"MDEditPhotoViewController" bundle:[NSBundle bundleWithPath:xxbBPath]];
+        if (self.isProMode) {            
+            MDEditPhotoViewController *editViewController = [[MDEditPhotoViewController alloc] initWithNibName:@"MDEditPhotoViewController" bundle:XXBFRAMEWORK_BUNDLE];
             MDLog(@"editVC setImage:%@", NSStringFromCGSize(stillImage.size));
             
             [editViewController setImage:stillImage];

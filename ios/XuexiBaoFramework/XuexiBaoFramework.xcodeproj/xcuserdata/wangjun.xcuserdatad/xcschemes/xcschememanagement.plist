@@ -7,12 +7,12 @@
 		<key>XuexiBaoBundle.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>6</integer>
 		</dict>
 		<key>XuexiBaoFramework.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>7</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -28,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>DA4C837A1B0331CB001390A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DAAB07031B062A2A0043E7C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -29,7 +29,7 @@
     static MDEmptyMainView *sharedInstance = nil;
     static dispatch_once_t once;
     dispatch_once(&once, ^ {
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"EmptyMain" owner:nil options:nil];
+        NSArray *views = [XXBFRAMEWORK_BUNDLE loadNibNamed:@"EmptyMain" owner:nil options:nil];
         if (views && views.count > 0) {
             sharedInstance = views.firstObject;
         }

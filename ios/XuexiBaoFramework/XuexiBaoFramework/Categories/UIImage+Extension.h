@@ -11,6 +11,7 @@
 
 @interface UIImage (Extension)
 
++ (UIImage *)imageWithName:(NSString *)name inBundle:(NSBundle *)bundle;
 + (UIImage *)imageWithColor:(UIColor *)color;
 + (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
 + (UIImage *)imageWithHexColor:(NSInteger)hexValue;
@@ -19,7 +20,6 @@
 
 //size
 - (UIImage *) scaleToSize:(CGSize) size;
-- (UIImage *) cropToSize:(CGSize)size;
 - (UIImage*) imageByScalingAndCroppingForSize:(CGSize)targetSize;
 -(UIImage*)getSubImage:(CGRect)rect;
 

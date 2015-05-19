@@ -95,7 +95,6 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) UIView *meBadge;
 @property (nonatomic, strong) UIView *strollBadge;
-@property (nonatomic, strong) UIView *leftCustomView;
 @property (nonatomic, strong) UIView *rightCustomView;
 
 @property (nonatomic, strong) NSMutableArray *dataList;
@@ -128,7 +127,12 @@ static MDQueListViewController *queListViewController = nil;
 + (MDQueListViewController *)sharedInstance
 {
     if (!queListViewController) {
-        queListViewController = [LOTSTORYBOARD instantiateViewControllerWithIdentifier:@"MDQueListViewController"];
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LOTStoryboard" bundle:XXBFRAMEWORK_BUNDLE];
+        queListViewController = [storyBoard instantiateViewControllerWithIdentifier:@"MDQueListViewController"];
+//        queListViewController = [[MDQueListViewController alloc] initWithNibName:XXBRSRC_NAME(@"MDQueListViewController") bundle:XXBFRAMEWORK_BUNDLE];
+
+//        MDLog(@"LOTSTORYBOARD: %@  XXBFRAMEWORK_BUNDLE: %@", LOTSTORYBOARD, XXBFRAMEWORK_BUNDLE);
+//        queListViewController = [LOTSTORYBOARD instantiateViewControllerWithIdentifier:@"MDQueListViewController"];
     }
     
     return queListViewController;
@@ -589,7 +593,7 @@ static MDQueListViewController *queListViewController = nil;
 
 - (MDQueUpdFailView *)updFailView {
     if (!_updFailView) {
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"MDQueUpdFailView" owner:self options:nil];
+        NSArray *views = [XXBFRAMEWORK_BUNDLE loadNibNamed:@"MDQueUpdFailView" owner:self options:nil];
         _updFailView = views.firstObject;
         [_updFailView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapReuploadFailQue:)]];
     }
@@ -642,36 +646,6 @@ static MDQueListViewController *queListViewController = nil;
     return YES;
 }
 
-
-- (UIView *)leftCustomView
-{
-    float padding = 9;
-    
-    UIImageView *pImgV = [[UIImageView alloc] initWithFrame:CGRectMake(padding-0.5, padding-0.5, 27,27)];
-    pImgV.hidden = YES;
-    pImgV.clipsToBounds = YES;
-    pImgV.layer.cornerRadius = pImgV.size.width / 2;
-    portraitImgV = pImgV;
-
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame=CGRectMake(0, 0, 44, 44);
-    [button setImage:[[UIImage imageNamed:@"defaultAvatar_small"] scaleToSize:CGSizeMake(26, 26)] forState:UIControlStateNormal];
-    [button setImage:[[UIImage imageNamed:@"defaultAvatar_small"] scaleToSize:CGSizeMake(26, 26)] forState:UIControlStateHighlighted];
-    [button setImageEdgeInsets:UIEdgeInsetsMake(0, padding , 0, 0)];
-    [button  setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [button addTarget:self action:@selector(leftNavBtnAction:) forControlEvents:UIControlEventTouchUpInside];
-    [button addSubview:portraitImgV];
-    
-    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    customView.backgroundColor = [UIColor clearColor];
-    [customView addSubview:button];
-    customView.userInteractionEnabled = YES;
-    [customView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(leftNavBtnAction:)]];
-    
-    [customView addSubview:self.meBadge];
-    
-    return customView;
-}
 
 - (UIView *)meBadge
 {
@@ -744,7 +718,7 @@ static NSString *CellIdentifier = @"QueTableCell";
     isDoingVCPush = NO;
     
     lastDisplayCell = 0;
-    [self.tableView registerNib:[UINib nibWithNibName:@"QuestionCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:@"QuestionCell" bundle:XXBFRAMEWORK_BUNDLE] forCellReuseIdentifier:CellIdentifier];
     
     
     CGRect tableFrame = self.tableView.frame;
@@ -920,59 +894,6 @@ static NSString *CellIdentifier = @"QueTableCell";
 
 #pragma mark -
 #pragma mark - Notification
-
-- (void)ntfAccountChanged
-{
-    UIButton *leftNavBtn = (UIButton *)self.navigationItem.leftBarButtonItem.customView.subviews.firstObject;
-    leftNavBtn.clipsToBounds = YES;
-    leftNavBtn.layer.cornerRadius = leftNavBtn.size.width / 2;
-    
-    if ([MDUserUtil sharedInstance].isLogin) {
-        if ([MDUserUtil sharedInstance].avatarUrl && [MDUserUtil sharedInstance].avatarUrl.length > 0) {
-            UIImage *genderImg = nil;
-            if ([MDUserUtil sharedInstance].gender.integerValue == SEX_MALE) {
-                genderImg = [UIImage imageNamed:@"defaultMale"];
-            }
-            else if ([MDUserUtil sharedInstance].gender.integerValue == SEX_FEMALE) {
-                genderImg = [UIImage imageNamed:@"defaultFemale"];
-            }
-            else {
-                genderImg = [UIImage imageNamed:@"defaultAvatar"];
-            }
-            
-            [portraitImgV setGeneralImageWithURL:[MDUserUtil sharedInstance].avatarUrl placeHolder:genderImg];
-        }
-        else {
-            if ([MDUserUtil sharedInstance].gender.integerValue == SEX_FEMALE) {
-                portraitImgV.image = [UIImage imageNamed:@"defaultFemale"];
-                
-            }
-            else if ([MDUserUtil sharedInstance].gender.integerValue == SEX_MALE) {
-                portraitImgV.image = [UIImage imageNamed:@"defaultMale"];
-                
-            }
-            else {
-                portraitImgV.image = [UIImage imageNamed:@"defaultAvatar"];
-                
-            }
-        }
-        
-        portraitImgV.hidden = NO;
-        [leftNavBtn setImage:nil forState:UIControlStateNormal];
-        [leftNavBtn setImage:nil forState:UIControlStateHighlighted];
-        [leftNavBtn setImage:nil forState:UIControlStateSelected];
-
-    }
-    else {
-        [leftNavBtn setImage:[UIImage imageNamed:@"entry_my"] forState:UIControlStateNormal];
-        [leftNavBtn setImage:[UIImage imageNamed:@"entry_my_h"] forState:UIControlStateHighlighted];
-        [leftNavBtn setImage:[UIImage imageNamed:@"entry_my_h"] forState:UIControlStateSelected];
-        
-        portraitImgV.hidden = YES;
-
-    }
-}
-
 - (void)ntfDeleteQuestion:(NSNotification *)note
 {
     if (!note)
@@ -1368,7 +1289,8 @@ static NSString *CellIdentifier = @"QueTableCell";
     
     MDQuestionData *cellData = [self.dataList objectAtIndex:indexPath.row];
     
-    MDQeustionDetailViewController *detailController=[self.storyboard instantiateViewControllerWithIdentifier:@"MDQeustionDetailViewController"];
+    MDQeustionDetailViewController *detailController = [[MDQeustionDetailViewController alloc] initWithNibName:XXBRSRC_NAME(@"MDQeustionDetailViewController") bundle:XXBFRAMEWORK_BUNDLE]; //[self.storyboard instantiateViewControllerWithIdentifier:@"MDQeustionDetailViewController"];
+    
     detailController.imageId = cellData.imageID; //[data nonNullValueForKeyPath:@"question.image_id"];
     detailController.updateTime = [NSNumber numberWithDouble:cellData.updateTime.timeIntervalSince1970 * 1000]; //[data nonNullValueForKeyPath:@"question.update_time"];
 
