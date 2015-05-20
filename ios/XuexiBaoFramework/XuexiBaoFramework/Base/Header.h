@@ -221,6 +221,7 @@ dispatch_sync(dispatch_get_main_queue(), block);\
 #define kNTF_REQFORHELP_FAIL @"ntf_reqforhelp_fail"
 #define kNOTIFICATION_NAME_QuestionRead @"noti_name_question_read"
 #define kNOTIFICATION_NAME_DelQuestion @"noti_name_del_question"
+#define kNOTIFICATION_NAME_BIND_DEV_FINISHED @"noti_name_bind_dev_finished"
 //#define kCACHE_NOPUSHREMIND_NOMORE @"cache_nopushremind_nomore"
 
 

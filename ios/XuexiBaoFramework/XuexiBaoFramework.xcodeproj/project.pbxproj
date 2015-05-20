@@ -445,6 +445,7 @@
 		DA4C82001B0B171300CB075F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LOTStoryboard.storyboard; sourceTree = "<group>"; };
 		DA4C82051B0B327800CB075F /* camera_160_h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera_160_h@2x.png"; path = "XuexiBaoFramework/Resources/images/camera_160_h@2x.png"; sourceTree = SOURCE_ROOT; };
 		DA4C82061B0B327800CB075F /* camera_160@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera_160@2x.png"; path = "XuexiBaoFramework/Resources/images/camera_160@2x.png"; sourceTree = SOURCE_ROOT; };
+		DA4C820B1B0C2E3D00CB075F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hans"; path = "zh-Hans.lproj/LOTStoryboard.storyboard"; sourceTree = "<group>"; };
 		DA4C835B1B032818001390A9 /* XuexiBaoFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XuexiBaoFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA4C835F1B032818001390A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA4C83601B032818001390A9 /* XuexiBaoFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XuexiBaoFramework.h; sourceTree = "<group>"; };
@@ -1732,6 +1733,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans",
 			);
 			mainGroup = DA4C83511B032818001390A9;
 			productRefGroup = DA4C835C1B032818001390A9 /* Products */;
@@ -2098,6 +2100,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				DA4C82001B0B171300CB075F /* en */,
+				DA4C820B1B0C2E3D00CB075F /* zh-Hans */,
 			);
 			name = LOTStoryboard.storyboard;
 			path = XuexiBaoFramework/Controllers;

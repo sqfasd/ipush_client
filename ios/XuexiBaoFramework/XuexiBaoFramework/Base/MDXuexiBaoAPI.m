@@ -359,9 +359,19 @@
 
 /***** Begin API in v1.4 **************/
 //绑定设备
-- (void)bindDevice:(NSDictionary *)params success:(BlockResponse)success failure:(BlockResponseFailure)failure
+- (void)bindDeviceSuccess:(BlockResponse)success failure:(BlockResponseFailure)failure
 {
-    [self postForAPI:MD_DOMAIN api:OP_DEVICE_BIND post:params success:success failure:failure];
+    NSString *devId=DeviceID();
+    if (devId==nil || devId.length==0) {
+        MDLog(@"error: device id is empty.");
+        if (failure)
+            failure(nil);
+        
+        return;
+    }
+    
+    
+    [self postForAPI:MD_DOMAIN api:OP_DEVICE_BIND post:@{PARAM_DEVICE_ID: devId,@"isnew":@"0"} success:success failure:failure];
 }
 
 - (void)getQueList:(NSDictionary *)params success:(BlockResponse)success failure:(BlockResponseFailure)failure

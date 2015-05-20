@@ -171,7 +171,7 @@ typedef enum : NSUInteger {
 
 
 //绑定设备
-- (void)bindDevice:(NSDictionary *)params success:(BlockResponse)success failure:(BlockResponseFailure)failure;
+- (void)bindDeviceSuccess:(BlockResponse)success failure:(BlockResponseFailure)failure;
 //获得用户题目列表
 - (void)getQueList:(NSDictionary *)params success:(BlockResponse)success failure:(BlockResponseFailure)failure;
 //获得题目详情

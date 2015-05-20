@@ -44,13 +44,35 @@
 }
 
 - (void)startWithAppKey:(NSString *)appKey secret:(NSString *)secret {
+    // 0. binddevice
+    [[MDXuexiBaoAPI sharedInstance] bindDeviceSuccess:^(id responseObject) {
+        if (IsResponseOK(responseObject)) {
+            [[MDUserUtil sharedInstance] setToken:[responseObject nonNullValueForKeyPath:@"result.token"]];
+            // [[MDUserUtil sharedInstance] setMobileBind:[[responseObject nonNullValueForKeyPath:@"result.ismobilebind"]boolValue]];
+            [[MDUserUtil sharedInstance] setUserID:[responseObject nonNullValueForKeyPath:@"result.userid"]];
+            [[MDUserUtil sharedInstance] setLogin:[[responseObject nonNullValueForKeyPath:@"result.is_login"] boolValue]];
+//            [MDUserUtil sharedInstance].pushToken=JsonValue([responseObject nonNullValueForKeyPath:@"result.pushtoken"],CLASS_NSSTRING);
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNOTIFICATION_NAME_BIND_DEV_FINISHED object:nil];
+        }
+        else {
+            MDLog(@"bindDevice resp invalid: %@", responseObject);
+        }
+        
+    } failure:^(NSError *error) {
+        MDLog(@"bindDevice fail: %@", error);
+    }];
+    
+    
     // 1. TalkingData统计
     [TalkingData sessionStarted:@"B3EC7279F87374F9F4856095ED0A2998" withChannelId:@"TalkingData"];
     [TalkingData setExceptionReportEnabled:NO];
     
+    
     // 2. 初始化Push模块
     self.xClient.enableBackgroundingOnSocket = YES;
     [self.xClient addDelegate:self delegateQueue:dispatch_get_main_queue()];
+    
     
     // 3. 初始化CoreData
     [[MDCoreDataUtil sharedInstance] initCoreData];
