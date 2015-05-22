@@ -280,7 +280,7 @@
     NSDictionary *fixeData=@{@"user_agent":userAgent?userAgent:@"",@"token":token?token:@"",@"cookie":lastUsedCookie?lastUsedCookie:@""};
     MDLog(@"params:%@", fixeData);
      self.requestManager.requestSerializer=[self requestSerializerForType:ParamFormJson];
-    [self.requestManager POST:strURL parameters:fixeData
+    AFHTTPRequestOperation *reqOperation = [self.requestManager POST:strURL parameters:fixeData
     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         // 直接以 key value 的形式向 formData 中追加二进制数据
         if (input) {
@@ -332,6 +332,11 @@
                           MDLog(@"POST file fail: %@", error);
                           failure(error);
                       }];
+    
+    NSMutableURLRequest *urlReq = (NSMutableURLRequest *)reqOperation.request;
+    if ([urlReq isKindOfClass:[NSMutableURLRequest class]]) {
+        
+    }
 }
 
 #pragma mark - key value参数传递方式

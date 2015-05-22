@@ -60,27 +60,13 @@
 #pragma mark - Display
 - (void)initDisplay
 {
-    self.starRegionImgV.layer.shadowOpacity = 1;
-    self.starRegionImgV.layer.shadowOffset = CGSizeMake(0, 0);
-    self.starRegionImgV.layer.shadowColor = [UIColor whiteColor].CGColor;
-    self.starRegionImgV.layer.shadowRadius = 0.0f;
-    self.emptyCircleHC.constant = SCREEN_WIDTH;
-    self.frame = SCREEN_RECT;
-
-    [self shineStars];
-}
-
-- (void)shineStars
-{
-    [self.starRegionImgV.layer removeAllAnimations];
+//    self.starRegionImgV.layer.shadowOpacity = 1;
+//    self.starRegionImgV.layer.shadowOffset = CGSizeMake(0, 0);
+//    self.starRegionImgV.layer.shadowColor = [UIColor whiteColor].CGColor;
+//    self.starRegionImgV.layer.shadowRadius = 0.0f;
+//    self.emptyCircleHC.constant = SCREEN_WIDTH;
     
-    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"shadowRadius"];
-    anim.duration = 2.0f;
-    anim.autoreverses = YES;
-    anim.fromValue = [NSNumber numberWithFloat:0.0f];
-    anim.toValue = [NSNumber numberWithFloat:10.0f];
-    anim.repeatCount = HUGE_VALF;
-    [self.starRegionImgV.layer addAnimation:anim forKey:@"StarShine"];
+    self.frame = SCREEN_RECT;
 }
 
 

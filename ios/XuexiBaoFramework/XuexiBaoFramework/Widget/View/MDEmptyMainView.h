@@ -30,6 +30,5 @@
 @property (strong, nonatomic) IBOutlet UIButton *cameraBtn;
 
 - (void)initDisplay;
-- (void)shineStars;
 
 @end

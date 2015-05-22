@@ -31,8 +31,8 @@
 #define RECT_DELETE_BTN CGRectMake(0, SCREEN_HEIGHT - 40 - 64, SCREEN_WIDTH, 40)
 
 // CGRectMake(SCREEN_WIDTH / 2 - 80, 120, 160, 160)
-#define RECT_EMPTYMAIN_SHOW CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64)
-#define RECT_EMPTYMAIN_HIDE CGRectMake(0, -SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT - 64)
+#define RECT_EMPTYMAIN_SHOW CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+#define RECT_EMPTYMAIN_HIDE CGRectMake(0, -SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 #define RECT_TAKEPHOTO_BTN_SPRING CGRectMake(0, 0, 75, 75)
 
@@ -181,8 +181,6 @@ static MDQueListViewController *queListViewController = nil;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.emptyMainView shineStars];
     
     [TalkingData trackPageBegin:NSStringFromClass([MDQueListViewController class])];
 
@@ -725,7 +723,7 @@ static NSString *CellIdentifier = @"QueTableCell";
     tableFrame.size.height = SCREEN_HEIGHT;
     self.tableView.frame = tableFrame;
     
-    self.navigationItem.title = @"错题本";
+    self.navigationItem.title = @"我的题目";
     
     _subjectName=NSLocalizedString(@"all", @"");
     
