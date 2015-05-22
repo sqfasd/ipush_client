@@ -9,29 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/MagicalRecord/MagicalRecord/Core/MagicalRecord+Setup.m"
-            timestampString = "453717480.787319"
+            filePath = "Pods/Cordova/CordovaLib/Classes/CDVViewController.m"
+            timestampString = "453973605.859862"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "+setupCoreDataStackWithAutoMigratingSqliteStoreNamed:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/MagicalRecord/MagicalRecord/Core/MagicalRecord+Setup.m"
-            timestampString = "453717484.431678"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "+setupCoreDataStackWithAutoMigratingSqliteStoreNamed:"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
+            landmarkName = "-loadSettings"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

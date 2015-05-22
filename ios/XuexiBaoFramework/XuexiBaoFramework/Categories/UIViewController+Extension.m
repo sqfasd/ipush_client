@@ -59,20 +59,20 @@ static NSString *kHandlerAssociatedKey = @"kHandlerAssociatedKey";
             break;
         case NavBarItemTypeBack:
         {
-            btnImg=[UIImage imageNamed:@"nav_btn_back"];
-            btnHiImg = btnSelImg = [UIImage imageNamed:@"nav_btn_back_h"];
+            btnImg=[UIImage imageNamed:XXBRSRC_NAME(@"nav_btn_back")];
+            btnHiImg = btnSelImg = [UIImage imageNamed:XXBRSRC_NAME(@"nav_btn_back_h")];
         }
             break;
         case NavBarItemTypeCancel:
         {
-            btnImg=[UIImage imageNamed:@"nav_btn_close"];
-            btnHiImg = btnSelImg = [UIImage imageNamed:@"nav_btn_close_h"];
+            btnImg=[UIImage imageNamed:XXBRSRC_NAME(@"nav_btn_close")];
+            btnHiImg = btnSelImg = [UIImage imageNamed:XXBRSRC_NAME(@"nav_btn_close_h")];
         }
             break;
         case NavBarItemTypeDelete:
         {
-            btnImg = [UIImage imageNamed:@"nav_btn_delete"];
-            btnHiImg = btnSelImg = [UIImage imageNamed:@"nav_btn_delete_h"];
+            btnImg = [UIImage imageNamed:XXBRSRC_NAME(@"nav_btn_delete")];
+            btnHiImg = btnSelImg = [UIImage imageNamed:XXBRSRC_NAME(@"nav_btn_delete_h")];
         }
             break;
         case NavBarItemTypeSubject:

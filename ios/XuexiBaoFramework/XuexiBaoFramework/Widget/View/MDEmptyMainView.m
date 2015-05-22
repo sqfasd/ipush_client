@@ -65,6 +65,7 @@
     self.starRegionImgV.layer.shadowColor = [UIColor whiteColor].CGColor;
     self.starRegionImgV.layer.shadowRadius = 0.0f;
     self.emptyCircleHC.constant = SCREEN_WIDTH;
+    self.frame = SCREEN_RECT;
 
     [self shineStars];
 }

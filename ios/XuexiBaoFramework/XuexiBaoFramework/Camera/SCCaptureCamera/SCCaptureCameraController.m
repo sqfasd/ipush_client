@@ -685,7 +685,7 @@
 
 //对焦的框
 - (void)addFocusView {
-    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"touch_focus_x.png"]];
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:XXBRSRC_NAME(@"touch_focus_x.png")]];
     imgView.alpha = 0;
     [self.view addSubview:imgView];
     self.focusImageView = imgView;

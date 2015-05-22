@@ -38,9 +38,7 @@
     }
     
     
-    [self presentViewController:[MDQueListViewController sharedInstance] animated:YES completion:^{
-        
-    }];
+    [self.navigationController pushViewController:[MDQueListViewController sharedInstance] animated:YES];
     
 //    SCNavigationController *nav = [[SCNavigationController alloc] init];
 //    nav.scNaigationDelegate = self;

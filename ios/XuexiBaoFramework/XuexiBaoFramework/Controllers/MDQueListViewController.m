@@ -357,7 +357,7 @@ static MDQueListViewController *queListViewController = nil;
             NSArray *menuItems =
             @[
               [KxMenuItem menuItem:@"管理题目"
-                             image:[UIImage imageNamed:@"qaMngIcon"]
+                             image:[UIImage imageNamed:XXBRSRC_NAME(@"qaMngIcon")]
                             target:self
                             action:@selector(manageSubjects)]];
             
@@ -1288,8 +1288,10 @@ static NSString *CellIdentifier = @"QueTableCell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     MDQuestionData *cellData = [self.dataList objectAtIndex:indexPath.row];
+  
+    MDQeustionDetailViewController *detailController = [MDQeustionDetailViewController instance];
     
-    MDQeustionDetailViewController *detailController = [[MDQeustionDetailViewController alloc] initWithNibName:XXBRSRC_NAME(@"MDQeustionDetailViewController") bundle:XXBFRAMEWORK_BUNDLE]; //[self.storyboard instantiateViewControllerWithIdentifier:@"MDQeustionDetailViewController"];
+//    MDQeustionDetailViewController *detailController = [[MDQeustionDetailViewController alloc] initWithNibName:XXBRSRC_NAME(@"MDQeustionDetailViewController") bundle:XXBFRAMEWORK_BUNDLE]; //[self.storyboard instantiateViewControllerWithIdentifier:@"MDQeustionDetailViewController"];
     
     detailController.imageId = cellData.imageID; //[data nonNullValueForKeyPath:@"question.image_id"];
     detailController.updateTime = [NSNumber numberWithDouble:cellData.updateTime.timeIntervalSince1970 * 1000]; //[data nonNullValueForKeyPath:@"question.update_time"];

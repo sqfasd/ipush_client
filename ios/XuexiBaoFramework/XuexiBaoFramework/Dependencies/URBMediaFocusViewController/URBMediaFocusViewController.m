@@ -248,8 +248,8 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     
     //CGFloat padding=(self.view.width-41*3)/4.0;
     self.leftRotationBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    [self.leftRotationBtn setBackgroundImage:[UIImage imageNamed:@"left_rotating_nor"] forState:UIControlStateNormal];
-    [self.leftRotationBtn setBackgroundImage:[UIImage imageNamed:@"left_rotating_pre"] forState:UIControlStateHighlighted];
+    [self.leftRotationBtn setBackgroundImage:[UIImage imageNamed:XXBRSRC_NAME(@"left_rotating_nor")] forState:UIControlStateNormal];
+    [self.leftRotationBtn setBackgroundImage:[UIImage imageNamed:XXBRSRC_NAME(@"left_rotating_pre")] forState:UIControlStateHighlighted];
     [self.leftRotationBtn addTarget:self action:@selector(leftRotation:) forControlEvents:UIControlEventTouchUpInside];
     //    self.leftRotationBtn.frame=CGRectMake(padding, self.view.height-50-60, 39, 50);
     
@@ -257,16 +257,16 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     [self.toolBar addSubview:self.leftRotationBtn];
     
     self.rightRotationBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    [self.rightRotationBtn setBackgroundImage:[UIImage imageNamed:@"right_rotating_nor"] forState:UIControlStateNormal];
-    [self.rightRotationBtn setBackgroundImage:[UIImage imageNamed:@"right_rotating_pre"] forState:UIControlStateHighlighted];
+    [self.rightRotationBtn setBackgroundImage:[UIImage imageNamed:XXBRSRC_NAME(@"right_rotating_nor")] forState:UIControlStateNormal];
+    [self.rightRotationBtn setBackgroundImage:[UIImage imageNamed:XXBRSRC_NAME(@"right_rotating_pre")] forState:UIControlStateHighlighted];
     [self.rightRotationBtn addTarget:self action:@selector(rightRotation:) forControlEvents:UIControlEventTouchUpInside];
     self.rightRotationBtn.frame=CGRectMake(0, self.leftRotationBtn.top, 49, 49);
     self.rightRotationBtn.centerX = self.toolBar.centerX;
     [self.toolBar addSubview:self.rightRotationBtn];
     
     self.saveBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    [self.saveBtn setBackgroundImage:[UIImage imageNamed:@"download_nor"] forState:UIControlStateNormal];
-    [self.saveBtn setBackgroundImage:[UIImage imageNamed:@"download_pre"] forState:UIControlStateHighlighted];
+    [self.saveBtn setBackgroundImage:[UIImage imageNamed:XXBRSRC_NAME(@"download_nor")] forState:UIControlStateNormal];
+    [self.saveBtn setBackgroundImage:[UIImage imageNamed:XXBRSRC_NAME(@"download_pre")] forState:UIControlStateHighlighted];
     [self.saveBtn addTarget:self action:@selector(saveImage:) forControlEvents:UIControlEventTouchUpInside];
     self.saveBtn.frame=CGRectMake(self.view.width - 50 - 49, self.leftRotationBtn.top, 49, 49);
     [self.toolBar addSubview:self.saveBtn];
@@ -525,10 +525,10 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     MDLog(@"showImageFromURL: %@", url);
     rotateDegree=0;
     self.scrollView.layer.transform=[self rotateTransform:CATransform3DIdentity];
-    [self showImage:[UIImage imageNamed:@"defaultImage_2"] fromRect:fromRect];
+    [self showImage:[UIImage imageNamed:XXBRSRC_NAME(@"defaultImage_2")] fromRect:fromRect];
             [self.indicatorView startAnimating];
             self.indicatorView.hidden = NO;
-    [self.imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"defaultImage_2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    [self.imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:XXBRSRC_NAME(@"defaultImage_2")] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             [self updateScale];
             [self.indicatorView stopAnimating];
             self.indicatorView.hidden = YES;

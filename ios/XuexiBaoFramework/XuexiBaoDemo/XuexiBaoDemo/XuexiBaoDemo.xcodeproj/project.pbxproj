@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DEB58BD1B04CB8200248D57 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DEB58BC1B04CB8200248D57 /* libc++.dylib */; };
+		DA4F9EA31B0F0BCA001087E2 /* www in Resources */ = {isa = PBXBuildFile; fileRef = DA4F9EA21B0F0BCA001087E2 /* www */; };
 		DAAB06231B04A6330043E7C3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB06221B04A6330043E7C3 /* main.m */; };
 		DAAB06261B04A6330043E7C3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB06251B04A6330043E7C3 /* AppDelegate.m */; };
 		DAAB06291B04A6330043E7C3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB06281B04A6330043E7C3 /* ViewController.m */; };
@@ -68,6 +69,7 @@
 
 /* Begin PBXFileReference section */
 		1DEB58BC1B04CB8200248D57 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		DA4F9EA21B0F0BCA001087E2 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		DAAB061D1B04A6330043E7C3 /* XuexiBaoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XuexiBaoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAB06211B04A6330043E7C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAAB06221B04A6330043E7C3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 		DAAB061F1B04A6330043E7C3 /* XuexiBaoDemo */ = {
 			isa = PBXGroup;
 			children = (
+				DA4F9EA21B0F0BCA001087E2 /* www */,
 				DAAB06241B04A6330043E7C3 /* AppDelegate.h */,
 				DAAB06251B04A6330043E7C3 /* AppDelegate.m */,
 				DAAB06271B04A6330043E7C3 /* ViewController.h */,
@@ -325,6 +328,7 @@
 				DAAB07171B08D6DF0043E7C3 /* XuexiBaoBundle.bundle in Resources */,
 				DAAB062C1B04A6330043E7C3 /* Main.storyboard in Resources */,
 				DAAB06311B04A6330043E7C3 /* LaunchScreen.xib in Resources */,
+				DA4F9EA31B0F0BCA001087E2 /* www in Resources */,
 				DAAB062E1B04A6330043E7C3 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

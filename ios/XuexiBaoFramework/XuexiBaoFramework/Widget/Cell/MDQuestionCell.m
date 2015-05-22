@@ -113,7 +113,8 @@ static UIColor *_DiverColor=nil;
         
         // 如果有题干
         if (cellData.answerBody && cellData.answerBody.length > 0) {
-            _subjectImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%li_nor", (long)cellData.subjectID]];
+            NSString *imgName = [NSString stringWithFormat:@"%li_nor", (long)cellData.subjectID];
+            _subjectImageView.image = [UIImage imageNamed:XXBRSRC_NAME(imgName)];
             
             _questionBodyLabel.text = cellData.answerBody;
             
@@ -122,7 +123,7 @@ static UIColor *_DiverColor=nil;
         }
         // 如果没有题干
         else {
-            _subjectImageView.image = [UIImage imageNamed:@"0_nor"];
+            _subjectImageView.image = [UIImage imageNamed:XXBRSRC_NAME(@"0_nor")];
             
             _warningStateLabel.text = NSLocalizedString(@"que_tag_reg_error", "que_tag_reg_error");
             _warningStateLabel.hidden = YES;
@@ -142,7 +143,7 @@ static UIColor *_DiverColor=nil;
         }
         
     } else if(cellData.searchType == 400){
-        _subjectImageView.image = [UIImage imageNamed:@"0_nor"];
+        _subjectImageView.image = [UIImage imageNamed:XXBRSRC_NAME(@"0_nor")];
         
         _warningStateLabel.text = NSLocalizedString(@"que_tag_reg_error", "que_tag_reg_error");
         _warningStateLabel.hidden = YES;
@@ -157,7 +158,7 @@ static UIColor *_DiverColor=nil;
         _questionBodyLabel.text = NSLocalizedString(@"hint_when_answer_not_found", @"");
         
     } else if(cellData.searchType == 500){
-        _subjectImageView.image = [UIImage imageNamed:@"0_nor"];
+        _subjectImageView.image = [UIImage imageNamed:XXBRSRC_NAME(@"0_nor")];
         
         _warningStateLabel.text = NSLocalizedString(@"que_tag_reg_error", "que_tag_reg_error");
         _warningStateLabel.hidden = YES;

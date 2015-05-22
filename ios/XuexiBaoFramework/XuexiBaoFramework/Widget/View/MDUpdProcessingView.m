@@ -26,7 +26,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self addSubview:self.textLabel];
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_proc"]];
+        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:XXBRSRC_NAME(@"bg_proc")]];
     }
     
     return self;

@@ -11,6 +11,7 @@
 #import "MDQuestionV2.h"
 #import  "URBMediaFocusViewController.h"
 
+
 typedef NS_ENUM(NSInteger, RequestAudioStatus) {
     RequestAudioStatusNotRequest=0,
     RequestAudioStatusAlreadyRequest,
@@ -21,31 +22,21 @@ typedef NS_ENUM(NSInteger, RequestAudioStatus) {
 
 @interface MDQeustionDetailViewController : CDVViewController
 
++ (MDQeustionDetailViewController *)instance;
+
 @property (nonatomic, strong) NSDictionary *questionDic;
 @property (nonatomic, strong) NSString *imageId;
 @property (nonatomic, strong) NSNumber *updateTime;
 @property (nonatomic, strong) NSString *audioNewQuestionID;
 
-@end
+@property(nonatomic, strong)NSString *localImgPath;
 
-
-
-@interface MDQuestionPlugin : CDVPlugin<URBMediaFocusViewControllerDelegate>
-//@property(nonatomic, strong)NSDictionary *questionDic;
-@property(nonatomic, strong)NSDictionary *queParams;
-@property(nonatomic, strong)MDQuestionV2 *question;
-@property (nonatomic, strong) URBMediaFocusViewController *mediaFocusController;
-
-- (void)showQuestion:(CDVInvokedUrlCommand*)command;
-
-- (void)showPhoto:(CDVInvokedUrlCommand*)command;
+-(NSDictionary *)getQueLoadingParams;
+-(void)getQueDetailWithCallBack:(void(^)(id sender))callBack;
+-(void)retakePhoto;
+-(void)changeTitle:(NSNumber *)page;
+-(void)cacheImg:(UIImage *)image;
 
 @end
 
-@interface MDQuestionCommandDelegate : CDVCommandDelegateImpl
 
-@end
-
-@interface MDQuestionCommandQueue : CDVCommandQueue
-
-@end

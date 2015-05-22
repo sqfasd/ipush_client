@@ -197,9 +197,9 @@ static char UIScrollViewPullToRefreshView;
         self.state = MDPullToRefreshStateStopped;
         self.showsDateLabel = NO;
         
-        self.titles = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Pull to refresh...",),
-                             NSLocalizedString(@"Release to refresh...",),
-                             NSLocalizedString(@"Loading...",),
+        self.titles = [NSMutableArray arrayWithObjects:NSLocalizedString(@"下拉刷新…",),
+                             NSLocalizedString(@"松开更新…",),
+                             NSLocalizedString(@"加载中...",),
                                 nil];
         
         self.subtitles = [NSMutableArray arrayWithObjects:@"", @"", @"", @"", nil];
@@ -207,23 +207,23 @@ static char UIScrollViewPullToRefreshView;
         self.wasTriggeredByUser = YES;
         
         self.pullImages = [NSArray arrayWithObjects:
-                           [UIImage imageNamed:@"pulltorefresh_pull_1"],
-                           [UIImage imageNamed:@"pulltorefresh_pull_2"],
-                           [UIImage imageNamed:@"pulltorefresh_pull_3"],
-                           [UIImage imageNamed:@"pulltorefresh_pull_4"],
-                           [UIImage imageNamed:@"pulltorefresh_pull_5"],
+                           [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_pull_1")],
+                           [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_pull_2")],
+                           [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_pull_3")],
+                           [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_pull_4")],
+                           [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_pull_5")],
                            nil];
         
         self.loadingImages = [NSArray arrayWithObjects:
-                              [UIImage imageNamed:@"pulltorefresh_loading_1"],
-                              [UIImage imageNamed:@"pulltorefresh_loading_1"],
-                              [UIImage imageNamed:@"pulltorefresh_loading_1"],
-                              [UIImage imageNamed:@"pulltorefresh_loading_2"],
-                              [UIImage imageNamed:@"pulltorefresh_loading_2"],
-                              [UIImage imageNamed:@"pulltorefresh_loading_2"],
-                              [UIImage imageNamed:@"pulltorefresh_loading_3"],
-                              [UIImage imageNamed:@"pulltorefresh_loading_3"],
-                              [UIImage imageNamed:@"pulltorefresh_loading_3"],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_1")],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_1")],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_1")],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_2")],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_2")],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_2")],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_3")],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_3")],
+                              [UIImage imageNamed:XXBRSRC_NAME(@"pulltorefresh_loading_3")],
                               nil];
     }
     
@@ -563,7 +563,7 @@ static char UIScrollViewPullToRefreshView;
 - (UILabel *)titleLabel {
     if(!_titleLabel) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 210, 20)];
-        _titleLabel.text = NSLocalizedString(@"Pull to refresh...",);
+        _titleLabel.text = NSLocalizedString(@"下拉刷新…",);
         _titleLabel.font = [UIFont boldSystemFontOfSize:14];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textColor = textColor;

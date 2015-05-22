@@ -323,7 +323,7 @@ typedef enum {
     [self setupFrameInView:view fromRect:rect];
     
     _backgroundView = [[UIImageView alloc] initWithFrame:_contentView.frame];
-    UIImage *bgImg = [[UIImage imageNamed:@"bg_menu"] resizableImageWithCapInsets:UIEdgeInsetsMake(22, 6, 6, 32)];
+    UIImage *bgImg = [[UIImage imageNamed:XXBRSRC_NAME(@"bg_menu")] resizableImageWithCapInsets:UIEdgeInsetsMake(22, 6, 6, 32)];
     _backgroundView.image = bgImg;
     
     [self addSubview:_backgroundView];
