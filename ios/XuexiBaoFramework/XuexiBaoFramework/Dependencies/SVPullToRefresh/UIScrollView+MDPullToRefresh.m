@@ -258,7 +258,11 @@ static char UIScrollViewPullToRefreshView;
     
     self.titleLabel.hidden = hasCustomView;
     self.subtitleLabel.hidden = hasCustomView;
-    self.picShowImgV.hidden = hasCustomView;
+    
+    // tim.wangj.remind
+//    self.picShowImgV.hidden = hasCustomView;
+    self.picShowImgV.hidden = YES;
+    
 //    self.arrow.hidden = hasCustomView;
     
     if(hasCustomView) {
@@ -534,7 +538,8 @@ static char UIScrollViewPullToRefreshView;
         bottomLine.backgroundColor = [UIColor colorWithHex:0xcdcdcd];
         [self addSubview:bottomLine];
 
-        _picShowImgV = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 2 - 80, self.bounds.size.height - 48, 67, 50)];
+        _picShowImgV = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 2 - 80, self.bounds.size.height - 48, 60, 50)];
+//        _picShowImgV = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 2 - 80, self.bounds.size.height - 48, 67, 50)];
         _picShowImgV.backgroundColor = [UIColor clearColor];
         [self addSubview:_picShowImgV];
     }

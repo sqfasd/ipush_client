@@ -394,26 +394,6 @@
         _cameraBtnLoadingImgV.backgroundColor = [UIColor clearColor];
 
         
-        // tim.wangj.test
-//        NSError *error = nil;
-//        BOOL result = NO;
-//        UIImage *image = [UIImage imageNamed:@"XuexiBaoBundle.bundle/camera_loading_1"];
-//        
-//        NSLog(@"xuexibaobundlepath: %@", XXBFRAMEWORK_BUNDLEPATH);
-//        NSLog(@"bundle: %@", XXBFRAMEWORK_BUNDLE);
-//        result = [XXBFRAMEWORK_BUNDLE loadAndReturnError:&error];
-//        MDLog(@"XXBFRAMEWORK_BUNDLE load: %d %@", result, error.debugDescription);
-//
-//        NSBundle *loadBundle = [[NSBundle alloc] initWithPath:XXBFRAMEWORK_BUNDLEPATH];
-//        result = [loadBundle loadAndReturnError:&error];
-//        MDLog(@"loadAndReturnError: %d %@", result, error);
-//        
-//        NSString *imgPath = [loadBundle pathForResource:@"camera_loading_1" ofType:@"png"];
-//        
-//        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"cn.xuexibao.bundle"];
-//        imgPath = [bundle pathForResource:@"camera_loading_1" ofType:@"png"];
-
-        
         _cameraBtnLoadingImgV.animationImages = @[[UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_1")],
                                                   [UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_2")],
                                                   [UIImage imageNamed:XXBRSRC_NAME(@"camera_loading_3")],
