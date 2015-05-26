@@ -23,8 +23,12 @@
 
 typedef void(^DidCapturePhotoBlock)(UIImage *stillImage);
 
-@interface SCCaptureSessionManager : NSObject
 
+
+
+
+
+@interface SCCaptureSessionManager : NSObject
 
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -71,6 +75,9 @@ typedef void(^DidCapturePhotoBlock)(UIImage *stillImage);
 @end
 
 
+
+
+
 @protocol SCCaptureSessionManager <NSObject>
 
 @optional
@@ -86,7 +93,13 @@ typedef void(^DidCapturePhotoBlock)(UIImage *stillImage);
 - (void)didCometoSteadyForTakingPicture:(SCCaptureSessionManager *)sessionMgr;
 - (void)didGotPhotoData:(SCCaptureSessionManager *)sessionMgr;
 
+- (void)didAutoFocusStarted:(SCCaptureSessionManager *)sessionMgr;
+- (void)didAutoFocusSucceed:(SCCaptureSessionManager *)sessionMgr;
 
 - (void)stopDetectingOrientation;
 
 @end
+
+
+
+

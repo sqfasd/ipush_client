@@ -92,6 +92,8 @@ typedef enum : NSUInteger {
 #define PARAM_WMAC @"WMAC"
 #define PARAM_BMAC @"BMAC"
 #define PARAM_MILLIS @"MILLIS"
+#define PARAM_SDK_APPKEY @"APP_KEY"
+#define PARAM_SDK_APPSECRET @"APP_SECRET"
 
 #define PARAM_USER_ID @"user_id"
 #define PARAM_DEVICE_ID @"dev_id"

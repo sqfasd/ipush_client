@@ -44,7 +44,11 @@
 }
 
 - (void)startWithAppKey:(NSString *)appKey secret:(NSString *)secret {
-    // 0. binddevice
+    // 0. 设置appkey 与 appsecret
+    [[MDStoreUtil sharedInstance] setObject:appKey forKey:PARAM_SDK_APPKEY];
+    [[MDStoreUtil sharedInstance] setObject:secret forKey:PARAM_SDK_APPSECRET];
+    
+    // 1. binddevice
     [[MDXuexiBaoAPI sharedInstance] bindDeviceSuccess:^(id responseObject) {
         if (IsResponseOK(responseObject)) {
             [[MDUserUtil sharedInstance] setToken:[responseObject nonNullValueForKeyPath:@"result.token"]];
@@ -64,17 +68,17 @@
     }];
     
     
-    // 1. TalkingData统计
+    // 2. TalkingData统计
     [TalkingData sessionStarted:@"B3EC7279F87374F9F4856095ED0A2998" withChannelId:@"TalkingData"];
     [TalkingData setExceptionReportEnabled:NO];
     
     
-    // 2. 初始化Push模块
+    // 3. 初始化Push模块
     self.xClient.enableBackgroundingOnSocket = YES;
     [self.xClient addDelegate:self delegateQueue:dispatch_get_main_queue()];
     
     
-    // 3. 初始化CoreData
+    // 4. 初始化CoreData
     [[MDCoreDataUtil sharedInstance] initCoreData];
 }
 

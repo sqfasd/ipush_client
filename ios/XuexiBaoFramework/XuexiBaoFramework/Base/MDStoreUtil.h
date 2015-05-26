@@ -17,7 +17,9 @@ NSString *UDID();
 NSString *DeviceID();
 
 
+#pragma mark --
 #pragma mark Param define
+
 #define TOPIC_TYPE_ID @"_id"
 #define TOPIC_TYPE_NAME @"name"
 #define TOPIC_TYPE_COUNT @"topic_count"

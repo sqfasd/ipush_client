@@ -76,6 +76,7 @@
 
 @property (nonatomic, strong) UIButton *cameraButton;
 @property (nonatomic, strong) UIButton *flashButton;
+@property (nonatomic, strong) UIButton *helpButton;
 
 //对焦
 @property (nonatomic, strong) UIImageView *focusImageView;
@@ -183,7 +184,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self switchActivityView:NO];
+//    [self switchActivityView:NO];
 
 //    [MobClick endLogPageView:NSStringFromClass([SCCaptureCameraController class])];
     [TalkingData trackPageEnd:NSStringFromClass([SCCaptureCameraController class])];
@@ -614,6 +615,7 @@
                  parentView:_topContainerView];
     //    [_cameraBtnSet addObject:btn];
     btn.transform = transform;
+    _helpButton = btn;
 }
 
 - (UIButton *)buildTextButton:(CGRect)frame
@@ -855,6 +857,22 @@ void c_slideAlpha() {
         }
     }];
 }
+#else
+- (void)showFocusInPoint:(CGPoint)touchPoint {
+    //对焦框
+    [_focusImageView setCenter:touchPoint];
+    _focusImageView.transform = CGAffineTransformMakeScale(2.0, 2.0);
+
+    [UIView animateWithDuration:0.3f delay:0.f options:UIViewAnimationOptionAllowUserInteraction animations:^{
+        _focusImageView.alpha = 1.f;
+        _focusImageView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.5f delay:0.5f options:UIViewAnimationOptionAllowUserInteraction animations:^{
+            _focusImageView.alpha = 0.f;
+        } completion:nil];
+    }];
+}
+
 #endif
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -868,9 +886,31 @@ void c_slideAlpha() {
         return;
     }
     
+    
     alphaTimes = -1;
     
     UITouch *touch = [touches anyObject];
+    // 如果点中闪光灯按钮
+    CGPoint touchPoint = [touch locationInView:self.flashButton];
+    if (CGRectContainsPoint(self.flashButton.bounds, touchPoint)) {
+        [super touchesBegan:touches withEvent:event];
+        return;
+    }
+    
+    // 如果点中帮助按钮
+    touchPoint = [touch locationInView:self.helpButton];
+    if (CGRectContainsPoint(self.helpButton.bounds, touchPoint)) {
+        [super touchesBegan:touches withEvent:event];
+        return;
+    }
+    
+    // 如果点中底部菜单区域
+    touchPoint = [touch locationInView:self.bottomContainerView];
+    if (CGRectContainsPoint(self.bottomContainerView.bounds, touchPoint)) {
+        [super touchesBegan:touches withEvent:event];
+        return;
+    }
+    
     currTouchPoint = [touch locationInView:self.view];
     
     if (CGRectContainsPoint(_captureManager.previewLayer.bounds, currTouchPoint) == NO) {
@@ -879,11 +919,12 @@ void c_slideAlpha() {
     
     [_captureManager focusInPoint:currTouchPoint];
     
+    
+#if SWITCH_SHOW_FOCUSVIEW_UNTIL_FOCUS_DONE
     //对焦框
     [_focusImageView setCenter:currTouchPoint];
     _focusImageView.transform = CGAffineTransformMakeScale(2.0, 2.0);
-    
-#if SWITCH_SHOW_FOCUSVIEW_UNTIL_FOCUS_DONE
+
     [UIView animateWithDuration:0.1f animations:^{
         _focusImageView.alpha = HIGH_ALPHA;
         _focusImageView.transform = CGAffineTransformMakeScale(1.0, 1.0);
@@ -891,14 +932,7 @@ void c_slideAlpha() {
         [self showFocusInPoint:currTouchPoint];
     }];
 #else
-    [UIView animateWithDuration:0.3f delay:0.f options:UIViewAnimationOptionAllowUserInteraction animations:^{
-        _focusImageView.alpha = 1.f;
-        _focusImageView.transform = CGAffineTransformMakeScale(1.0, 1.0);
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.5f delay:0.5f options:UIViewAnimationOptionAllowUserInteraction animations:^{
-            _focusImageView.alpha = 0.f;
-        } completion:nil];
-    }];
+    [self showFocusInPoint:currTouchPoint];
 #endif
 
 }
@@ -998,6 +1032,22 @@ void c_slideAlpha() {
     [self showCentralInfoArea:@"" autoDisappear:NO];
 }
 
+- (void)didAutoFocusStarted:(SCCaptureSessionManager *)sessionMgr {
+    MDLog(@"didAutoFocusStarted");
+
+    CGPoint previewCenter = CGPointMake(SCREEN_WIDTH / 2, (SCREEN_HEIGHT - self.bottomContainerView.size.height) / 2);
+    
+    [self showFocusInPoint:previewCenter];
+}
+
+- (void)didAutoFocusSucceed:(SCCaptureSessionManager *)sessionMgr {
+    MDLog(@"didAutoFocusSucceed");
+}
+
+
+
+
+
 
 #pragma mark -------------button actions---------------
 //拍照页面，拍照按钮
@@ -1012,7 +1062,7 @@ void c_slideAlpha() {
 //    [MobClick event:EVENT_SUB_CAM_OK];
     [TalkingData trackEvent:EVENT_SUB_CAM_OK];
 
-    [self switchActivityView:YES];
+//    [self switchActivityView:YES];
     sender.userInteractionEnabled = NO;
     
     [_captureManager takePicture:^(UIImage *stillImage) {
@@ -1087,14 +1137,14 @@ void c_slideAlpha() {
     if (self.navigationController) {
         if (self.navigationController.viewControllers.count == 1) {
             [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                [self.captureManager stopCamera];
+//                [self.captureManager stopCamera];
             }];
         } else {
             [self.navigationController popViewControllerAnimated:YES];
         }
     } else {
         [self dismissViewControllerAnimated:YES completion:^{
-            [self.captureManager stopCamera];
+//            [self.captureManager stopCamera];
         }];
     }
 }

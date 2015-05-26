@@ -98,7 +98,19 @@ NSString *DeviceID()
         if (!imei)
             return nil;
         
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:imei, PARAM_IMEI, @"", PARAM_PUID, @"", PARAM_AID, @"", PARAM_WMAC, @"", PARAM_BMAC, [NSString stringWithFormat:@"%lld", (long long)[NSDate date].timeIntervalSince1970 * 1000], PARAM_MILLIS, nil];
+        NSString *strAppKey = [[MDStoreUtil sharedInstance] getObjectForKey:PARAM_SDK_APPKEY] ? [[MDStoreUtil sharedInstance] getObjectForKey:PARAM_SDK_APPKEY] : @"";
+        NSString *strAppSecret = [[MDStoreUtil sharedInstance] getObjectForKey:PARAM_SDK_APPSECRET] ? [[MDStoreUtil sharedInstance] getObjectForKey:PARAM_SDK_APPSECRET] : @"";
+        
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                imei, PARAM_IMEI,
+                                @"", PARAM_PUID,
+                                @"", PARAM_AID,
+                                @"", PARAM_WMAC,
+                                @"", PARAM_BMAC,
+                                [NSString stringWithFormat:@"%lld", (long long)[NSDate date].timeIntervalSince1970 * 1000], PARAM_MILLIS,
+                                strAppKey, PARAM_SDK_APPKEY,
+                                strAppSecret, PARAM_SDK_APPSECRET,
+                                nil];
         
         NSError *error = nil;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];

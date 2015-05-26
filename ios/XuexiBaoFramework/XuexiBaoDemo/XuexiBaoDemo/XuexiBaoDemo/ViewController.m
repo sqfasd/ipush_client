@@ -21,7 +21,7 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view, typically from a nib.
-    [[LOTLib sharedInstance] startWithAppKey:@"" secret:@""];
+    [[LOTLib sharedInstance] startWithAppKey:@"5554527E474347F01EDB267A" secret:@"BDECB2E9C8F6887FF31D5AC6DA312D85"];
 }
 
 - (void)didReceiveMemoryWarning {

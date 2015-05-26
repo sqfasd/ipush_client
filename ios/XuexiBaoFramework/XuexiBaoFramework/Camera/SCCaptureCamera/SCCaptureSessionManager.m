@@ -141,6 +141,9 @@ typedef enum : NSUInteger {
     //5、output
     [self addStillImageOutput];
     
+    // 6. KVO
+    [self configKVO];
+    
 //    //6、preview imageview
 //    [self addPreviewImageView];
     
@@ -255,7 +258,6 @@ typedef enum : NSUInteger {
         }
         
         AVCaptureDeviceInput *backFacingCameraDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:backCamera error:&error];
-//        [backFacingCameraDeviceInput addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:nil];
         
         if (!error) {
             if ([_session canAddInput:backFacingCameraDeviceInput]) {
@@ -293,7 +295,23 @@ typedef enum : NSUInteger {
     self.stillImageOutput = tmpOutput;
 }
 
-- (void)startCameraCompletion:(void (^)())completion;
+/*
+ *
+ */
+- (void)configKVO {
+//    if (!self.inputDevice || !self.inputDevice.device) {
+//        return;
+//    }
+    
+    [self.inputDevice.device addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)clearKVO {
+    [self.inputDevice.device removeObserver:self forKeyPath:@"adjustingFocus"];
+}
+
+
+- (void)startCameraCompletion:(void (^)())completion
 {
     dispatch_async(dispatch_get_main_queue(), ^{
     
@@ -320,6 +338,10 @@ typedef enum : NSUInteger {
     if (!self.session || !self.session.isRunning)
         return;
     
+    // 1. 清除KVO
+    [self clearKVO];
+    
+    // 2. 停止camera session
     dispatch_async(dispatch_get_main_queue(), ^{
         [self stopDetectingOrientation];
 
@@ -396,6 +418,21 @@ typedef enum : NSUInteger {
         }
         else {
             adjustingFocusFailCount = 0;
+        }
+
+        if (self.inputDevice.device.focusMode == AVCaptureFocusModeContinuousAutoFocus) {
+            // 如果正在对焦
+            if (adjustingFocus) {
+                if (self.delegate && [self.delegate respondsToSelector:@selector(didAutoFocusStarted:)]) {
+                    [self.delegate didAutoFocusStarted:self];
+                }
+            }
+            // 如果完成对焦
+            else {
+                if (self.delegate && [self.delegate respondsToSelector:@selector(didAutoFocusSucceed:)]) {
+                    [self.delegate didAutoFocusSucceed:self];
+                }
+            }
         }
     }
 }
@@ -507,205 +544,298 @@ typedef enum : NSUInteger {
     [self motionReset];
 	SCDLog(@"startTakingPicture begin");
 
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-
     // Anti-shake
-    if (self.delegate && [self.delegate respondsToSelector:@selector(didStartTakingPicture:)]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didCometoSteadyForTakingPicture:)]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.delegate didStartTakingPicture:self];
+            [self.delegate didCometoSteadyForTakingPicture:self];
         });
     }
     
-
-    if (![self.motionManager isDeviceMotionAvailable]) {
-        [SVProgressHUD showStatus:@"很抱歉，我们暂不支持您的设备拍照"];
+    
+    MDLog(@"got acce data");
+    
+    CGFloat x = resultTotalXValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
+    CGFloat y = resultTotalYValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
+    CGFloat z = resultTotalZValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
+    
+    // 重置结果数据累计
+    [self resetResultTotalData];
+    
+    //            CGFloat x = motion.userAcceleration.x + motion.gravity.x;
+    //            CGFloat y = motion.userAcceleration.y + motion.gravity.y;
+    //            CGFloat z = motion.userAcceleration.z + motion.gravity.z;
+    
+    [connection setVideoOrientation:[self getCurrentOrientationWith:x andY:y andZ:z]];
+    
+    [self stopDetectingOrientation];
+    
+    if (!connection || !connection.isActive) {
+        MDLog(@"startTakingPicture connection inactive/invalid");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.delegate && [self.delegate respondsToSelector:@selector(sessionManagerError:)]) {
+                [self.delegate sessionManagerError:self];
+            }
+        });
+        
         return;
     }
     
-    startCameraTime = [NSDate date];
+    MDLog(@"About to captureStillImageAsynchronouslyFromConnection");
     
-    [self.motionManager startDeviceMotionUpdatesToQueue:queue withHandler:^(CMDeviceMotion *motion, NSError *error) {
+    [_stillImageOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         
-        // 0. 累计数据
-        float iXYZ = fabs(motion.userAcceleration.x) + fabs(motion.userAcceleration.y) + fabs(motion.userAcceleration.z);
-        // Motion数据
-        motionTotalValue += iXYZ;
-        // 防抖数据
-        shakeMotionTotalValue += iXYZ;
+        MDLog(@"After captureStillImageAsynchronouslyFromConnection");
         
-        // 计算结果的数据
-        resultTotalXValue += motion.userAcceleration.x + motion.gravity.x;
-        resultTotalYValue += motion.userAcceleration.y + motion.gravity.y;
-        resultTotalZValue += motion.userAcceleration.z + motion.gravity.z;
-        resultTotalDataCount++;
-        
-        
-        if (!lastAttitude) {
-            lastAttitude = motion.attitude;
-        }
-        else {
-            float iAttitude = fabs(motion.attitude.yaw - lastAttitude.yaw) + fabs(motion.attitude.roll - lastAttitude.roll) + fabs(motion.attitude.pitch - lastAttitude.pitch);
-            // Motion数据
-            attitudeTotalValue += iAttitude;
-            // 防抖数据
-            shakeMotionTotalValue += iAttitude;
-            
-            MDLog(@"attitude change yaw:%f roll:%f pitch:%f", motion.attitude.yaw - lastAttitude.yaw, motion.attitude.roll - lastAttitude.roll, motion.attitude.pitch - lastAttitude.pitch);
-            
-            lastAttitude = motion.attitude;
-        }
-        
-        MDLog(@"i totalvalue:%f count:%ld x:%f y:%f z:%f", motionTotalValue, (long)motionDataCount, motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z);
-
-        
-        // 1. 判断
-        // 1.1. 防抖数据如果在半秒以上
-        if (++shakeDataCount > MOTION_UPD_HZ / 2) {
-            
-            // 1.1.1. 如果半秒内是抖动的
-            if (shakeMotionTotalValue >= MOTION_VALUE_FINE / 2 || shakeAttitudeTotalValue >= ATTITUDE_VALUE_FINE / 2) {
-                if (self.delegate && [self.delegate respondsToSelector:@selector(didDetectShake:)]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate didDetectShake:self];
-                    });
-                }
-            }
-            // 1.1.2. 如果半秒内是稳定的
-            else {
-                if (self.delegate && [self.delegate respondsToSelector:@selector(didDetectSteady:)]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate didDetectSteady:self];
-                    });
-                }
-            }
-            
-            // 防抖数据
-            [self resetShakeTotalData];
-        }
-        
-        // 1.2. 必须收集到一秒以上
-        if (++motionDataCount <= MOTION_UPD_HZ) {
-            return;
-        }
-
-        MDLog(@"totalValue: %f totalAttitude:%f", motionTotalValue, attitudeTotalValue);
-
-        
-        // 2. 如果在抖动
-        if (motionTotalValue > MOTION_VALUE_FINE || attitudeTotalValue > ATTITUDE_VALUE_FINE) {
-            MDLog(@"continue steady");
-            
-            [self resetMotionTotalData];
-
-            NSDate *now = [NSDate date];
-            if (startCameraTime && [now timeIntervalSinceDate:startCameraTime] < MOTION_RECORD_MAXTIME) {
-                return;
-            }
-        }
-
-        // Motion数据
-        [self resetMotionTotalData];
-        
-        // 防抖数据
-        [self resetShakeTotalData];
-
-        // Anti-shake
-        if (self.delegate && [self.delegate respondsToSelector:@selector(didCometoSteadyForTakingPicture:)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(didGotPhotoData:)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate didCometoSteadyForTakingPicture:self];
+                [self.delegate didGotPhotoData:self];
             });
         }
         
-
-        // 3. 如果没有抖动
-        if (!self.motionData) {
-            self.motionData = motion;
-
-            MDLog(@"got acce data");
-
-            CGFloat x = resultTotalXValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
-            CGFloat y = resultTotalYValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
-            CGFloat z = resultTotalZValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
-
-            // 重置结果数据累计
-            [self resetResultTotalData];
-            
-//            CGFloat x = motion.userAcceleration.x + motion.gravity.x;
-//            CGFloat y = motion.userAcceleration.y + motion.gravity.y;
-//            CGFloat z = motion.userAcceleration.z + motion.gravity.z;
-            
-            [connection setVideoOrientation:[self getCurrentOrientationWith:x andY:y andZ:z]];
-            
-            [self stopDetectingOrientation];
-            
-            if (!connection || !connection.isActive) {
-                MDLog(@"startTakingPicture connection inactive/invalid");
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (self.delegate && [self.delegate respondsToSelector:@selector(sessionManagerError:)]) {
-                        [self.delegate sessionManagerError:self];
-                    }
-                });
-                
-                return;
-            }
-            
-            MDLog(@"About to captureStillImageAsynchronouslyFromConnection");
-            
-            [_stillImageOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-                
-                MDLog(@"After captureStillImageAsynchronouslyFromConnection");
-                
-                if (self.delegate && [self.delegate respondsToSelector:@selector(didGotPhotoData:)]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate didGotPhotoData:self];
-                    });
-                }
-
-                CFDictionaryRef exifAttachments = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-                if (exifAttachments) {
-                    SCDLog(@"attachements: %@", exifAttachments);
-                } else {
-                    SCDLog(@"no attachments");
-                }
-                
-                /* CVBufferRelease(imageBuffer); */  // do not call this!
-                
-                NSData *imageData = nil;
-                UIImage *oriImage = nil;
-                if (CMSampleBufferIsValid(imageDataSampleBuffer)) {
-                    imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                    oriImage = [[UIImage alloc] initWithData:imageData];
-                }
-                
-                MDLog(@"capOriSize:%@", NSStringFromCGSize(oriImage.size));
-
-
-                UIImage *image = oriImage;
-//                image = [oriImage imageRotatedByDegrees:90];
-                
-                image = [image rotate90Clockwise];
-                
-//                image = [image rotateInDegrees:-90.0f];
-                
-                MDLog(@"capOriSize after rotate90:%@", NSStringFromCGSize(image.size));
-                
-
-                UIImage *croppedImage = image; //[scaledImage croppedImage:cropFrame];
-                
-                
-                //block、delegate、notification 3选1，传值
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (block) {
-                        block(croppedImage);
-                    } else if ([_delegate respondsToSelector:@selector(didCapturePhoto:)]) {
-                        [_delegate didCapturePhoto:croppedImage];
-                    } else {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kCapturedPhotoSuccessfully object:croppedImage];
-                    }
-                });
-            }];
+        CFDictionaryRef exifAttachments = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+        if (exifAttachments) {
+            SCDLog(@"attachements: %@", exifAttachments);
+        } else {
+            SCDLog(@"no attachments");
         }
+        
+        /* CVBufferRelease(imageBuffer); */  // do not call this!
+        
+        NSData *imageData = nil;
+        UIImage *oriImage = nil;
+        if (CMSampleBufferIsValid(imageDataSampleBuffer)) {
+            imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+            oriImage = [[UIImage alloc] initWithData:imageData];
+        }
+        
+        MDLog(@"capOriSize:%@", NSStringFromCGSize(oriImage.size));
+        
+        
+        UIImage *image = oriImage;
+        //                image = [oriImage imageRotatedByDegrees:90];
+        
+        image = [image rotate90Clockwise];
+        
+        //                image = [image rotateInDegrees:-90.0f];
+        
+        MDLog(@"capOriSize after rotate90:%@", NSStringFromCGSize(image.size));
+        
+        
+        UIImage *croppedImage = image; //[scaledImage croppedImage:cropFrame];
+        
+        
+        //block、delegate、notification 3选1，传值
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (block) {
+                block(croppedImage);
+            } else if ([_delegate respondsToSelector:@selector(didCapturePhoto:)]) {
+                [_delegate didCapturePhoto:croppedImage];
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kCapturedPhotoSuccessfully object:croppedImage];
+            }
+        });
     }];
+    
+    
+//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+//
+//    // Anti-shake
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(didStartTakingPicture:)]) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.delegate didStartTakingPicture:self];
+//        });
+//    }
+//    
+//
+//    if (![self.motionManager isDeviceMotionAvailable]) {
+//        [SVProgressHUD showStatus:@"很抱歉，我们暂不支持您的设备拍照"];
+//        return;
+//    }
+//    
+//    startCameraTime = [NSDate date];
+//    
+//    [self.motionManager startDeviceMotionUpdatesToQueue:queue withHandler:^(CMDeviceMotion *motion, NSError *error) {
+//        
+//        // 0. 累计数据
+//        float iXYZ = fabs(motion.userAcceleration.x) + fabs(motion.userAcceleration.y) + fabs(motion.userAcceleration.z);
+//        // Motion数据
+//        motionTotalValue += iXYZ;
+//        // 防抖数据
+//        shakeMotionTotalValue += iXYZ;
+//        
+//        // 计算结果的数据
+//        resultTotalXValue += motion.userAcceleration.x + motion.gravity.x;
+//        resultTotalYValue += motion.userAcceleration.y + motion.gravity.y;
+//        resultTotalZValue += motion.userAcceleration.z + motion.gravity.z;
+//        resultTotalDataCount++;
+//        
+//        
+//        if (!lastAttitude) {
+//            lastAttitude = motion.attitude;
+//        }
+//        else {
+//            float iAttitude = fabs(motion.attitude.yaw - lastAttitude.yaw) + fabs(motion.attitude.roll - lastAttitude.roll) + fabs(motion.attitude.pitch - lastAttitude.pitch);
+//            // Motion数据
+//            attitudeTotalValue += iAttitude;
+//            // 防抖数据
+//            shakeMotionTotalValue += iAttitude;
+//            
+//            MDLog(@"attitude change yaw:%f roll:%f pitch:%f", motion.attitude.yaw - lastAttitude.yaw, motion.attitude.roll - lastAttitude.roll, motion.attitude.pitch - lastAttitude.pitch);
+//            
+//            lastAttitude = motion.attitude;
+//        }
+//        
+//        MDLog(@"i totalvalue:%f count:%ld x:%f y:%f z:%f", motionTotalValue, (long)motionDataCount, motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z);
+//
+//        
+//        // 1. 判断
+//        // 1.1. 防抖数据如果在半秒以上
+//        if (++shakeDataCount > MOTION_UPD_HZ / 2) {
+//            
+//            // 1.1.1. 如果半秒内是抖动的
+//            if (shakeMotionTotalValue >= MOTION_VALUE_FINE / 2 || shakeAttitudeTotalValue >= ATTITUDE_VALUE_FINE / 2) {
+//                if (self.delegate && [self.delegate respondsToSelector:@selector(didDetectShake:)]) {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [self.delegate didDetectShake:self];
+//                    });
+//                }
+//            }
+//            // 1.1.2. 如果半秒内是稳定的
+//            else {
+//                if (self.delegate && [self.delegate respondsToSelector:@selector(didDetectSteady:)]) {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [self.delegate didDetectSteady:self];
+//                    });
+//                }
+//            }
+//            
+//            // 防抖数据
+//            [self resetShakeTotalData];
+//        }
+//        
+//        // 1.2. 必须收集到一秒以上
+//        if (++motionDataCount <= MOTION_UPD_HZ) {
+//            return;
+//        }
+//
+//        MDLog(@"totalValue: %f totalAttitude:%f", motionTotalValue, attitudeTotalValue);
+//
+//        
+//        // 2. 如果在抖动
+//        if (motionTotalValue > MOTION_VALUE_FINE || attitudeTotalValue > ATTITUDE_VALUE_FINE) {
+//            MDLog(@"continue steady");
+//            
+//            [self resetMotionTotalData];
+//
+//            NSDate *now = [NSDate date];
+//            if (startCameraTime && [now timeIntervalSinceDate:startCameraTime] < MOTION_RECORD_MAXTIME) {
+//                return;
+//            }
+//        }
+//
+//        // Motion数据
+//        [self resetMotionTotalData];
+//        
+//        // 防抖数据
+//        [self resetShakeTotalData];
+//
+//        // Anti-shake
+//        if (self.delegate && [self.delegate respondsToSelector:@selector(didCometoSteadyForTakingPicture:)]) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.delegate didCometoSteadyForTakingPicture:self];
+//            });
+//        }
+//        
+//
+//        // 3. 如果没有抖动
+//        if (!self.motionData) {
+//            self.motionData = motion;
+//
+//            MDLog(@"got acce data");
+//
+//            CGFloat x = resultTotalXValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
+//            CGFloat y = resultTotalYValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
+//            CGFloat z = resultTotalZValue / ((resultTotalDataCount > 0) ? resultTotalDataCount : 1);
+//
+//            // 重置结果数据累计
+//            [self resetResultTotalData];
+//            
+////            CGFloat x = motion.userAcceleration.x + motion.gravity.x;
+////            CGFloat y = motion.userAcceleration.y + motion.gravity.y;
+////            CGFloat z = motion.userAcceleration.z + motion.gravity.z;
+//            
+//            [connection setVideoOrientation:[self getCurrentOrientationWith:x andY:y andZ:z]];
+//            
+//            [self stopDetectingOrientation];
+//            
+//            if (!connection || !connection.isActive) {
+//                MDLog(@"startTakingPicture connection inactive/invalid");
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if (self.delegate && [self.delegate respondsToSelector:@selector(sessionManagerError:)]) {
+//                        [self.delegate sessionManagerError:self];
+//                    }
+//                });
+//                
+//                return;
+//            }
+//            
+//            MDLog(@"About to captureStillImageAsynchronouslyFromConnection");
+//            
+//            [_stillImageOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+//                
+//                MDLog(@"After captureStillImageAsynchronouslyFromConnection");
+//                
+//                if (self.delegate && [self.delegate respondsToSelector:@selector(didGotPhotoData:)]) {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [self.delegate didGotPhotoData:self];
+//                    });
+//                }
+//
+//                CFDictionaryRef exifAttachments = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+//                if (exifAttachments) {
+//                    SCDLog(@"attachements: %@", exifAttachments);
+//                } else {
+//                    SCDLog(@"no attachments");
+//                }
+//                
+//                /* CVBufferRelease(imageBuffer); */  // do not call this!
+//                
+//                NSData *imageData = nil;
+//                UIImage *oriImage = nil;
+//                if (CMSampleBufferIsValid(imageDataSampleBuffer)) {
+//                    imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+//                    oriImage = [[UIImage alloc] initWithData:imageData];
+//                }
+//                
+//                MDLog(@"capOriSize:%@", NSStringFromCGSize(oriImage.size));
+//
+//
+//                UIImage *image = oriImage;
+////                image = [oriImage imageRotatedByDegrees:90];
+//                
+//                image = [image rotate90Clockwise];
+//                
+////                image = [image rotateInDegrees:-90.0f];
+//                
+//                MDLog(@"capOriSize after rotate90:%@", NSStringFromCGSize(image.size));
+//                
+//
+//                UIImage *croppedImage = image; //[scaledImage croppedImage:cropFrame];
+//                
+//                
+//                //block、delegate、notification 3选1，传值
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if (block) {
+//                        block(croppedImage);
+//                    } else if ([_delegate respondsToSelector:@selector(didCapturePhoto:)]) {
+//                        [_delegate didCapturePhoto:croppedImage];
+//                    } else {
+//                        [[NSNotificationCenter defaultCenter] postNotificationName:kCapturedPhotoSuccessfully object:croppedImage];
+//                    }
+//                });
+//            }];
+//        }
+//    }];
 }
 
 - (UIImage *)rotateImage:(UIImage *)image forDegree:(CGFloat)degree
