@@ -36,6 +36,7 @@
 #import "UIScrollView+MDPullToRefresh.h"
 
 #import "Header.h"
+#import "XuexiBaoHeader.h"
 #import "MDCoreDataUtil.h"
 #import "MDUserUtil.h"
 #import "MDFileUtil.h"

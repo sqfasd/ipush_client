@@ -949,12 +949,8 @@ static NSString *CellIdentifier = @"QueTableCell";
 #pragma mark - SCNavigationController delegate
 - (void)didEndEditPhoto:(UIImage *)image
 {
-    // 2. 开始实际上传操作
-    [[MDXuexiBaoAPI sharedInstance] uploadSubjectPicture:image success:^(id responseObject) {
-        MDLog(@"didSelectPhoto succeed");
-    } failure:^(NSError *error) {
-        
-    }];
+    MDLog(@"didSelectPhoto succeed");
+
 }
 
 

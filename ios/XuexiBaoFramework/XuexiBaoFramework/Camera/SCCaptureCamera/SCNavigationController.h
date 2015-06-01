@@ -18,7 +18,7 @@
 
 @property (nonatomic, assign) id <SCNavigationControllerDelegate> scNaigationDelegate;
 
-@property (nonatomic, assign) UIViewController *parentViewController;
+//@property (nonatomic, assign) UIViewController *parentViewController;
 
 @end
 
@@ -30,7 +30,7 @@
 - (void)didEndEditPhoto:(UIImage *)image;
 
 @optional
-- (void)didCapturePhoto:(SCNavigationController*)navigationController image:(UIImage*)image;
+//- (void)didCapturePhoto:(SCNavigationController*)navigationController image:(UIImage*)image;
 - (BOOL)willDismissNavigationController:(SCNavigationController*)navigatonController;
 
 @end

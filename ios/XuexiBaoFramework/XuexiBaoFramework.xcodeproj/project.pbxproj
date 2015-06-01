@@ -287,6 +287,7 @@
 		DA4F9EAB1B0F0D70001087E2 /* MDQuestionPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4F9EA91B0F0D70001087E2 /* MDQuestionPlugin.m */; };
 		DA4F9EAE1B0F1B87001087E2 /* bg_cell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA4F9EAC1B0F1B87001087E2 /* bg_cell@2x.png */; };
 		DA4F9EAF1B0F1B87001087E2 /* bg_cell@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA4F9EAD1B0F1B87001087E2 /* bg_cell@3x.png */; };
+		DA551AA41B1C578E00293615 /* XuexiBaoHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = DA551AA31B1C578E00293615 /* XuexiBaoHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DAAB06501B04A7FB0043E7C3 /* XuexiBaoFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83601B032818001390A9 /* XuexiBaoFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DAAB07151B08D4E40043E7C3 /* camera_loading_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAAB07131B08D4E30043E7C3 /* camera_loading_1@2x.png */; };
 		DAAB07161B08D4E40043E7C3 /* camera_loading_1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAAB07141B08D4E40043E7C3 /* camera_loading_1@3x.png */; };
@@ -656,6 +657,7 @@
 		DA4F9EA91B0F0D70001087E2 /* MDQuestionPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDQuestionPlugin.m; sourceTree = "<group>"; };
 		DA4F9EAC1B0F1B87001087E2 /* bg_cell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bg_cell@2x.png"; path = "XuexiBaoFramework/Resources/images/bg_cell@2x.png"; sourceTree = SOURCE_ROOT; };
 		DA4F9EAD1B0F1B87001087E2 /* bg_cell@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bg_cell@3x.png"; path = "XuexiBaoFramework/Resources/images/bg_cell@3x.png"; sourceTree = SOURCE_ROOT; };
+		DA551AA31B1C578E00293615 /* XuexiBaoHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XuexiBaoHeader.h; sourceTree = "<group>"; };
 		DAAB07131B08D4E30043E7C3 /* camera_loading_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera_loading_1@2x.png"; path = "XuexiBaoFramework/Resources/images/camera_loading_1@2x.png"; sourceTree = SOURCE_ROOT; };
 		DAAB07141B08D4E40043E7C3 /* camera_loading_1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera_loading_1@3x.png"; path = "XuexiBaoFramework/Resources/images/camera_loading_1@3x.png"; sourceTree = SOURCE_ROOT; };
 		DAAE1A971B08D98B00D33536 /* EmptyMain.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyMain.xib; sourceTree = "<group>"; };
@@ -872,6 +874,7 @@
 				DA4C84DA1B033973001390A9 /* MDCoreDataUtil.m */,
 				DA4C83831B033351001390A9 /* Header.h */,
 				DA4C83841B033351001390A9 /* Header.m */,
+				DA551AA31B1C578E00293615 /* XuexiBaoHeader.h */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1502,6 +1505,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA551AA41B1C578E00293615 /* XuexiBaoHeader.h in Headers */,
 				DAAB06501B04A7FB0043E7C3 /* XuexiBaoFramework.h in Headers */,
 				DA4C841B1B033351001390A9 /* SCNavigationController.h in Headers */,
 				DA4F9EAA1B0F0D70001087E2 /* MDQuestionPlugin.h in Headers */,

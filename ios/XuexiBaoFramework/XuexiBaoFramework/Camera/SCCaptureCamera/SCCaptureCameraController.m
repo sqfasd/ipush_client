@@ -950,6 +950,13 @@ void c_slideAlpha() {
 {
     WEAKSELF_SC
     
+    // 2. 开始实际上传操作
+    [[MDXuexiBaoAPI sharedInstance] uploadSubjectPicture:image success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
     SCNavigationController *nav = (SCNavigationController*)weakSelf_SC.navigationController;
     if (nav.scNaigationDelegate && [nav.scNaigationDelegate respondsToSelector:@selector(didEndEditPhoto:)]) {
         [nav.scNaigationDelegate didEndEditPhoto:image];

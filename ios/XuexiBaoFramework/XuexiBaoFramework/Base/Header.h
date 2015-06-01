@@ -213,10 +213,11 @@ dispatch_sync(dispatch_get_main_queue(), block);\
 
 #define kNOTIFICATION_NAME_NoAuth @"noti_name_no_auth"
 // Notification V2.0 ************************* Begin
-#define kNTF_QUE_NEW_START @"ntf_que_new_start"
-#define kNTF_QUE_NEW_UPDFAIL @"ntf_que_new_updfail"
-#define kNTF_QUE_REUPLOAD @"ntf_que_reupload"
-#define kNTF_REFRESH_QUESTIONLIST @"ntf_refresh_questionlist"
+//#define kNTF_QUE_NEW_START @"ntf_que_new_start"
+//#define kNTF_QUE_NEW_UPDFAIL @"ntf_que_new_updfail"
+//#define kNTF_QUE_REUPLOAD @"ntf_que_reupload"
+//#define kNTF_REFRESH_QUESTIONLIST @"ntf_refresh_questionlist"
+
 #define kNTF_REQFORHELP_OK @"ntf_reqforhelp_ok"
 #define kNTF_REQFORHELP_FAIL @"ntf_reqforhelp_fail"
 #define kNOTIFICATION_NAME_QuestionRead @"noti_name_question_read"
