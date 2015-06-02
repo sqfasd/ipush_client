@@ -38,27 +38,20 @@
     }
     
     
-//    [self.navigationController pushViewController:[MDQueListViewController sharedInstance] animated:YES];
+    [self.navigationController pushViewController:[MDQueListViewController sharedInstance] animated:YES];
     
-    SCNavigationController *nav = [[SCNavigationController alloc] init];
-    nav.scNaigationDelegate = self;
-    [nav showCameraWithParentController:self isPro:YES];
+//    SCNavigationController *nav = [[SCNavigationController alloc] init];
+//    nav.scNaigationDelegate = self;
+//    [nav showCameraWithParentController:self isPro:YES];
 
 }
 
 
-#pragma mark -
-#pragma mark - SCNavigationController delegate
-- (void)didEndEditPhoto:(UIImage *)image
-{
-    NSLog(@"didendeditphoto: %@", NSStringFromCGSize(image.size));
-    
-//    // 2. 开始实际上传操作
-//    [[MDXuexiBaoAPI sharedInstance] uploadSubjectPicture:image success:^(id responseObject) {
-//        MDLog(@"didSelectPhoto succeed");
-//    } failure:^(NSError *error) {
-//        
-//    }];
-}
+//#pragma mark -
+//#pragma mark - SCNavigationController delegate
+//- (void)didEndEditPhoto:(UIImage *)image
+//{
+//    NSLog(@"didendeditphoto: %@", NSStringFromCGSize(image.size));
+//}
 
 @end
