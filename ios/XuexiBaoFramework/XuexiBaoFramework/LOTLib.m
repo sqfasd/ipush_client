@@ -11,16 +11,14 @@
 #import "LOTLib.h"
 //#import <xcomet/xcomet.h>
 
-#import "xcomet.h"
+//#import "xcomet.h"
 #import "UIActionSheet+Blocks.h"
 #import "MDXuexiBaoOperationMgr.h"
 #import "MDQuestionV2.h"
 
 
 
-@interface LOTLib ()<XClientDelegate>
-
-@property (nonatomic, strong) XClient *xClient;
+@interface LOTLib ()
 
 @end
 
@@ -73,7 +71,9 @@
     
     
     // 2. TalkingData统计
-    [TalkingData sessionStarted:@"B3EC7279F87374F9F4856095ED0A2998" withChannelId:@"TalkingData"];
+    // 学习宝教师版：8D338D321EE8E7807CAF938ED5C6D514
+    // 学习宝：B3EC7279F87374F9F4856095ED0A2998
+    [TalkingData sessionStarted:@"8D338D321EE8E7807CAF938ED5C6D514" withChannelId:@"TalkingData"];
     [TalkingData setExceptionReportEnabled:NO];
     
     
@@ -86,51 +86,6 @@
     [[MDCoreDataUtil sharedInstance] initCoreData];
 }
 
-
-
-#pragma mark --
-#pragma mark -- Properties
-- (XClient *)xClient {
-    if (!_xClient) {
-        _xClient = [[XClient alloc] init];
-    }
-    
-    return _xClient;
-}
-
-
-
-#pragma mark --
-#pragma mark -- XClientDelegate
-/**
- * This method is called after the client has been connected
- * if error is nil, auzhorized successfull
- * if error is not nil, auzhorized failed.
- **/
-- (void)xclientDidConnect:(XClient *)sender withError:(NSError *)error {
-    
-}
-
-/**
- * This method is called after the client has reveived a message.
- **/
-- (void)xclient:(XClient *)sender didReceiveMessage:(XCMessage *)message {
-    
-}
-
-/**
- * This method is called after the client has reveived a message that be parsed or an err response.
- **/
-- (void)xclient:(XClient *)sender didReceiveError:(NSError *)error {
-    
-}
-
-/**
- * This method is called after the client is closed.
- **/
-- (void)xclientDidDisconnect:(XClient *)sender withError:(NSError *)error {
-    
-}
 
 
 

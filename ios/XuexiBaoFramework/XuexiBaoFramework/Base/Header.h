@@ -46,7 +46,7 @@
 
 #else
 
-#define MD_DOMAIN  @"http://webapi.91xuexibao.com:3000"
+#define MD_DOMAIN  @"http://webapi.91xuexibao.com"
 
 #define MD_DOMAIN_HZ @"http://121.41.106.37:8080"
 
@@ -55,8 +55,8 @@
 // 测试环境
 //#define MD_DOMAIN_PIC @"http://192.168.1.230:30001"
 
-#define MD_DOMAIN_AD @"http://adv.91xuexibao.com:3010"
-#define MD_DOMAIN_MOBILE @"http://m.91xuexibao.com:3000"
+#define MD_DOMAIN_AD @"http://adv.91xuexibao.com"
+#define MD_DOMAIN_MOBILE @"http://m.91xuexibao.com"
 #define MD_DOMAIN_PAY   @"https://pay.91xuexibao.com"
 //@"https://webapi.91xuexibao.com"
 #define MD_URL_FEATUREINTRO @"http://www.xuexibao.cn/app/v_2.6.html"

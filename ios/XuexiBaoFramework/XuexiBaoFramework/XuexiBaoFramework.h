@@ -19,5 +19,8 @@ FOUNDATION_EXPORT const unsigned char XuexiBaoFrameworkVersionString[];
 #import <XuexiBaoFramework/SCCaptureCameraController.h>
 #import <XuexiBaoFramework/SCNavigationController.h>
 #import <XuexiBaoFramework/MDQueListViewController.h>
-
+#import <XuexiBaoFramework/pubshare.h>
+#import <XuexiBaoFramework/AFNetworking.h>
+#import <XuexiBaoFramework/UIImageView+AFNetworking.h>
+#import <XuexiBaoFramework/UIButton+AFNetworking.h>
 
