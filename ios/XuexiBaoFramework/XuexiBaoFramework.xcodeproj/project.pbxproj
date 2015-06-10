@@ -79,7 +79,7 @@
 		DA4C82081B0B327800CB075F /* camera_160@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA4C82061B0B327800CB075F /* camera_160@2x.png */; };
 		DA4C84001B033351001390A9 /* Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83831B033351001390A9 /* Header.h */; };
 		DA4C84011B033351001390A9 /* Header.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83841B033351001390A9 /* Header.m */; };
-		DA4C84021B033351001390A9 /* MDEditPhotoViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83871B033351001390A9 /* MDEditPhotoViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA4C84021B033351001390A9 /* MDEditPhotoViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83871B033351001390A9 /* MDEditPhotoViewController.h */; };
 		DA4C84031B033351001390A9 /* MDEditPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83881B033351001390A9 /* MDEditPhotoViewController.m */; };
 		DA4C84041B033351001390A9 /* album_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA4C838A1B033351001390A9 /* album_btn@2x.png */; };
 		DA4C84051B033351001390A9 /* ic_left_rotate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA4C838B1B033351001390A9 /* ic_left_rotate@2x.png */; };
@@ -94,15 +94,14 @@
 		DA4C840F1B033351001390A9 /* MDEditPhotoBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83971B033351001390A9 /* MDEditPhotoBottomView.m */; };
 		DA4C84101B033351001390A9 /* MDEditPhotoView.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83981B033351001390A9 /* MDEditPhotoView.h */; };
 		DA4C84111B033351001390A9 /* MDEditPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83991B033351001390A9 /* MDEditPhotoView.m */; };
-		DA4C84131B033351001390A9 /* meizi.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DA4C839D1B033351001390A9 /* meizi.jpg */; };
-		DA4C84141B033351001390A9 /* SCCaptureCameraController.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C839E1B033351001390A9 /* SCCaptureCameraController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA4C84141B033351001390A9 /* SCCaptureCameraController.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C839E1B033351001390A9 /* SCCaptureCameraController.h */; };
 		DA4C84151B033351001390A9 /* SCCaptureCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C839F1B033351001390A9 /* SCCaptureCameraController.m */; };
 		DA4C84161B033351001390A9 /* SCCaptureSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83A01B033351001390A9 /* SCCaptureSessionManager.h */; };
 		DA4C84171B033351001390A9 /* SCCaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83A11B033351001390A9 /* SCCaptureSessionManager.m */; };
 		DA4C84181B033351001390A9 /* SCCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83A31B033351001390A9 /* SCCommon.h */; };
 		DA4C84191B033351001390A9 /* SCCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83A41B033351001390A9 /* SCCommon.m */; };
 		DA4C841A1B033351001390A9 /* SCDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83A51B033351001390A9 /* SCDefines.h */; };
-		DA4C841B1B033351001390A9 /* SCNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83A61B033351001390A9 /* SCNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA4C841B1B033351001390A9 /* SCNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83A61B033351001390A9 /* SCNavigationController.h */; };
 		DA4C841C1B033351001390A9 /* SCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83A71B033351001390A9 /* SCNavigationController.m */; };
 		DA4C841D1B033351001390A9 /* SCSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83A81B033351001390A9 /* SCSlider.h */; };
 		DA4C841E1B033351001390A9 /* SCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83A91B033351001390A9 /* SCSlider.m */; };
@@ -130,8 +129,6 @@
 		DA4C84411B033351001390A9 /* MDQeustionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83D21B033351001390A9 /* MDQeustionDetailViewController.m */; };
 		DA4C84421B033351001390A9 /* MDQueListViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83D31B033351001390A9 /* MDQueListViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA4C84431B033351001390A9 /* MDQueListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83D41B033351001390A9 /* MDQueListViewController.m */; };
-		DA4C84441B033351001390A9 /* libTalkingData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4C83D71B033351001390A9 /* libTalkingData.a */; };
-		DA4C84451B033351001390A9 /* TalkingData.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83D81B033351001390A9 /* TalkingData.h */; };
 		DA4C844A1B033351001390A9 /* LOTLib.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83DE1B033351001390A9 /* LOTLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA4C844B1B033351001390A9 /* LOTLib.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C83DF1B033351001390A9 /* LOTLib.m */; };
 		DA4C844C1B033351001390A9 /* NSData+ImageContentType.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83E11B033351001390A9 /* NSData+ImageContentType.h */; };
@@ -208,8 +205,6 @@
 		DA4C85151B036421001390A9 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C85111B036421001390A9 /* SSKeychainQuery.m */; };
 		DA4C85181B03644F001390A9 /* UIDevice+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C85161B03644F001390A9 /* UIDevice+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA4C85191B03644F001390A9 /* UIDevice+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C85171B03644F001390A9 /* UIDevice+Extension.m */; };
-		DA4C851F1B03646E001390A9 /* pubshare.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C851D1B03646E001390A9 /* pubshare.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DA4C85201B03646E001390A9 /* libpubshare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4C851E1B03646E001390A9 /* libpubshare.a */; };
 		DA4C85241B0364E7001390A9 /* KxMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C85221B0364E7001390A9 /* KxMenu.h */; };
 		DA4C85251B0364E7001390A9 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4C85231B0364E7001390A9 /* KxMenu.m */; };
 		DA4C852E1B036540001390A9 /* MDNoNetHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C85271B036540001390A9 /* MDNoNetHeader.h */; };
@@ -283,7 +278,11 @@
 		DA4F9EAB1B0F0D70001087E2 /* MDQuestionPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4F9EA91B0F0D70001087E2 /* MDQuestionPlugin.m */; };
 		DA4F9EAE1B0F1B87001087E2 /* bg_cell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA4F9EAC1B0F1B87001087E2 /* bg_cell@2x.png */; };
 		DA4F9EAF1B0F1B87001087E2 /* bg_cell@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA4F9EAD1B0F1B87001087E2 /* bg_cell@3x.png */; };
-		DA551AA41B1C578E00293615 /* XuexiBaoHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = DA551AA31B1C578E00293615 /* XuexiBaoHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA551AA41B1C578E00293615 /* XuexiBaoHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = DA551AA31B1C578E00293615 /* XuexiBaoHeader.h */; };
+		DA77941D1B214639009748CF /* pubshare.h in Headers */ = {isa = PBXBuildFile; fileRef = DA77941A1B214639009748CF /* pubshare.h */; };
+		DA77941E1B214639009748CF /* libpubshare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA77941B1B214639009748CF /* libpubshare.a */; };
+		DA96E2991B240A9E00D98AC0 /* libTalkingData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA96E2971B240A9E00D98AC0 /* libTalkingData.a */; };
+		DA96E29A1B240A9E00D98AC0 /* TalkingData.h in Headers */ = {isa = PBXBuildFile; fileRef = DA96E2981B240A9E00D98AC0 /* TalkingData.h */; };
 		DAAB06501B04A7FB0043E7C3 /* XuexiBaoFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4C83601B032818001390A9 /* XuexiBaoFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DAAB07151B08D4E40043E7C3 /* camera_loading_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAAB07131B08D4E30043E7C3 /* camera_loading_1@2x.png */; };
 		DAAB07161B08D4E40043E7C3 /* camera_loading_1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAAB07141B08D4E40043E7C3 /* camera_loading_1@3x.png */; };
@@ -457,7 +456,6 @@
 		DA4C83981B033351001390A9 /* MDEditPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDEditPhotoView.h; sourceTree = "<group>"; };
 		DA4C83991B033351001390A9 /* MDEditPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDEditPhotoView.m; sourceTree = "<group>"; };
 		DA4C839B1B033351001390A9 /* CameraCover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraCover.xib; sourceTree = "<group>"; };
-		DA4C839D1B033351001390A9 /* meizi.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = meizi.jpg; sourceTree = "<group>"; };
 		DA4C839E1B033351001390A9 /* SCCaptureCameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCaptureCameraController.h; sourceTree = "<group>"; };
 		DA4C839F1B033351001390A9 /* SCCaptureCameraController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCaptureCameraController.m; sourceTree = "<group>"; };
 		DA4C83A01B033351001390A9 /* SCCaptureSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCaptureSessionManager.h; sourceTree = "<group>"; };
@@ -493,8 +491,6 @@
 		DA4C83D21B033351001390A9 /* MDQeustionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDQeustionDetailViewController.m; sourceTree = "<group>"; };
 		DA4C83D31B033351001390A9 /* MDQueListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDQueListViewController.h; sourceTree = "<group>"; };
 		DA4C83D41B033351001390A9 /* MDQueListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDQueListViewController.m; sourceTree = "<group>"; };
-		DA4C83D71B033351001390A9 /* libTalkingData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTalkingData.a; sourceTree = "<group>"; };
-		DA4C83D81B033351001390A9 /* TalkingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkingData.h; sourceTree = "<group>"; };
 		DA4C83DD1B033351001390A9 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = images.xcassets; path = ../XuexiBaoFramework/images.xcassets; sourceTree = "<group>"; };
 		DA4C83DE1B033351001390A9 /* LOTLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTLib.h; sourceTree = "<group>"; };
 		DA4C83DF1B033351001390A9 /* LOTLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTLib.m; sourceTree = "<group>"; };
@@ -573,8 +569,6 @@
 		DA4C85111B036421001390A9 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		DA4C85161B03644F001390A9 /* UIDevice+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Extension.h"; sourceTree = "<group>"; };
 		DA4C85171B03644F001390A9 /* UIDevice+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Extension.m"; sourceTree = "<group>"; };
-		DA4C851D1B03646E001390A9 /* pubshare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pubshare.h; sourceTree = "<group>"; };
-		DA4C851E1B03646E001390A9 /* libpubshare.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpubshare.a; sourceTree = "<group>"; };
 		DA4C85221B0364E7001390A9 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		DA4C85231B0364E7001390A9 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		DA4C85271B036540001390A9 /* MDNoNetHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDNoNetHeader.h; sourceTree = "<group>"; };
@@ -650,6 +644,10 @@
 		DA4F9EAC1B0F1B87001087E2 /* bg_cell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bg_cell@2x.png"; path = "XuexiBaoFramework/Resources/images/bg_cell@2x.png"; sourceTree = SOURCE_ROOT; };
 		DA4F9EAD1B0F1B87001087E2 /* bg_cell@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bg_cell@3x.png"; path = "XuexiBaoFramework/Resources/images/bg_cell@3x.png"; sourceTree = SOURCE_ROOT; };
 		DA551AA31B1C578E00293615 /* XuexiBaoHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XuexiBaoHeader.h; sourceTree = "<group>"; };
+		DA77941A1B214639009748CF /* pubshare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pubshare.h; sourceTree = "<group>"; };
+		DA77941B1B214639009748CF /* libpubshare.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpubshare.a; path = "Debug-iphonesimulator/libpubshare.a"; sourceTree = "<group>"; };
+		DA96E2971B240A9E00D98AC0 /* libTalkingData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTalkingData.a; sourceTree = "<group>"; };
+		DA96E2981B240A9E00D98AC0 /* TalkingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkingData.h; sourceTree = "<group>"; };
 		DAAB07131B08D4E30043E7C3 /* camera_loading_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera_loading_1@2x.png"; path = "XuexiBaoFramework/Resources/images/camera_loading_1@2x.png"; sourceTree = SOURCE_ROOT; };
 		DAAB07141B08D4E40043E7C3 /* camera_loading_1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera_loading_1@3x.png"; path = "XuexiBaoFramework/Resources/images/camera_loading_1@3x.png"; sourceTree = SOURCE_ROOT; };
 		DAAE1A971B08D98B00D33536 /* EmptyMain.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyMain.xib; sourceTree = "<group>"; };
@@ -724,12 +722,12 @@
 				DA4C84801B033845001390A9 /* AssetsLibrary.framework in Frameworks */,
 				DA4C847E1B03383A001390A9 /* AVFoundation.framework in Frameworks */,
 				DA4C847D1B033833001390A9 /* CoreGraphics.framework in Frameworks */,
+				DA77941E1B214639009748CF /* libpubshare.a in Frameworks */,
 				DA4C847B1B03382D001390A9 /* QuartzCore.framework in Frameworks */,
-				DA4C85201B03646E001390A9 /* libpubshare.a in Frameworks */,
 				DA4C84791B033827001390A9 /* UIKit.framework in Frameworks */,
 				DA4C84771B03381A001390A9 /* CoreTelephony.framework in Frameworks */,
 				DA4C84761B033814001390A9 /* AdSupport.framework in Frameworks */,
-				DA4C84441B033351001390A9 /* libTalkingData.a in Frameworks */,
+				DA96E2991B240A9E00D98AC0 /* libTalkingData.a in Frameworks */,
 				1C48ADB0E27AFCBC3E7AE350 /* libPods-XuexiBaoFramework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -941,7 +939,6 @@
 		DA4C839C1B033351001390A9 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				DA4C839D1B033351001390A9 /* meizi.jpg */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -1033,6 +1030,7 @@
 		DA4C83D51B033351001390A9 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				DA96E2961B240A9E00D98AC0 /* TalkingData */,
 				DA4C85761B036B12001390A9 /* LibImgCD */,
 				DA4C851A1B03646E001390A9 /* PubShare */,
 				DA4C85501B036A27001390A9 /* Reachability */,
@@ -1043,18 +1041,8 @@
 				DA4C84E71B033CC9001390A9 /* MSWeakTimer */,
 				DA4C84DE1B033A20001390A9 /* URBMediaFocusViewController */,
 				DA4C83E01B033351001390A9 /* SDWebImage */,
-				DA4C83D61B033351001390A9 /* TalkingData */,
 			);
 			path = Dependencies;
-			sourceTree = "<group>";
-		};
-		DA4C83D61B033351001390A9 /* TalkingData */ = {
-			isa = PBXGroup;
-			children = (
-				DA4C83D71B033351001390A9 /* libTalkingData.a */,
-				DA4C83D81B033351001390A9 /* TalkingData.h */,
-			);
-			path = TalkingData;
 			sourceTree = "<group>";
 		};
 		DA4C83E01B033351001390A9 /* SDWebImage */ = {
@@ -1204,26 +1192,10 @@
 		DA4C851A1B03646E001390A9 /* PubShare */ = {
 			isa = PBXGroup;
 			children = (
-				DA4C851B1B03646E001390A9 /* include */,
-				DA4C851E1B03646E001390A9 /* libpubshare.a */,
+				DA7794171B214639009748CF /* include */,
+				DA77941B1B214639009748CF /* libpubshare.a */,
 			);
 			path = PubShare;
-			sourceTree = "<group>";
-		};
-		DA4C851B1B03646E001390A9 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				DA4C851C1B03646E001390A9 /* pubshare */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		DA4C851C1B03646E001390A9 /* pubshare */ = {
-			isa = PBXGroup;
-			children = (
-				DA4C851D1B03646E001390A9 /* pubshare.h */,
-			);
-			path = pubshare;
 			sourceTree = "<group>";
 		};
 		DA4C85211B0364E7001390A9 /* KxMenu */ = {
@@ -1312,6 +1284,32 @@
 			);
 			name = Plugin;
 			path = Widget/Plugin;
+			sourceTree = "<group>";
+		};
+		DA7794171B214639009748CF /* include */ = {
+			isa = PBXGroup;
+			children = (
+				DA7794181B214639009748CF /* pubshare */,
+			);
+			name = include;
+			path = "Debug-iphonesimulator/include";
+			sourceTree = "<group>";
+		};
+		DA7794181B214639009748CF /* pubshare */ = {
+			isa = PBXGroup;
+			children = (
+				DA77941A1B214639009748CF /* pubshare.h */,
+			);
+			path = pubshare;
+			sourceTree = "<group>";
+		};
+		DA96E2961B240A9E00D98AC0 /* TalkingData */ = {
+			isa = PBXGroup;
+			children = (
+				DA96E2971B240A9E00D98AC0 /* libTalkingData.a */,
+				DA96E2981B240A9E00D98AC0 /* TalkingData.h */,
+			);
+			path = TalkingData;
 			sourceTree = "<group>";
 		};
 		DAAB07121B08D4D60043E7C3 /* images */ = {
@@ -1476,21 +1474,23 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA4C851F1B03646E001390A9 /* pubshare.h in Headers */,
-				DA551AA41B1C578E00293615 /* XuexiBaoHeader.h in Headers */,
 				DAAB06501B04A7FB0043E7C3 /* XuexiBaoFramework.h in Headers */,
-				DA4C841B1B033351001390A9 /* SCNavigationController.h in Headers */,
 				DA4F9EAA1B0F0D70001087E2 /* MDQuestionPlugin.h in Headers */,
 				DA4C844A1B033351001390A9 /* LOTLib.h in Headers */,
-				DA4C84021B033351001390A9 /* MDEditPhotoViewController.h in Headers */,
 				DA4C84421B033351001390A9 /* MDQueListViewController.h in Headers */,
 				DA4C84381B033351001390A9 /* UIColor+Extension.h in Headers */,
+				DA4C84E11B033A20001390A9 /* URBMediaFocusViewController.h in Headers */,
 				DA4C85181B03644F001390A9 /* UIDevice+Extension.h in Headers */,
 				DA4C853F1B03683F001390A9 /* NSDictionary+Extension.h in Headers */,
 				DA4C853B1B0365A7001390A9 /* UIImage+Extension.h in Headers */,
+				DA4C84671B033351001390A9 /* UIImageView+WebCache.h in Headers */,
 				DA4C858A1B037F6F001390A9 /* UIViewController+Extension.h in Headers */,
-				DA4C85851B037EBD001390A9 /* UIImageView+Extension.h in Headers */,
+				DA77941D1B214639009748CF /* pubshare.h in Headers */,
+				DA551AA41B1C578E00293615 /* XuexiBaoHeader.h in Headers */,
+				DA4C841B1B033351001390A9 /* SCNavigationController.h in Headers */,
+				DA4C84021B033351001390A9 /* MDEditPhotoViewController.h in Headers */,
 				DA4C84141B033351001390A9 /* SCCaptureCameraController.h in Headers */,
+				DA4C85851B037EBD001390A9 /* UIImageView+Extension.h in Headers */,
 				DA4C84401B033351001390A9 /* MDQeustionDetailViewController.h in Headers */,
 				DA4C84581B033351001390A9 /* SDWebImageManager.h in Headers */,
 				DA4C84501B033351001390A9 /* SDWebImageCompat.h in Headers */,
@@ -1502,9 +1502,7 @@
 				DA4C85371B036571001390A9 /* MDEmptyMainView.h in Headers */,
 				DA4C84EF1B033D28001390A9 /* EGOCache.h in Headers */,
 				DA4C842E1B033351001390A9 /* SVIndefiniteAnimatedView.h in Headers */,
-				DA4C84671B033351001390A9 /* UIImageView+WebCache.h in Headers */,
 				DA4C84691B033351001390A9 /* UIView+WebCacheOperation.h in Headers */,
-				DA4C84451B033351001390A9 /* TalkingData.h in Headers */,
 				DA4C858E1B037FA8001390A9 /* NSString+Additions.h in Headers */,
 				DA4C841A1B033351001390A9 /* SCDefines.h in Headers */,
 				DA4C84DB1B033973001390A9 /* MDCoreDataUtil.h in Headers */,
@@ -1524,8 +1522,8 @@
 				DA4C845F1B033351001390A9 /* UIImage+GIF.h in Headers */,
 				DA4C844E1B033351001390A9 /* SDImageCache.h in Headers */,
 				DA4C843E1B033351001390A9 /* UIView+Frame.h in Headers */,
+				DA96E29A1B240A9E00D98AC0 /* TalkingData.h in Headers */,
 				DA4C845B1B033351001390A9 /* SDWebImagePrefetcher.h in Headers */,
-				DA4C84E11B033A20001390A9 /* URBMediaFocusViewController.h in Headers */,
 				DA4C850C1B034A99001390A9 /* XuexiBaoPrefix.pch in Headers */,
 				DA4C856C1B036AB8001390A9 /* MDNetCommonOperation.h in Headers */,
 				DA4C857D1B036B85001390A9 /* MDFileUtil.h in Headers */,
@@ -1652,7 +1650,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA4C84311B033351001390A9 /* SVProgressHUD.bundle in Resources */,
-				DA4C84131B033351001390A9 /* meizi.jpg in Resources */,
 				DA4C84051B033351001390A9 /* ic_left_rotate@2x.png in Resources */,
 				DA4C85551B036A27001390A9 /* LICENCE.txt in Resources */,
 				DA4C84061B033351001390A9 /* ic_right_rotate@2x.png in Resources */,
@@ -2093,6 +2090,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 590B38F294AE3A1E851FDFEE /* Pods-XuexiBaoFramework.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					i386,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
@@ -2115,6 +2116,7 @@
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/PubShare",
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/LibImgCD",
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/xcomet",
+					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/PubShare/Debug-iphonesimulator",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2148,6 +2150,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 324D1441C70374D0EAC1969D /* Pods-XuexiBaoFramework.release.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					i386,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
@@ -2170,6 +2176,7 @@
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/PubShare",
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/LibImgCD",
 					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/xcomet",
+					"$(PROJECT_DIR)/XuexiBaoFramework/Dependencies/PubShare/Debug-iphonesimulator",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",

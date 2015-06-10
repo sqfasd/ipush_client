@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UIImageView+WebCache.h"
+
 @interface UIImageView (Extension)
 
 //用户信息相关图片异步加载

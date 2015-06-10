@@ -1,6 +1,6 @@
 //
 //  TalkingData.h
-//  TalkingData Version 1.2.80
+//  TalkingData Version 1.2.84
 //
 //  Created by Biao Hou on 11-11-14.
 //  Copyright (c) 2011年 tendcloud. All rights reserved.
@@ -8,20 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TalkingData: NSObject
+@interface XueXiBao: NSObject
 
 
-/*!
- *	@function sessionStarted:withChannelId:
- *
- *  @abstract
+/**
+ *	@method	sessionStarted:withChannelId:
  *  初始化统计实例，请在application:didFinishLaunchingWithOptions:方法里调用
- *
- *	@param 	appKey 
- *  应用的唯一标识，统计后台注册得到
- *
- *  @param 	channelId 
- *  (可选)渠道名，如“app store”
+ *	@param 	appKey 	应用的唯一标识，统计后台注册得到
+    @param 	channelId(可选) 	渠道名，如“app store”
  */
 + (void)sessionStarted:(NSString *)appKey withChannelId:(NSString *)channelId;
 /**  

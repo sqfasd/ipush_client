@@ -193,7 +193,12 @@
     NSString *lastUsedCookie = [[MDStoreUtil sharedInstance] getObjectForKey:UD_NET_LASTUSED_COOKIE];
     
     // channel bid
-    NSMutableDictionary *fixeData=@{@"user_agent":userAgent?userAgent:@"",@"token":token?token:@"",@"cookie":lastUsedCookie?lastUsedCookie:@"", @"channel":PARAM_CHANNEL, @"bid":[NSBundle mainBundle].bundleIdentifier, @"ver_client":@"2-litefull"}.mutableCopy;
+    NSMutableDictionary *fixeData=@{@"ver_client":@"2",
+                                    @"user_agent":userAgent?userAgent:@"",
+                                    @"token":token?token:@"",
+                                    @"cookie":lastUsedCookie?lastUsedCookie:@"",
+                                    @"channel":PARAM_CHANNEL,
+                                    @"bid":[NSBundle mainBundle].bundleIdentifier}.mutableCopy;
     if (data) {
         [fixeData addEntriesFromDictionary:data];
     }
@@ -354,7 +359,12 @@
     NSString *lastUsedCookie = [[MDStoreUtil sharedInstance] getObjectForKey:UD_NET_LASTUSED_COOKIE];
     
     // channel bid
-    NSMutableDictionary *fixeData=@{@"user_agent":userAgent?userAgent:@"",@"token":token?token:@"",@"cookie":lastUsedCookie?lastUsedCookie:@"", @"channel":PARAM_CHANNEL, @"bid":[NSBundle mainBundle].bundleIdentifier, @"ver_client":@"2-litefull"}.mutableCopy;
+    NSMutableDictionary *fixeData=@{@"ver_client":@"2",
+                                    @"user_agent":userAgent?userAgent:@"",
+                                    @"token":token?token:@"",
+                                    @"cookie":lastUsedCookie?lastUsedCookie:@"",
+                                    @"channel":PARAM_CHANNEL,
+                                    @"bid":[NSBundle mainBundle].bundleIdentifier}.mutableCopy;
     if (data) {
         [fixeData addEntriesFromDictionary:data];
     }

@@ -14,6 +14,7 @@
 //#import "xcomet.h"
 #import "UIActionSheet+Blocks.h"
 #import "MDXuexiBaoOperationMgr.h"
+#import "NSDictionary+Extension.h"
 #import "MDQuestionV2.h"
 
 
@@ -73,8 +74,8 @@
     // 2. TalkingData统计
     // 学习宝教师版：8D338D321EE8E7807CAF938ED5C6D514
     // 学习宝：B3EC7279F87374F9F4856095ED0A2998
-    [TalkingData sessionStarted:@"8D338D321EE8E7807CAF938ED5C6D514" withChannelId:@"TalkingData"];
-    [TalkingData setExceptionReportEnabled:NO];
+    [XueXiBao sessionStarted:@"1EE3D47C3D02E2DC9CC002BBD86845B3" withChannelId:@"XXB_IOS_SDK"];
+    [XueXiBao setExceptionReportEnabled:NO];
     
     
 //    // 3. 初始化Push模块
@@ -89,112 +90,112 @@
 
 
 
-#pragma mark --
-#pragma mark -- 题目接口
-/*!
- *  @method queCountOfSubUpdFailed
- *
- *  @abstract
- *  获取上传失败的题目数量
- *
- *  @return
- *  返回数量
- *
- *  @discussion
- *  UI界面根据需要查询上传出错的题目数量
- */
-- (NSInteger)queCountOfSubUpdFailed {
-    return [[MDCoreDataUtil sharedInstance] queCountOfSubUpdFail];
-}
-
-/*!
- *  @method queReuploadSubUpdFailed
- *
- *  @abstract
- *  触发重新上传失败的题目
- *
- *  @discussion
- *  UI界面根据需要调用
- */
-- (void)queReuploadSubUpdFailed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"%li道题目上传失败：", (long)[[MDCoreDataUtil sharedInstance] queCountOfSubUpdFail]] delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-    
-    [actionSheet addButtonWithTitle:@"全部上传"];
-    [actionSheet addButtonWithTitle:@"全部删除"];
-    
-    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"取消", @"")];
-    
-    [actionSheet showInView:[UIApplication sharedApplication].keyWindow handler:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
-        // 全部上传
-        if (buttonIndex == 0) {
-            [[MDXuexiBaoOperationMgr sharedInstance] checkAndSyncUpdFailSubjects:YES];
-        }
-        // 全部删除
-        else if (buttonIndex == 1) {
-            [[MDCoreDataUtil sharedInstance] queClearQuesUploadFailed];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:kNTF_REFRESH_QUESTIONLIST object:nil];
-        });
-    }];
-
-}
-
-/*!
- *  @method queCountOfSubProcessing
- *
- *  @abstract
- *  获取上传中的题目数量
- *
- *  @discussion
- *  UI界面根据需要调用
- */
-- (NSInteger)queCountOfSubProcessing {
-    return [[MDCoreDataUtil sharedInstance] queCountOfSubProcessing];
-}
-
-/*!
- *  @method queCheckAnySubGetAnswer
- *
- *  @abstract
- *  调用以确认是否有任何题目完成了上传，获得了答案
- *
- *  @discussion
- *  UI界面根据需要调用
- */
-- (void)queCheckAnySubGetAnswer:(NSArray *)questions {
-    if (!questions || questions.count <= 0)
-        return;
-    
-    NSArray *processingList = [[MDCoreDataUtil sharedInstance] queArrayOfSubProcessing];
-    if (!processingList || processingList.count <= 0)
-        return;
-    
-    BOOL hasMatchData = NO;
-    NSMutableArray *removeImgIDs = [[NSMutableArray alloc] init];
-    
-    for (NSString *imgId in questions) {
-        for (MDQuestionV2 *dbQue in processingList) {
-            MDLog(@"dbQue imgID:%@", dbQue.image_id);
-            
-            if ([dbQue.image_id isEqualToString:imgId]) {
-                MDLog(@"found equal");
-                [removeImgIDs addObject:dbQue.image_id];
-                hasMatchData = YES;
-            }
-        }
-    }
-    
-    if (hasMatchData) {
-        [[MDCoreDataUtil sharedInstance] queRemoveQuesWithArrImgID:removeImgIDs.copy];
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:kNTF_REFRESH_QUESTIONLIST object:nil];
-        });
-    }
-
-}
+//#pragma mark --
+//#pragma mark -- 题目接口
+///*!
+// *  @method queCountOfSubUpdFailed
+// *
+// *  @abstract
+// *  获取上传失败的题目数量
+// *
+// *  @return
+// *  返回数量
+// *
+// *  @discussion
+// *  UI界面根据需要查询上传出错的题目数量
+// */
+//- (NSInteger)queCountOfSubUpdFailed {
+//    return [[MDCoreDataUtil sharedInstance] queCountOfSubUpdFail];
+//}
+//
+///*!
+// *  @method queReuploadSubUpdFailed
+// *
+// *  @abstract
+// *  触发重新上传失败的题目
+// *
+// *  @discussion
+// *  UI界面根据需要调用
+// */
+//- (void)queReuploadSubUpdFailed {
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"%li道题目上传失败：", (long)[[MDCoreDataUtil sharedInstance] queCountOfSubUpdFail]] delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+//    
+//    [actionSheet addButtonWithTitle:@"全部上传"];
+//    [actionSheet addButtonWithTitle:@"全部删除"];
+//    
+//    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"取消", @"")];
+//    
+//    [actionSheet showInView:[UIApplication sharedApplication].keyWindow handler:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
+//        // 全部上传
+//        if (buttonIndex == 0) {
+//            [[MDXuexiBaoOperationMgr sharedInstance] checkAndSyncUpdFailSubjects:YES];
+//        }
+//        // 全部删除
+//        else if (buttonIndex == 1) {
+//            [[MDCoreDataUtil sharedInstance] queClearQuesUploadFailed];
+//        }
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:kNTF_REFRESH_QUESTIONLIST object:nil];
+//        });
+//    }];
+//
+//}
+//
+///*!
+// *  @method queCountOfSubProcessing
+// *
+// *  @abstract
+// *  获取上传中的题目数量
+// *
+// *  @discussion
+// *  UI界面根据需要调用
+// */
+//- (NSInteger)queCountOfSubProcessing {
+//    return [[MDCoreDataUtil sharedInstance] queCountOfSubProcessing];
+//}
+//
+///*!
+// *  @method queCheckAnySubGetAnswer
+// *
+// *  @abstract
+// *  调用以确认是否有任何题目完成了上传，获得了答案
+// *
+// *  @discussion
+// *  UI界面根据需要调用
+// */
+//- (void)queCheckAnySubGetAnswer:(NSArray *)questions {
+//    if (!questions || questions.count <= 0)
+//        return;
+//    
+//    NSArray *processingList = [[MDCoreDataUtil sharedInstance] queArrayOfSubProcessing];
+//    if (!processingList || processingList.count <= 0)
+//        return;
+//    
+//    BOOL hasMatchData = NO;
+//    NSMutableArray *removeImgIDs = [[NSMutableArray alloc] init];
+//    
+//    for (NSString *imgId in questions) {
+//        for (MDQuestionV2 *dbQue in processingList) {
+//            MDLog(@"dbQue imgID:%@", dbQue.image_id);
+//            
+//            if ([dbQue.image_id isEqualToString:imgId]) {
+//                MDLog(@"found equal");
+//                [removeImgIDs addObject:dbQue.image_id];
+//                hasMatchData = YES;
+//            }
+//        }
+//    }
+//    
+//    if (hasMatchData) {
+//        [[MDCoreDataUtil sharedInstance] queRemoveQuesWithArrImgID:removeImgIDs.copy];
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:kNTF_REFRESH_QUESTIONLIST object:nil];
+//        });
+//    }
+//
+//}
 
 @end
 

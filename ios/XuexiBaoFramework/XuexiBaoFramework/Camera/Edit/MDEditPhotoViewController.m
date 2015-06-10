@@ -136,7 +136,7 @@
     
     [super viewWillAppear:animated];
 //    [MobClick beginLogPageView:NSStringFromClass([MDEditPhotoViewController class])];
-    [TalkingData trackPageBegin:NSStringFromClass([MDEditPhotoViewController class])];
+//    [XueXiBao trackPageBegin:NSStringFromClass([MDEditPhotoViewController class])];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -151,7 +151,7 @@
 {
     [super viewWillDisappear:animated];
 //    [MobClick endLogPageView:NSStringFromClass([MDEditPhotoViewController class])];
-    [TalkingData trackPageEnd:NSStringFromClass([MDEditPhotoViewController class])];
+//    [XueXiBao trackPageEnd:NSStringFromClass([MDEditPhotoViewController class])];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -161,6 +161,9 @@
     [UIApplication sharedApplication].statusBarOrientation = statusBarOrientation;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle NS_AVAILABLE_IOS(7_0) {
+    return UIStatusBarStyleLightContent;
+}
 
 - (BOOL)prefersStatusBarHidden
 {
@@ -178,6 +181,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    if ([UIApplication sharedApplication].statusBarHidden) {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    }
+
+}
+
+
 
 #pragma mark - Properties
 - (void) setCropRect:(CGRect)cropRect
@@ -189,12 +201,12 @@
 {
     return RECT_CROPFRAME;
     
-    if( self.captureImageView.cropRect.size.width == 0 || self.captureImageView.cropRect.size.height == 0 )
-        [self.captureImageView setCropRect:(CGRect){ ( CGRectGetWidth(self.captureImageView.bounds) - kDefaultCropWidth ) * .5,
-            ( CGRectGetHeight(self.captureImageView.bounds) - kDefaultCropHeight ) * .5,
-            kDefaultCropWidth, kDefaultCropHeight }];
-    
-    return self.captureImageView.cropRect;
+//    if( self.captureImageView.cropRect.size.width == 0 || self.captureImageView.cropRect.size.height == 0 )
+//        [self.captureImageView setCropRect:(CGRect){ ( CGRectGetWidth(self.captureImageView.bounds) - kDefaultCropWidth ) * .5,
+//            ( CGRectGetHeight(self.captureImageView.bounds) - kDefaultCropHeight ) * .5,
+//            kDefaultCropWidth, kDefaultCropHeight }];
+//    
+//    return self.captureImageView.cropRect;
 }
 
 - (CGRect)imageViewRect
@@ -916,7 +928,7 @@
 
 - (IBAction)confirmBtnClick:(id)sender {
 //    [MobClick event:EVENT_SUB_EDIT_OK];
-    [TalkingData trackEvent:EVENT_SUB_EDIT_OK];
+//    [XueXiBao trackEvent:EVENT_SUB_EDIT_OK];
 
     
     if (!self.captureImageView.image) {
@@ -969,7 +981,7 @@
 
 - (IBAction)cancelEditBtnClicked:(id)sender {
 //    [MobClick event:EVENT_SUB_EDIT_CANCLE];
-    [TalkingData trackEvent:EVENT_SUB_EDIT_CANCLE];
+//    [XueXiBao trackEvent:EVENT_SUB_EDIT_CANCLE];
     
     [self dismissViewControllerAnimated:YES completion:^{
         

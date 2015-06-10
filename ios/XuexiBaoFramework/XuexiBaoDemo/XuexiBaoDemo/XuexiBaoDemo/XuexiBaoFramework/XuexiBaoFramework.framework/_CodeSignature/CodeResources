@@ -6,11 +6,7 @@
 	<dict>
 		<key>Headers/LOTLib.h</key>
 		<data>
-		HQ90eJKtWGL7xosqdX7QxLnkmiE=
-		</data>
-		<key>Headers/MDEditPhotoViewController.h</key>
-		<data>
-		uo/Ynl2UDvA8OFpmN8j1xe0HLu0=
+		BJapq38/XohgNIzmL9jT/Ei352M=
 		</data>
 		<key>Headers/MDQueListViewController.h</key>
 		<data>
@@ -19,14 +15,6 @@
 		<key>Headers/NSDictionary+Extension.h</key>
 		<data>
 		jeMQd9XLPAIkOi51yDvvEDc5IDo=
-		</data>
-		<key>Headers/SCCaptureCameraController.h</key>
-		<data>
-		gNx2ne3oF06z62xelvbfROQZIvE=
-		</data>
-		<key>Headers/SCNavigationController.h</key>
-		<data>
-		YDtpSLtzItPwwc0VRB/Shlax4ig=
 		</data>
 		<key>Headers/UIColor+Extension.h</key>
 		<data>
@@ -42,7 +30,7 @@
 		</data>
 		<key>Headers/UIImageView+Extension.h</key>
 		<data>
-		wsrGzedBXgmMSI8xgzTTJanXqmM=
+		9tMTQnZJ6zbDOroFby83zVxakYs=
 		</data>
 		<key>Headers/UIViewController+Extension.h</key>
 		<data>
@@ -50,11 +38,7 @@
 		</data>
 		<key>Headers/XuexiBaoFramework.h</key>
 		<data>
-		3bQt+a3qX6iJvVkeGgJZHVrZDME=
-		</data>
-		<key>Headers/XuexiBaoHeader.h</key>
-		<data>
-		fyu/s9KqZAKtRQW93iwuDnIk9mk=
+		cuZzuKHuoxibZPuIHit5HeVjDJ0=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -96,20 +80,12 @@
 		<data>
 		Lc+QuBnoCLnIEIuxSFF6M9subZY=
 		</data>
-		<key>meizi.jpg</key>
-		<data>
-		f4DAEpmeqZ+Er+l5cWjrVkqQxtw=
-		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
 		<key>Headers/LOTLib.h</key>
 		<data>
-		HQ90eJKtWGL7xosqdX7QxLnkmiE=
-		</data>
-		<key>Headers/MDEditPhotoViewController.h</key>
-		<data>
-		uo/Ynl2UDvA8OFpmN8j1xe0HLu0=
+		BJapq38/XohgNIzmL9jT/Ei352M=
 		</data>
 		<key>Headers/MDQueListViewController.h</key>
 		<data>
@@ -118,14 +94,6 @@
 		<key>Headers/NSDictionary+Extension.h</key>
 		<data>
 		jeMQd9XLPAIkOi51yDvvEDc5IDo=
-		</data>
-		<key>Headers/SCCaptureCameraController.h</key>
-		<data>
-		gNx2ne3oF06z62xelvbfROQZIvE=
-		</data>
-		<key>Headers/SCNavigationController.h</key>
-		<data>
-		YDtpSLtzItPwwc0VRB/Shlax4ig=
 		</data>
 		<key>Headers/UIColor+Extension.h</key>
 		<data>
@@ -141,7 +109,7 @@
 		</data>
 		<key>Headers/UIImageView+Extension.h</key>
 		<data>
-		wsrGzedBXgmMSI8xgzTTJanXqmM=
+		9tMTQnZJ6zbDOroFby83zVxakYs=
 		</data>
 		<key>Headers/UIViewController+Extension.h</key>
 		<data>
@@ -149,11 +117,7 @@
 		</data>
 		<key>Headers/XuexiBaoFramework.h</key>
 		<data>
-		3bQt+a3qX6iJvVkeGgJZHVrZDME=
-		</data>
-		<key>Headers/XuexiBaoHeader.h</key>
-		<data>
-		fyu/s9KqZAKtRQW93iwuDnIk9mk=
+		cuZzuKHuoxibZPuIHit5HeVjDJ0=
 		</data>
 		<key>LICENCE.txt</key>
 		<data>
@@ -190,10 +154,6 @@
 		<key>ic_right_rotate@2x.png</key>
 		<data>
 		Lc+QuBnoCLnIEIuxSFF6M9subZY=
-		</data>
-		<key>meizi.jpg</key>
-		<data>
-		f4DAEpmeqZ+Er+l5cWjrVkqQxtw=
 		</data>
 	</dict>
 	<key>rules</key>

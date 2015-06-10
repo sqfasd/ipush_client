@@ -343,20 +343,6 @@
 #pragma mark -
 #pragma mark - V1.4~1.5 API
 
-
-// V1.5more App首次使用激活
-- (void)activateApp:(BlockResponseOK)success failure:(BlockResponseFailure)failure
-{
-    NSString *url = [NSString stringWithFormat:@"%@%@", MD_DOMAIN_AD, OP_APP_ACTIVATE];
-    
-    NSDictionary *input = [NSDictionary dictionaryWithObjectsAndKeys:IMEI(), @"muid", @"ios", @"app_type", nil];
-    
-    [[MDNetworking sharedInstance] sendPOSTRequest:url withData:input withTimeout:HTTP_REQ_TIMEOUT showAlert:NO success:^(id responseObject) {
-        MDLog(@"activate resp: %@", responseObject);
-    } failure:failure];
-}
-
-
 /***** Begin API in v1.4 **************/
 //绑定设备
 - (void)bindDeviceSuccess:(BlockResponse)success failure:(BlockResponseFailure)failure
@@ -371,7 +357,7 @@
     }
     
     
-    [self postForAPI:MD_DOMAIN api:OP_DEVICE_BIND post:@{PARAM_DEVICE_ID: devId,@"isnew":@"0"} success:success failure:failure];
+    [self postForAPI:MD_DOMAIN api:OP_DEVICE_BIND post:@{PARAM_DEVICE_ID: devId,@"phone_type":@"2"} success:success failure:failure];
 }
 
 - (void)getQueList:(NSDictionary *)params success:(BlockResponse)success failure:(BlockResponseFailure)failure
@@ -453,11 +439,6 @@
             success(responseObject,NO);
         }
     }failure:failure];
-}
-
-- (void)queryQues:(NSDictionary *)params success:(BlockResponse)success failure:(BlockResponseFailure)failure
-{
-    [self postForAPI:MD_DOMAIN api:OP_QUESTION_QUERY post:params success:success failure:failure];
 }
 
 /***** End API in v1.4 ***************/

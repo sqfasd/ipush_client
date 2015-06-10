@@ -40,54 +40,54 @@
 
 
 
-#pragma mark --
-#pragma mark -- 题目接口
-/*!
- *  @method queCountOfSubUpdFailed
- *
- *  @abstract
- *  获取上传失败的题目数量
- *
- *  @return
- *  返回数量
- *
- *  @discussion
- *  UI界面根据需要查询上传出错的题目数量
- */
-- (NSInteger)queCountOfSubUpdFailed;
-
-/*!
- *  @method queReuploadSubUpdFailed
- *
- *  @abstract
- *  触发重新上传失败的题目
- *
- *  @discussion
- *  UI界面根据需要调用
- */
-- (void)queReuploadSubUpdFailed;
-
-/*!
- *  @method queCountOfSubProcessing
- *
- *  @abstract
- *  获取上传中的题目数量
- *
- *  @discussion
- *  UI界面根据需要调用
- */
-- (NSInteger)queCountOfSubProcessing;
-
-/*!
- *  @method queCheckAnySubGetAnswer
- *
- *  @abstract
- *  调用以确认是否有任何题目完成了上传，获得了答案
- *
- *  @discussion
- *  UI界面根据需要调用
- */
-- (void)queCheckAnySubGetAnswer:(NSArray *)queList;
+//#pragma mark --
+//#pragma mark -- 题目接口
+///*!
+// *  @method queCountOfSubUpdFailed
+// *
+// *  @abstract
+// *  获取上传失败的题目数量
+// *
+// *  @return
+// *  返回数量
+// *
+// *  @discussion
+// *  UI界面根据需要查询上传出错的题目数量
+// */
+//- (NSInteger)queCountOfSubUpdFailed;
+//
+///*!
+// *  @method queReuploadSubUpdFailed
+// *
+// *  @abstract
+// *  触发重新上传失败的题目
+// *
+// *  @discussion
+// *  UI界面根据需要调用
+// */
+//- (void)queReuploadSubUpdFailed;
+//
+///*!
+// *  @method queCountOfSubProcessing
+// *
+// *  @abstract
+// *  获取上传中的题目数量
+// *
+// *  @discussion
+// *  UI界面根据需要调用
+// */
+//- (NSInteger)queCountOfSubProcessing;
+//
+///*!
+// *  @method queCheckAnySubGetAnswer
+// *
+// *  @abstract
+// *  调用以确认是否有任何题目完成了上传，获得了答案
+// *
+// *  @discussion
+// *  UI界面根据需要调用
+// */
+//- (void)queCheckAnySubGetAnswer:(NSArray *)queList;
 
 @end
 

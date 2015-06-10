@@ -16,11 +16,13 @@ FOUNDATION_EXPORT const unsigned char XuexiBaoFrameworkVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <XuexiBaoFramework/PublicHeader.h>
 #import <XuexiBaoFramework/LOTLib.h>
-#import <XuexiBaoFramework/SCCaptureCameraController.h>
-#import <XuexiBaoFramework/SCNavigationController.h>
 #import <XuexiBaoFramework/MDQueListViewController.h>
-#import <XuexiBaoFramework/pubshare.h>
-#import <XuexiBaoFramework/AFNetworking.h>
-#import <XuexiBaoFramework/UIImageView+AFNetworking.h>
-#import <XuexiBaoFramework/UIButton+AFNetworking.h>
+
+#import <XuexiBaoFramework/NSDictionary+Extension.h>
+#import <XuexiBaoFramework/UIImageView+Extension.h>
+#import <XuexiBaoFramework/UIImage+Extension.h>
+#import <XuexiBaoFramework/UIColor+Extension.h>
+#import <XuexiBaoFramework/UIDevice+Extension.h>
+#import <XuexiBaoFramework/UIViewController+Extension.h>
+
 

@@ -30,13 +30,10 @@
 三. 注意事项：
 
 1. XuexiBaoFramework使用cocoapods集成了以下开源库：AFNetworking，Cordova，MagicalRecord，pop
-其中“AFNetworking”所有header打包对外提供，App中如果需要使用AFNetworking，可以import如下：
-		
-		#import <XuexiBaoFramework/AFNetworking.h>
 		
 	如果App的代码中碰巧使用了以上这些开源库，请与我们联系，我们将开放出相应库的头文件。
-	
-	
+
+2. 打开App的build setting，在other linker flags下添加 -all_load	
 
 
 

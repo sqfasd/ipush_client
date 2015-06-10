@@ -182,7 +182,7 @@ static MDQueListViewController *queListViewController = nil;
 {
     [super viewWillAppear:animated];
     
-    [TalkingData trackPageBegin:NSStringFromClass([MDQueListViewController class])];
+//    [XueXiBao trackPageBegin:NSStringFromClass([MDQueListViewController class])];
 
     [self checkNetworkReachability];
     
@@ -194,7 +194,7 @@ static MDQueListViewController *queListViewController = nil;
     [super viewWillDisappear:animated];
     isDoingVCPush = NO;
     
-    [TalkingData trackPageEnd:NSStringFromClass([MDQueListViewController class])];
+//    [XueXiBao trackPageEnd:NSStringFromClass([MDQueListViewController class])];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -1380,7 +1380,7 @@ static NSString *CellIdentifier = @"QueTableCell";
 
 - (void)showCameraController
 {
-    [TalkingData trackEvent:EVENT_SUB_CAM_OPEN];
+//    [XueXiBao trackEvent:EVENT_SUB_CAM_OPEN];
 
     BOOL isCamrma = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
     if (!isCamrma) {

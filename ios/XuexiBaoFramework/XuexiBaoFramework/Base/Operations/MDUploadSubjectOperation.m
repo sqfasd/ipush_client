@@ -147,6 +147,9 @@ MSWeakTimer *_searchTimer = nil;
                 
                 // (3) 将图片标记为未读
                 [MDStoreUtil QueAddUnreadImgID:imgUuid];
+                
+                // (4) 发送notification通知App题目上传成功
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNTF_QUE_UPDSUCCEED object:nil userInfo:@{@"imageId":imgUuid}];
             }
             
 

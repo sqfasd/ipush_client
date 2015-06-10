@@ -22,7 +22,7 @@
 // 学习圈帖子，每页数量
 #define ARG_TCOUNT_PERPAGE @"20"
 
-#define OP_DEVICE_BIND @"/api/device/bind"
+#define OP_DEVICE_BIND @"/sdk/device/bind"
 
 //参数1.pushtoken 2.token
 #define OP_PUSH_TOKEN_UPDATE @"/api/ios/bind"//@"/api/ios/bind_v2"
@@ -42,9 +42,9 @@
 /***** End API for V1.5(1.*) ***********/
 
 /***** Begin API for V2.0 ***********/
-#define OP_QUE_LIST_GET @"/api/question/list_v2"
+#define OP_QUE_LIST_GET @"/sdk/question/list"
 // 获取题目详情和匹配结果
-#define OP_QUESTION_ANSWERS @"/api/question/answers_v2"
+#define OP_QUESTION_ANSWERS @"/sdk/question/answers"
 //获得学科列表
 #define OP_SUBJECTS_GET @"/api/dic/getSubjects"
 
@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, ParamForm) {
 
 
 // 删除题目
-#define OP_QUE_DELETE               @"/api/question/delete"
+#define OP_QUE_DELETE               @"/sdk/question/delete"
 
 
 // 换一题接口
@@ -167,9 +167,6 @@ typedef enum : NSUInteger {
 //题目详情v2.0
 - (void)getQuestionAnswers:(NSDictionary *)params success:(void(^)(id responseObject, BOOL cached))success failure:(BlockResponseFailure)failure;
 
-
-// V1.5more App首次使用激活
-- (void)activateApp:(BlockResponseOK)success failure:(BlockResponseFailure)failure;
 
 
 //绑定设备

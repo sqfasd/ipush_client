@@ -95,7 +95,7 @@ typedef enum : NSUInteger {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 
-    [TalkingData trackPageBegin:NSStringFromClass([MDQeustionDetailViewController class])];
+//    [XueXiBao trackPageBegin:NSStringFromClass([MDQeustionDetailViewController class])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -106,24 +106,24 @@ typedef enum : NSUInteger {
     }
     [self.webView stringByEvaluatingJavaScriptFromString:@"stopAudio();"];
 
-    // 如果选择的题目变了，向服务端请求一次换一题接口
-    NSNumber *cacheIndex=[[MDStoreUtil sharedInstance]getObjectForKey:[NSString stringWithFormat:kCACHE_KEY_QUE_CACHE_INDEX_FORMAT,_imageId]];
-    if (cacheIndex && cacheIndex.integerValue != displayIndex) {
-        if (cacheIndex.integerValue < _notEmptyAnswers.count) {
-            NSDictionary *answer = [_notEmptyAnswers objectAtIndex:cacheIndex.integerValue];
-            NSString *queId = [answer nonNullObjectForKey:@"question_id"];
-            if (!queId)
-                queId = @"";
-
-            [[MDXuexiBaoAPI sharedInstance] postForAPI:MD_DOMAIN api:OP_QUE_CHOOSE post:@{@"image_id":_imageId, @"question_id":queId} success:^(id responseObject) {
-                
-            } failure:^(NSError *error) {
-                
-            }];
-        }
-    }
+//    // 如果选择的题目变了，向服务端请求一次换一题接口
+//    NSNumber *cacheIndex=[[MDStoreUtil sharedInstance]getObjectForKey:[NSString stringWithFormat:kCACHE_KEY_QUE_CACHE_INDEX_FORMAT,_imageId]];
+//    if (cacheIndex && cacheIndex.integerValue != displayIndex) {
+//        if (cacheIndex.integerValue < _notEmptyAnswers.count) {
+//            NSDictionary *answer = [_notEmptyAnswers objectAtIndex:cacheIndex.integerValue];
+//            NSString *queId = [answer nonNullObjectForKey:@"question_id"];
+//            if (!queId)
+//                queId = @"";
+//
+//            [[MDXuexiBaoAPI sharedInstance] postForAPI:MD_DOMAIN api:OP_QUE_CHOOSE post:@{@"image_id":_imageId, @"question_id":queId} success:^(id responseObject) {
+//                
+//            } failure:^(NSError *error) {
+//                
+//            }];
+//        }
+//    }
     
-    [TalkingData trackPageEnd:NSStringFromClass([MDQeustionDetailViewController class])];
+//    [XueXiBao trackPageEnd:NSStringFromClass([MDQeustionDetailViewController class])];
 }
 
 - (void)viewDidLoad

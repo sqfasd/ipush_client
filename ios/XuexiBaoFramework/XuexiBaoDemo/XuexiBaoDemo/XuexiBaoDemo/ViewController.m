@@ -11,7 +11,7 @@
 
 
 
-@interface ViewController ()<SCNavigationControllerDelegate>
+@interface ViewController ()
 
 @end
 
@@ -21,7 +21,12 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view, typically from a nib.
-    [[LOTLib sharedInstance] startWithAppKey:@"5554527E474347F01EDB267A" secret:@"BDECB2E9C8F6887FF31D5AC6DA312D85"];
+    
+    // 教师端
+//    [[LOTLib sharedInstance] startWithAppKey:@"5554527E474347F01EDB267A" secret:@"BDECB2E9C8F6887FF31D5AC6DA312D85"];
+    
+    // 对外SDK
+    [[LOTLib sharedInstance] startWithAppKey:@"5577E6CCE4B0CDD74AE31C7E" secret:@"64F682C06F2A719D1902CE7C8E5CAA07"];
 }
 
 - (void)didReceiveMemoryWarning {

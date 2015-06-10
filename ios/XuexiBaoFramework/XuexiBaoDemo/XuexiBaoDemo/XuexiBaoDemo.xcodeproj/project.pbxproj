@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1DEB58BD1B04CB8200248D57 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DEB58BC1B04CB8200248D57 /* libc++.dylib */; };
-		DA4DD5BB1B1D7B02004E833E /* XuexiBaoBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA4DD5B91B1D7B02004E833E /* XuexiBaoBundle.bundle */; };
-		DA4DD5BC1B1D7B02004E833E /* XuexiBaoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4DD5BA1B1D7B02004E833E /* XuexiBaoFramework.framework */; };
 		DA4F9EA31B0F0BCA001087E2 /* www in Resources */ = {isa = PBXBuildFile; fileRef = DA4F9EA21B0F0BCA001087E2 /* www */; };
 		DA4F9EB11B0F2254001087E2 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = DA4F9EB01B0F2254001087E2 /* config.xml */; };
+		DA5AF5541B270D4F004B15A3 /* XuexiBaoBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA5AF5521B270D4F004B15A3 /* XuexiBaoBundle.bundle */; };
+		DA5AF5551B270D4F004B15A3 /* XuexiBaoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5AF5531B270D4F004B15A3 /* XuexiBaoFramework.framework */; };
 		DAAB06231B04A6330043E7C3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB06221B04A6330043E7C3 /* main.m */; };
 		DAAB06261B04A6330043E7C3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB06251B04A6330043E7C3 /* AppDelegate.m */; };
 		DAAB06291B04A6330043E7C3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB06281B04A6330043E7C3 /* ViewController.m */; };
@@ -42,10 +42,10 @@
 
 /* Begin PBXFileReference section */
 		1DEB58BC1B04CB8200248D57 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		DA4DD5B91B1D7B02004E833E /* XuexiBaoBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = XuexiBaoBundle.bundle; path = XuexiBaoDemo/XuexiBaoFramework/XuexiBaoBundle.bundle; sourceTree = "<group>"; };
-		DA4DD5BA1B1D7B02004E833E /* XuexiBaoFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XuexiBaoFramework.framework; path = XuexiBaoDemo/XuexiBaoFramework/XuexiBaoFramework.framework; sourceTree = "<group>"; };
 		DA4F9EA21B0F0BCA001087E2 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		DA4F9EB01B0F2254001087E2 /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
+		DA5AF5521B270D4F004B15A3 /* XuexiBaoBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = XuexiBaoBundle.bundle; path = XuexiBaoDemo/XuexiBaoFramework/XuexiBaoBundle.bundle; sourceTree = "<group>"; };
+		DA5AF5531B270D4F004B15A3 /* XuexiBaoFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XuexiBaoFramework.framework; path = XuexiBaoDemo/XuexiBaoFramework/XuexiBaoFramework.framework; sourceTree = "<group>"; };
 		DAAB061D1B04A6330043E7C3 /* XuexiBaoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XuexiBaoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAB06211B04A6330043E7C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAAB06221B04A6330043E7C3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -83,7 +83,7 @@
 				DAAB06661B04AD0B0043E7C3 /* ImageIO.framework in Frameworks */,
 				DAAB06621B04ACC80043E7C3 /* CoreMotion.framework in Frameworks */,
 				DAAB06601B04ACB90043E7C3 /* CoreTelephony.framework in Frameworks */,
-				DA4DD5BC1B1D7B02004E833E /* XuexiBaoFramework.framework in Frameworks */,
+				DA5AF5551B270D4F004B15A3 /* XuexiBaoFramework.framework in Frameworks */,
 				DAAB065E1B04ACA90043E7C3 /* AssetsLibrary.framework in Frameworks */,
 				DAAB065C1B04AC920043E7C3 /* AdSupport.framework in Frameworks */,
 				DAAB065A1B04AC820043E7C3 /* CoreData.framework in Frameworks */,
@@ -168,8 +168,8 @@
 		DAAB066C1B04AE660043E7C3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DA4DD5B91B1D7B02004E833E /* XuexiBaoBundle.bundle */,
-				DA4DD5BA1B1D7B02004E833E /* XuexiBaoFramework.framework */,
+				DA5AF5521B270D4F004B15A3 /* XuexiBaoBundle.bundle */,
+				DA5AF5531B270D4F004B15A3 /* XuexiBaoFramework.framework */,
 				1DEB58BC1B04CB8200248D57 /* libc++.dylib */,
 				DAAB06691B04AD2A0043E7C3 /* QuartzCore.framework */,
 				DAAB06671B04AD200043E7C3 /* UIKit.framework */,
@@ -268,7 +268,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA4DD5BB1B1D7B02004E833E /* XuexiBaoBundle.bundle in Resources */,
+				DA5AF5541B270D4F004B15A3 /* XuexiBaoBundle.bundle in Resources */,
 				DAAB062C1B04A6330043E7C3 /* Main.storyboard in Resources */,
 				DAAB06311B04A6330043E7C3 /* LaunchScreen.xib in Resources */,
 				DA4F9EB11B0F2254001087E2 /* config.xml in Resources */,

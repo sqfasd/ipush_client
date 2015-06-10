@@ -179,7 +179,7 @@
     [super viewWillAppear:animated];
     
 //    [MobClick beginLogPageView:NSStringFromClass([SCCaptureCameraController class])];
-    [TalkingData trackPageBegin:NSStringFromClass([SCCaptureCameraController class])];
+//    [XueXiBao trackPageBegin:NSStringFromClass([SCCaptureCameraController class])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -187,7 +187,7 @@
 //    [self switchActivityView:NO];
 
 //    [MobClick endLogPageView:NSStringFromClass([SCCaptureCameraController class])];
-    [TalkingData trackPageEnd:NSStringFromClass([SCCaptureCameraController class])];
+//    [XueXiBao trackPageEnd:NSStringFromClass([SCCaptureCameraController class])];
 
     [super viewWillDisappear:animated];
 }
@@ -209,6 +209,10 @@
             [self orientationDidChange:nil];
         });
     }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle NS_AVAILABLE_IOS(7_0) {
+    return UIStatusBarStyleLightContent;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -310,6 +314,9 @@
 }
 
 - (void)dealloc {
+    if ([UIApplication sharedApplication].statusBarHidden) {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    }
     
     //    if (!self.navigationController) {
     //        if ([UIApplication sharedApplication].statusBarHidden != _isStatusBarHiddenBeforeShowCamera) {
@@ -963,10 +970,15 @@ void c_slideAlpha() {
     }
     
     UIViewController *viewC = self;
-    if (self.isProMode) {
-        while (viewC.presentingViewController) {
-            viewC = viewC.presentingViewController;
-        }
+//    if (self.isProMode) {
+//        while (viewC.presentingViewController) {
+//            viewC = viewC.presentingViewController;
+//        }
+//    }
+    
+    // tim.wangj.remind
+    if (viewC.presentingViewController) {
+        viewC = viewC.presentingViewController;
     }
     
     [viewC dismissViewControllerAnimated:YES completion:^{
@@ -1067,7 +1079,7 @@ void c_slideAlpha() {
 #endif
     
 //    [MobClick event:EVENT_SUB_CAM_OK];
-    [TalkingData trackEvent:EVENT_SUB_CAM_OK];
+//    [XueXiBao trackEvent:EVENT_SUB_CAM_OK];
 
 //    [self switchActivityView:YES];
     sender.userInteractionEnabled = NO;
@@ -1139,7 +1151,7 @@ void c_slideAlpha() {
 //拍照页面，"X"按钮
 - (void)dismissBtnPressed:(id)sender {
 //    [MobClick event:EVENT_SUB_CAM_CANCEL];
-    [TalkingData trackEvent:EVENT_SUB_CAM_CANCEL];
+//    [XueXiBao trackEvent:EVENT_SUB_CAM_CANCEL];
 
     if (self.navigationController) {
         if (self.navigationController.viewControllers.count == 1) {
@@ -1186,7 +1198,7 @@ void c_slideAlpha() {
     UIImage *image = [[info objectForKey:UIImagePickerControllerOriginalImage] adjustOrientation];
     
 //    [MobClick event:EVENT_SUB_CAM_SELPHOTO];
-    [TalkingData trackEvent:EVENT_SUB_CAM_SELPHOTO];
+//    [XueXiBao trackEvent:EVENT_SUB_CAM_SELPHOTO];
 
     [self dismissViewControllerAnimated:YES completion:^{
         if (self.isProMode) {

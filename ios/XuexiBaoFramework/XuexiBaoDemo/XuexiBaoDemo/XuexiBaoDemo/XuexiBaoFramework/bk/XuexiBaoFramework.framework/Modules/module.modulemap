@@ -1,0 +1,6 @@
+framework module XuexiBaoFramework {
+  umbrella header "XuexiBaoFramework.h"
+
+  export *
+  module * { export * }
+}
