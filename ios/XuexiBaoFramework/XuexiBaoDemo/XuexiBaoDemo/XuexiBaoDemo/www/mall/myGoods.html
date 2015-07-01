@@ -1,0 +1,35 @@
+
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <title>我的礼品</title>
+        <meta name="format-detection" content="telephone=no,email=no,adress=no" />
+        <link rel="stylesheet" href="../css/wealth.css" />
+        <script type="text/javascript" src="../phonegap.js"></script>
+        <script type="text/javascript" src="../js/cross/mall.js"></script>
+        <script type="text/javascript" src="../js/wealth.js" defer="defer"></script>
+    </head>
+   
+    <body class="page-myGoods" id="MyGoodsPage">
+
+        <ul id="MyGoods" class="mygood-list">
+        </ul>
+        <div class="order-detail" id="OrderDetail" style="display:none;">
+            <h3>礼品订单详情</h3>
+            <ul>
+                <li><span class="option-title">礼品名称</span><div class="option-des"><span id="order_prizename"></span></div><br class="cl"></li>
+                <li><span class="option-title">使用积分</span><div class="option-des"><span id="order_needscore"></span></div><br class="cl"></li>
+                <li><span class="option-title">联系电话</span><div class="option-des"><span id="order_tele"></span></div><br class="cl"></li>
+                <li><span class="option-title">收货地址</span><div class="option-des"><span id="order_addr"></span></div><br class="cl"></li>
+                <li><span class="option-title">下单时间</span><div class="option-des"><span id="order_times"></span></div><br class="cl"></li>
+                <li><span class="option-title">订单状态</span><div class="option-des"><span id="order_status"></span></div><br class="cl"></li>
+            </ul>
+            <span class="close-order" onclick="closeOrder();">关闭</span>
+        </div>
+
+        <div id="blank"></div>
+
+    </body>
+    
+</html>

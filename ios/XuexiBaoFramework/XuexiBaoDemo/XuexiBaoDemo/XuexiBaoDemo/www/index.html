@@ -1,0 +1,66 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>题目详情</title>
+	<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+	<link rel="stylesheet" href="css/all.css" />
+	<script type="text/javascript" src="phonegap.js"></script>
+	<script type="text/javascript" src="js/lib/iscroll-probe.js"></script>
+	<script type="text/javascript" src="js/lib/fastclick.js"></script>
+	<script type="text/javascript" src="js/results.js" defer="defer"></script>
+	<script type="text/javascript" src="js/act.js" defer="defer"></script>
+	<script type="text/javascript" src="js/cross/detail.js"></script>
+</head>
+
+<body id="Index" class="QA-detail">
+	<div id="PhotoFixed">
+		<div id="Photo">
+		</div>
+	</div>
+
+	<div id="NavDiv" style="display:none;">
+		<ul id="NavFixed" class="results">
+			<li class="result-fixed" id="ResultFixed0" style="display:none;">题目一<img src="images/pay0.png"></li>
+			<li class="result-fixed" id="ResultFixed1" style="display:none;">题目二<img src="images/pay0.png"></li>
+			<li class="result-fixed" id="ResultFixed2" style="display:none;">题目三<img src="images/pay0.png"></li>
+		</ul>
+		<div class="nav-hover"></div>
+	</div>
+
+<div id="IScroll">
+	<div>
+		<div id="PhotoFrame" onclick="myPlugin.showPhoto();">
+		</div>
+
+		<div id="QuesInfo" class="ques-info">
+			<span id="result_remind">找到以下匹配的题目</span><span id="CreateTime" class="create-time"></span>
+		</div>
+		
+		<div id="Nav" class="nav">
+			<ul id="ResultsNav" class="results" style="display:none;">
+				<li class="result" id="Result0" style="display:none;">题目一<img src="images/pay1.png"></li>
+				<li class="result" id="Result1" style="display:none;">题目二<img src="images/pay1.png"></li>
+				<li class="result" id="Result2" style="display:none;">题目三<img src="images/pay1.png"></li>
+			</ul>
+		</div>
+
+	<div class="solution-frame">
+		<div id="Solution" class="solution" title="blank">
+		</div>
+	</div>
+
+		<div id="SeekHelp" class="seekhelps" style="display:;">
+			<span id="HelpTitle" class="help-title"></span>
+			<!-- <span id="StudentsHelp" class="seek-help" onclick="myPlugin.seekHelp();"></span> -->
+		</div>
+
+	</div>
+</div>
+
+	<img id="data_img">
+	<canvas id="data_canvas"></canvas>
+
+</body>
+</html>

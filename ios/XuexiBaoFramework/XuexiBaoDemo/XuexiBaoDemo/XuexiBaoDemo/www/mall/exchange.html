@@ -1,0 +1,53 @@
+
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <title>兑换礼品</title>
+        <meta name="format-detection" content="telephone=no,email=no,adress=no" />
+        <link rel="stylesheet" href="../css/wealth.css" />
+        <script type="text/javascript" src="../phonegap.js"></script>
+        <script type="text/javascript" src="../js/cross/mall.js"></script>
+        <script type="text/javascript" src="../js/wealth.js" defer="defer"></script>
+        <script type="text/javascript" src="../js/lib/md5.js"></script>
+    </head>
+   
+    <body class="page-exchange" id="ExchangePage" onpaste="return false;">
+
+    <div id="exchange_form" class="exchange-form">
+        <div id="account" class="account">
+            <div id="account_title" class="form-title">账号验证<span class="form-des">（为确保本人兑换,请输入账号密码）</span></div>
+            <div id="account_name"></div>
+            <input name="password" type="password" id="password" autofocus placeholder="请输入密码" onblur="legalPassword();" oninput="inputVerify();" onkeypress="ShieldChars();" onkeyup="tabForward();"/>
+        </div>
+
+        <div id="receiver" class="receiver">
+            <div id="receiver_title" class="form-title">收货人信息</div>
+            <input name="receiver_name" type="text" id="UserName" placeholder="请输入收货人姓名" onblur="legalName();" oninput="inputVerify();" onkeypress="ShieldChars();" onkeyup="tabForward();"/>
+            <input name="receiver_mobile" type="text" id="UserTel" placeholder="请输入收货人手机号码" onblur="legalTel();" oninput="inputVerify();" onkeypress="ShieldChars();" onkeyup="tabForward();"/>
+            <textarea name="receiver_addr" rows="3" id="UserAddr" placeholder="请输入详细地址" onblur="legalAddr();" oninput="inputVerify();" onkeyup="tabForward();"></textarea>
+        </div>
+
+        <div class="input-verify">
+            <span id="input_verify"></span>
+        </div>
+        
+        <div id="submitPrize">提交</div>       
+    </div>
+
+    <div id="build_order" class="build-order" style="display:none;">
+        <div class="order-ok">
+            <span class="congratulate">恭喜您,兑换成功！</span>
+            <div class="order-remind">在积分兑礼品首页右上角“我的礼品”可以查看兑换记录哦。</div>
+        </div>
+        <div class="order-opra">
+            <span class="order-btn" onclick='window.location.href="myGoods.html";'>查看我的礼品</span>
+            <span class="order-btn" onclick='window.location.href="mall.html";'>返回兑换首页</span>
+            <br class="cl">
+        </div>
+    </div>
+
+
+    </body>
+    
+</html>

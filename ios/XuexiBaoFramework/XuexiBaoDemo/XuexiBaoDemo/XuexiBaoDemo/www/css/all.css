@@ -1,0 +1,178 @@
+
+#test{position:fixed;color:#f00;word-break:break-all;font-size:12px;z-index:5;top:100px;}
+.clear{clear:both;}
+.QA-detail{-webkit-tap-highlight-color:rgba(0,0,0,0);padding:0;margin:0;width:100%;font-size:16px;background-color:#f7f7f7;}
+
+#PhotoFixed{position:fixed;top:0;z-index:0;width:100%;min-height:140px;background-color:#fff;}
+#Photo{margin:10px 10px 0px 10px;max-height:300px;overflow:hidden;}
+#Photo img{width:100%;display:none;}
+#Photo[title="complete"] img{display:block;}
+#Photo img[src="images/photo.png"]{width:100%;}
+#PhotoFrame{height:20px;min-height:20px;max-height:210px;border:10px solid #fff;border-top:none;}
+#data_img{display:none;overflow:scroll;}
+#data_canvas{display:none;overflow:scroll;}
+.waitting-remind{display:block;height:16px;line-height:16px;margin:0 0 6px 0;font-weight:bold;font-size:12px;text-align:center;color:#333;}
+
+.ques-info{font-family:'Arial','Roboto',"微软雅黑";padding:0 10px;height:30px;line-height:30px;font-size:13px;color:#777;background-color:#ebebeb;border-bottom:12px solid #f7f7f7;vertical-align:middle;}
+#result_remind{display:none;}
+.results{height:26px;margin:0px 10px 0 10px;z-index:2;background-color:#f7f7f7;}
+.nav{background-color:#f7f7f7;}
+#NavDiv{position:fixed;width:100%;z-index:3;top:0;background-color:#f7f7f7;}
+#NavFixed{margin:10px 10px 0 10px;}
+.nav-hover{margin:0px 10px;padding-bottom:10px;border-radius:4px 4px 0px 0px;background-color:#fff;box-shadow:0px 2px 2px -0px rgba(0,0,0,0.2);}
+#IScroll{position:absolute;top:0;bottom:0;width:100%;overflow:hidden;}
+
+li.result{height:14px;line-height:14px;padding:6px 0;display:block;width:25%;margin-left:2.4%;color:#777;background-color:#e4e4e4;font-size:14px;border-radius:3px 3px 0 0;text-align:center;float:left;-webkit-touch-callout:none;-webkit-user-select:none;}
+li.result[title="current-result"]{color:#0091ff;background-color:#fff;}
+li.result-fixed{height:14px;line-height:14px;padding:6px 0;display:block;width:25%;margin-left:2.4%;color:#777;background-color:#e4e4e4;font-size:14px;border-radius:3px 3px 0 0;text-align:center;float:left;-webkit-touch-callout:none;-webkit-user-select:none;}
+li.result-fixed[title="current-result"]{color:#0091ff;background-color:#fff;}
+li.result img{width:14px;height:14px;margin:0px 0px 0px 4px;display:none;vertical-align:middle;}
+li.result img.pay0{display:inline;}
+li.result img.pay1{display:inline;}
+li.result-fixed img{width:14px;height:14px;margin:0px 0px 0px 4px;display:none;vertical-align:middle;}
+li.result-fixed img.pay0{display:inline;}
+li.result-fixed img.pay1{display:inline;}
+
+.solution-frame{background-color:#f7f7f7;}
+body[title="err"]{background-color:#f7f7f7;}
+body[title="err"] .solution{background-color:#f7f7f7;}
+.solution{max-width:100%;overflow:hidden;background-color:#fff;border-radius:4px;margin:0 10px;padding:16px 10px;}
+.solution[title="blank"]{display:none;}
+.solution .solve .detail{margin-left:24px;font-family:'Arial','Roboto',"微软雅黑";font-size:13px;line-height:20px;color:#777;}
+#question{font-size:15px;color:#333;line-height:24px;overflow:hidden;}
+#question[title="fold"]{height:24px;}
+#question[title="unfold"]{height:;}
+#answer{}
+.solution .solve .detail img{max-width:100%;}
+.solution .solve .detail table{max-width:100%;}
+.match-detail img{max-width:100%;}
+.match-detail table{max-width:100%;}
+
+.solve-h{width:18px;height:18px;line-height:18px;display:block;float:left;}
+.solve-h-question{}
+.solve-h-answer{}
+.fold{border-bottom:1px solid #ebebeb;height:28px;margin-left:24px;}
+.reporterror{display:none;width:;padding:6px 4px;line-height:12px;height:12px;text-align:center;font-size:12px;color:#e03f3f;}
+#fold{height:12px;float:right;padding:6px 4px;}
+#analysis{padding-bottom:12px;border-bottom:1px dashed #ebebeb;}
+.solve-h-theme{display:block;height:24px;line-height:24px;margin-left:24px;font-size:15px;color:#333;}
+
+#QuestionSection{margin:0;padding:0;}
+.info-bar{color:#333;font-size:15px;}
+#Subject{color:#333;font-size:15px;}
+.subject-frame-l{margin-left:6px;}
+.answer-title{display:inline-block;padding-left:6px;}
+.request_audio{display:none;margin-left:24px;background-color:#f7f7f7;height:24px;line-height:24px;padding:7px 8px;margin-bottom:6px;}
+.audio_info{margin-left:24px;height:18px;line-height:18px;margin-top:6px;}
+#Noaudio{height:24px;line-height:24px;}
+
+#re_audio_status{display:inline-block;float:right;color:#fff;height:24px;line-height:24px;font-size:13px;padding:0 7px;background-color:#0091ff;border-radius:2px;text-align:center;}
+.request_audio[title="send"]{height:32px;}
+.request_audio[title="send"] #Noaudio{height:32px;line-height:32px;}
+.request_audio[title="send"] #re_audio_status{height:32px;line-height:16px;color:#dadada;background-color:#f7f7f7;}
+
+#AnswerSection{margin:0;padding:0;}
+#AnswerSection .info-bar{margin:6px 0 4px 0;}
+#AnswerSection #answer{border-bottom:none;}
+#AudioFixedDiv{position:fixed;width:100%;top:46px;z-index:3;}
+.audio{padding:6px 0;height:60px;padding:0 0 0 24px;margin:0 0 6px 0;}
+.play{display:block;float:right;margin:0;width:48px;height:48px;border-radius:24px;z-index:3;background-image:url(../images/play.png);background-color:#0091ff;background-repeat:no-repeat;background-size:24px 24px;background-position:center center;}
+.play:active{background-color:#1e81d3;}
+.audio ul{display:block;min-width:240px;padding:0;margin:0;font-family:'Arial','Roboto',"微软雅黑";font-size:14px;}
+.audio ul li{display:block;height:14px;line-height:14px;}
+#Controls{height:20px;line-height:20px;}
+
+.topic{display:block;float:left;max-width:10em;color:#333;font-size:15px;height:18px;line-height:18px;}
+.evaluate{display:block;float:left;margin:0 0 0 8px;font-size:13px;width:40px;color:#0e7aff;text-align:center;height:18px;line-height:18px;}
+#audio_new{display:none;float:left;margin:0 0 0 8px;width:20px;height:14px;line-height:18px;}
+.control{display:block;}
+.progress{display:block;min-width:200px;height:4px;border-radius:2px;background-color:#d5d5d5;position:relative;top:7px;left:0;}
+.load-rate{display:block;min-width:6px;width:6px;height:100%;border-radius:2px;background-color:#c3c3c3;}
+.rate{display:block;min-width:6px;width:6px;height:100%;border-radius:2px;background-color:#0091ff;}
+.handle{display:block;width:14px;height:14px;border-radius:7px;background-color:#d5d5d5;box-shadow:0 2px 4px rgba(0,0,0,0.4);position:relative;top:-2px;left:0;}
+.remain[title="left"]{text-align:left;}
+.remain[title="center"]{text-align:center;}
+.remain[title="right"]{text-align:right;}
+.play[title="pause"]{background-image:url(../images/pause.png);}
+.play[title="play"]{background-image:url(../images/play.png);}
+.play[title="load"]{background-image:url(../images/loading.png);}
+.audio_info[title="nopay"] .evaluate{display:none;}
+.audio[title="nopay"] .handle{background-color:#d5d5d5;}
+.audio_info[title="pay"] .evaluate{display:block;}
+.audio[title="pay"] .handle{background-color:#0091ff;}
+
+#ThemeSection{margin:0;padding:12px 0;}
+
+.seekhelps{padding:24px 0 64px 0;background-color:#f7f7f7;}
+.help-title{display:block;height:16px;line-height:16px;margin:0 0 6px 0;font-weight:bold;font-size:12px;text-align:center;color:#333;}
+.seek-help{display:block;margin:0px 24px;height:40px;line-height:40px;border-radius:1px;text-align:center;color:#fff;background-color:#0091ff;font-weight:;font-size:15px;}
+
+.fl{float:left;}
+.fr{float:right;}
+.cl{clear:both;}
+
+.qy-ti_jiexinr2{padding:64px 0;min-height:300px;text-align:center;color:#000;}
+.waitting{display:block;width:30px;height:30px;margin:0 auto;}
+.abnormal-btns{display:block;width:240px;margin:0 auto;}
+.waitting-remind{display:block;height:32px;line-height:32px;font-weight:bold;font-size:14px;text-align:center;color:#000;}
+.abnormal_btn1{display:block;margin:0px auto;width:240px;max-width:240px;height:45px;line-height:46px;border-radius:23px;text-align:center;color:#fff;font-weight:bold;font-size:14px;background:-webkit-gradient(linear, 0 0, 0 100%, from(#00baff), to(#0078ff));box-shadow:0px -9px 9px #0b72fe inset;}
+#CreateTime{font-family:'Arial','Roboto',"微软雅黑", sans-serif;font-size:11px;color:#777;display:inline-block;margin:;float:right;}
+#Longer{font-family:'Arial','Roboto',"微软雅黑", sans-serif;font-size:11px;color:#d5d5d5;display:block;width:48px;float:right;text-align:center;}
+#Remain{font-family:'Arial','Roboto',"微软雅黑", sans-serif;font-size:11px;color:#d5d5d5;display:block;width:38px;max-width:38px;height:14px;position:relative;}
+
+#alertBack{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;opacity:0.3;z-index:3;}
+#alertDiv{width:84%;position:fixed;top:50%;left:50%;margin-top:-72px;margin-left:-42%;border-radius:4px;background-color:#fff;z-index:4;}
+#alertContent{font-size:15px;line-height:1.6em;text-align:center;padding:20px 27px;color:#414141;word-wrap:break-word;word-break:break-all;}
+#alert_yes{font-size:16px;border-radius:0 0 4px 4px;text-align:center;background-color:#fff;color:#0091ff;border-top:1px solid #d4d4d4;height:45px;line-height:45px;}
+.confirm-div{font-size:16px;border-radius:0 0 4px 4px;text-align:center;background-color:#fff;color:#0091ff;border-top:1px solid #d4d4d4;height:45px;line-height:45px;}
+#confirm_no{width:50%;float:left;box-shadow:1px 0px #d4d4d4;border-radius:0 0 0 4px;}
+#confirm_yes{width:50%;float:left;border-radius:0 4px 0 0;}
+#alert_yes:active{background-color:#f4f4f4;}
+#confirm_no:active{background-color:#f4f4f4;}
+#confirm_yes:active{background-color:#f4f4f4;}
+
+/*for topic content : spider doctransform input --- start*/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote{margin:0; padding:0; -webkit-text-size-adjust:none; font-family:inherit;}
+fieldset, img{border:0 none}
+img{vertical-align:middle; max-width:100%;}
+br{letter-spacing:normal}
+address, caption, cite, code, dfn, em, strong, var, optgroup{font-style:normal; font-weight:normal}
+h1, h2, h3, h4, h5, h6{font-size:100%; font-weight:normal}
+h3{font-size:14px}
+abbr, acronym{border:0; font-variant:normal}
+input, button, textarea, select, optgroup, option{font-family:inherit; font-size:inherit; font-style:inherit; font-weight:inherit}
+code, kbd, samp, tt{font-size:100%}
+input, button, textarea, select{*font-size:100%}
+dl, ul, ol, ul{list-style:none; padding:0; margin:0;}
+table td{line-height:20px}
+sup, sub{font-family:"Arial", "Helvetica", sans-serif; font-size:11px}
+:link, :visited, ins{text-decoration:none}
+blockquote, q{quotes:none}
+blockquote:before, blockquote:after, q:before, q:after{content:none}
+body{font-size:14px; line-height:24px; font-family:Microsoft YaHei, Arial, Verdana, Helvetica, sans-serif;}
+tt{font-style:italic; font-size:16px}
+hr{clear:both}
+pre{white-space:normal;}
+/*jyeoo*/
+.pt0{padding:2px 0 5px 0; font-size:14px; font-weight:700;}
+.pt2{margin:0; padding:10px 5px;}
+.pt3, .pt4, .pt5, .pt6, .pt7{clear:both; overflow:hidden; zoom:1; position:relative;}
+.pt3{margin-top:10px;}
+.pt8 a:link, .pt8 a:visited{margin-right:10px; padding:2px 5px;}
+.pt8 a:hover{background:#fc0;}
+.pt9{text-align:right; border:0 none;}
+.pt1{overflow:hidden; zoom:1; clear:both; line-height:25px;}
+.pt1 img{position:relative;}
+.MathXxb{border:0 none; direction:ltr; line-height:normal; display:inline-block; float:none; font-size:15px; font-style:normal; font-weight:normal; letter-spacing:1px; margin:0; padding:0; text-align:left; text-indent:0; text-transform:none; white-space:nowrap; word-spacing:normal; word-wrap:normal; -webkit-text-size-adjust:none;}
+.MathXxb div, .MathJye span{border:0 none; margin:0; padding:0; line-height:normal; text-align:left; height:auto; _height:auto; white-space:normal;}
+.MathXxb table{border-collapse:collapse; margin:0; padding:0; text-align:center; vertical-align:middle; line-height:normal; font-size:inherit; *font-size:100%; _font-size:100%; font-style:normal; font-weight:normal; border:0; float:none; display:inline-block; *display:inline; zoom:0;}
+.MathXxb table td{padding:0; font-size:inherit; line-height:normal; white-space:nowrap; border:0 none; width:auto; _height:auto;}
+.MathXxb_mi{font-style:italic;}
+/*ks5u*/
+.deText{word-break:break-all;}
+/*manfen5*/
+.xxb_manfen{word-break:break-all;}
+/*mofangge*/
+.ke-zeroborder{width:100%;}
+table[width='650']{width:auto;}
+/*for topic content : spider doctransform input --- end*/

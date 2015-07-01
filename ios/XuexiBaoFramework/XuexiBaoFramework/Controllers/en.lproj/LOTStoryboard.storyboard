@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <scenes>
+        <!--Qeustion Detail View Controller-->
+        <scene sceneID="J4d-J3-HVi">
+            <objects>
+                <viewController storyboardIdentifier="MDQeustionDetailViewController" hidesBottomBarWhenPushed="YES" id="y5V-9v-dzl" customClass="MDQeustionDetailViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vHp-ss-EuO"/>
+                        <viewControllerLayoutGuide type="bottom" id="DE7-9H-meh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iAF-C2-81j">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="U1a-OO-WPn"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f3K-tP-EJu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1225" y="-1793"/>
+        </scene>
+        <!--Base Navigation Controller-->
+        <scene sceneID="7ra-L6-nig">
+            <objects>
+                <navigationController storyboardIdentifier="MDQueListNavController" definesPresentationContext="YES" id="2sX-pF-Eae" customClass="BaseNavigationController" sceneMemberID="viewController">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="nvT-Yd-9Wf">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="1Dd-pp-EHB" kind="relationship" relationship="rootViewController" id="yqB-CV-aCJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8GE-7f-SNC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="483" y="-2515"/>
+        </scene>
+        <!--Que List View Controller-->
+        <scene sceneID="jEd-nl-IA3">
+            <objects>
+                <viewController storyboardIdentifier="MDQueListViewController" id="1Dd-pp-EHB" customClass="MDQueListViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="p4Z-7i-sUf"/>
+                        <viewControllerLayoutGuide type="bottom" id="Q6W-Ot-cnq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1p6-ou-ENp">
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="faQ-rF-6Z1">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                                <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="1Dd-pp-EHB" id="U82-bs-tOq"/>
+                                    <outlet property="delegate" destination="1Dd-pp-EHB" id="LO1-Od-nSe"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WTn-18-dfm">
+                                <rect key="frame" x="263" y="446" width="75" height="75"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="75" id="KKi-gV-o62"/>
+                                    <constraint firstAttribute="height" constant="75" id="eFd-Uz-Rej"/>
+                                </constraints>
+                                <state key="normal" image="camera_160.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="camera_160_h.png"/>
+                                <state key="highlighted" image="camera_160_h.png"/>
+                                <connections>
+                                    <action selector="takeSubPhotoBtnClicked:" destination="1Dd-pp-EHB" eventType="touchUpInside" id="1UG-az-IEi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="faQ-rF-6Z1" firstAttribute="leading" secondItem="1p6-ou-ENp" secondAttribute="leading" id="C3L-QH-cpz"/>
+                            <constraint firstItem="Q6W-Ot-cnq" firstAttribute="top" secondItem="WTn-18-dfm" secondAttribute="bottom" constant="15" id="GyE-vT-I5K"/>
+                            <constraint firstAttribute="trailing" secondItem="faQ-rF-6Z1" secondAttribute="trailing" id="Zzc-me-8io"/>
+                            <constraint firstAttribute="centerX" secondItem="WTn-18-dfm" secondAttribute="centerX" id="bV3-9a-8qo"/>
+                            <constraint firstItem="Q6W-Ot-cnq" firstAttribute="top" secondItem="faQ-rF-6Z1" secondAttribute="bottom" id="lTC-Wh-fwd"/>
+                            <constraint firstItem="faQ-rF-6Z1" firstAttribute="top" secondItem="p4Z-7i-sUf" secondAttribute="bottom" id="weU-ha-B3w"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="mt2-4b-AjA"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="tableView" destination="faQ-rF-6Z1" id="bmE-cZ-muK"/>
+                        <outlet property="takePhotoButton" destination="WTn-18-dfm" id="wFq-nW-AfR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gyr-MF-0Nl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1225" y="-2515"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="camera_160.png" width="160" height="160"/>
+        <image name="camera_160_h.png" width="160" height="160"/>
+    </resources>
+    <color key="tintColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+</document>
