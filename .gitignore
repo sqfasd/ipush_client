@@ -43,3 +43,5 @@ alipay_sdk_demo/
 
 # Idea config
 */.idea/*
+
+node_modules
