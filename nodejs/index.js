@@ -2,6 +2,8 @@ var querystring = require('querystring');
 var WebSocketClient = require('websocket').client;
 var protocol = require('./protocol');
 
+var DEFAULT_KEEPALIVE_INTERVAL_MS = 30000;
+
 module.exports = {
   XCometClient: XCometClient,
   XCometMessage: protocol.Message,
@@ -17,6 +19,7 @@ function XCometClient(address, options) {
   this.sock_;
   this.conn_;
   this.full_url_;
+  this.keepAliveTimer_;
   this.onOpen = function() {}
   this.onError = function(error) {}
   this.onClose = function() {}
@@ -39,12 +42,16 @@ function XCometClient(address, options) {
     if (isFunction(this.onOpen)) {
       this.onOpen();
     }
+
+    this.restartKeepAlive();
+
     connection.on('error', function(error) {
       console.log('connection error ' + error);
       if (isFunction(this.onError)) {
         this.onError(error);
       }
     }.bind(this));
+
     connection.on('close', function(reason, description) {
       console.log('connection closed with reason ' + reason
                   + ', desc ' + description);
@@ -52,6 +59,7 @@ function XCometClient(address, options) {
         this.onClose();
       }
     }.bind(this));
+
     connection.on('message', function(message) {
       console.log('receive message', message);
       if (message.type !== 'utf8' && isFunction(this.onError)) {
@@ -69,10 +77,27 @@ function XCometClient(address, options) {
         }
       }
     }.bind(this));
+
   }.bind(this));
 }
 
+XCometClient.prototype.restartKeepAlive = function() {
+  console.log('restartKeepAlive');
+  if (this.keepAliveTimer_) {
+    console.log('clear last keepalive timer');
+    clearInterval(this.keepAliveTimer_);
+  }
+  this.keepAliveTimer_ = setInterval(
+    function() {
+      console.log('send heartbeat');
+      this.sendPacket(protocol.heartbeatPacket());
+    }.bind(this),
+    DEFAULT_KEEPALIVE_INTERVAL_MS
+  );
+}
+
 XCometClient.prototype.sendPacket = function(data) {
+  this.restartKeepAlive();
   this.conn_.sendUTF(data);
 }
 

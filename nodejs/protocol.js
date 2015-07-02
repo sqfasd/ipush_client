@@ -22,6 +22,9 @@ var K_ROOM = 'r';
 
 module.exports = {
   Message: Message,
+  heartbeatPacket: function() {
+    return ' ';
+  },
   sendPacket: function(body, to) {
     var msg = new Message();
     msg.setType(T_MESSAGE);
