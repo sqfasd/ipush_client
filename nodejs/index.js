@@ -1,5 +1,6 @@
 var querystring = require('querystring');
 var WebSocketClient = require('websocket').client;
+var request = require('request');
 var protocol = require('./protocol');
 
 var DEFAULT_KEEPALIVE_INTERVAL_MS = 30000;
@@ -18,6 +19,7 @@ function XCometClient(address, options) {
   this.password = options.password;
   this.sock_;
   this.conn_;
+  this.address_ = address;
   this.full_url_;
   this.keepAliveTimer_;
   this.onOpen = function() {}
@@ -25,11 +27,11 @@ function XCometClient(address, options) {
   this.onClose = function() {}
   this.onMessage = function(message) {}
 
-  if (!this.uid || !this.password) {
+  if (!this.uid || !this.password || !this.address_) {
     throw new Error("uid or password must be provided");
   }
 
-  this.full_url_ = 'http://' + address + '/connect?' +
+  this.full_url_ = 'ws://' + address + '/connect?' +
                    querystring.stringify(options);
   console.log('full_url_ = ', this.full_url_);
 
@@ -82,9 +84,7 @@ function XCometClient(address, options) {
 }
 
 XCometClient.prototype.restartKeepAlive = function() {
-  console.log('restartKeepAlive');
   if (this.keepAliveTimer_) {
-    console.log('clear last keepalive timer');
     clearInterval(this.keepAliveTimer_);
   }
   this.keepAliveTimer_ = setInterval(
@@ -135,6 +135,28 @@ XCometClient.prototype.roomSend = function(roomId, body, to) {
 
 XCometClient.prototype.roomBroadcast = function(roomId, body) {
   this.sendPacket(protocol.roomBroadcastPacket(roomId, body));
+}
+
+XCometClient.prototype.roomSet = function(roomId, key, value) {
+  this.sendPacket(protocol.roomSetPacket(roomId, key, value));
+}
+
+XCometClient.prototype.roomState = function(roomId, cb) {
+  var url = 'http://' + this.address_ + '/room/state?room=' + roomId;
+  request.get(url, function(err, resp, body) {
+    if (err) {
+      cb(new Error('request room state failed: ' + err));
+    } else if (resp.statusCode !== 200) {
+      cb(new Error('server error: ') + body);
+    } else {
+      try {
+        var result = JSON.parse(body);
+        cb(null, result);
+      } catch (e) {
+        cb(new Error('response format error: ' + e));
+      }
+    }
+  });
 }
 
 XCometClient.prototype.close = function() {

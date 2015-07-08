@@ -8,7 +8,8 @@ var T_ROOM_LEAVE = 7;
 var T_ROOM_KICK = 8;
 var T_ROOM_SEND = 9;
 var T_ROOM_BROADCAST = 10;
-var T_COUNT = 11;
+var T_ROOM_SET = 11;
+var T_COUNT = 12;
 
 
 var K_FROM = 'f';
@@ -19,6 +20,9 @@ var K_USER = 'u';
 var K_CHANNEL = 'c';
 var K_BODY = 'b';
 var K_ROOM = 'r';
+var K_KEY = 'k';
+var K_VALUE = 'v';
+var K_ID = 'i';
 
 module.exports = {
   Message: Message,
@@ -93,6 +97,14 @@ module.exports = {
     msg.setType(T_ROOM_BROADCAST);
     msg.setRoom(roomId);
     msg.setBody(body);
+    return msg.serialize();
+  },
+  roomSetPacket: function(roomId, key, value) {
+    var msg = new Message();
+    msg.setType(T_ROOM_SET);
+    msg.setRoom(roomId);
+    msg.setKey(key);
+    msg.setValue(value);
     return msg.serialize();
   },
 }
@@ -196,4 +208,20 @@ Message.prototype.setRoom = function(room) {
 
 Message.prototype.room = function() {
   return this.data_[K_ROOM];
+}
+
+Message.prototype.setKey = function(key) {
+  this.data_[K_KEY] = key;
+}
+
+Message.prototype.key = function() {
+  return this.data_[K_KEY];
+}
+
+Message.prototype.setValue = function(value) {
+  this.data_[K_VALUE] = value;
+}
+
+Message.prototype.value = function() {
+  return this.data_[K_VALUE];
 }

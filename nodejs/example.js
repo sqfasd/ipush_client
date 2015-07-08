@@ -113,6 +113,22 @@ function main(argv) {
           var body = fields[2];
           client.roomBroadcast(roomId, body);
           break;
+        case 'room_set':
+          var roomId = fields[1];
+          var key = fields[2];
+          var value = fields[3];
+          client.roomSet(roomId, key, value);
+          break;
+        case 'room_state':
+          var roomId = fields[1];
+          client.roomState(roomId, function(err, result) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(result);
+            }
+          });
+          break;
         case 'close':
         case 'bye':
         case 'exit':
