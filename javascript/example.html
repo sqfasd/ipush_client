@@ -1,0 +1,118 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>xcomet-client example</title>
+  <style type="text/css">
+  </style>
+
+  <script src="./dist/xcomet-client.min.js"></script>
+</head>
+
+<body>
+  <div>
+    <input id='inputRoomId' type='text' />
+    <button id='btnJoin'>Join</button>
+    <button id='btnLeave'>Leave</button>
+  </div>
+  <div>
+    <input id='inputMessage' type='text' />
+    <input id='inputMessageTo' type='text' />
+    <button id='btnSend'>Send</button>
+  </div>
+  <div>
+    <input id='inputBroadcast' type='text' />
+    <button id='btnBroadcast'>Broadcast</button>
+  </div>
+  <!--
+  <div>
+    <input id="inputRoomSet" type='text' />
+    <button id='btnRoomSet'>RoomSet</button>
+  </div>
+  -->
+  <div>
+    <button id='btnClose'>Close</button>
+  </div>
+
+  <script type="text/javascript">
+    window.onload = function() {
+      var options = {
+        uid: 'browser_user_1',
+        password: '123456',
+      };
+      var address = '127.0.0.1:9000';
+      var client;
+      try {
+        client = new window.XCometClient(address, options);
+        client.onOpen = function() {
+          console.log('client onOpen');
+        }
+        client.onClose = function() {
+          console.log('client onClose');
+        }
+        client.onError = function(error) {
+          console.log('client onError', error);
+        }
+        client.onMessage = function(message) {
+          console.log('client.onMessage: ' + message);
+          if (message.isNormalMessage()) {
+            console.log('normal message');
+          } else if (message.isChannelMessage()) {
+            console.log('channel message');
+          } else if (message.isRoomSendMessage()) {
+            console.log('room send message');
+          } else if (message.isRoomBroadcastMessage()) {
+            console.log('room broadcast message');
+          } else {
+            console.log('unexpected message type');
+          }
+        }
+
+        function getRoomId() {
+          return document.getElementById('inputRoomId').value;
+        }
+
+        var joinBtn = document.getElementById('btnJoin');
+        joinBtn.onclick = function(e) {
+          var roomId = getRoomId();
+          console.log('join room', roomId);
+          client.roomJoin(roomId);
+        }
+
+        var leaveBtn = document.getElementById('btnLeave');
+        leaveBtn.onclick = function(e) {
+          var roomId = getRoomId();
+          console.log('join room', roomId);
+          client.roomLeave(roomId);
+        }
+
+        var sendBtn = document.getElementById('btnSend');
+        sendBtn.onclock = function(e) {
+          var message = document.getElementById('inputMessage').value;
+          var to = document.getElementById('inputMessageTo').value;
+          console.log('send message', message, to);
+          client.send(message, to);
+        }
+
+        var broadcastBtn = document.getElementById('btnBroadcast');
+        broadcastBtn.onclick = function(e) {
+          var roomId = getRoomId();
+          var message = document.getElementById('inputBroadcast').value;
+          console.log('room broadcast', message, roomId);
+          client.roomBroadcast(roomId, message);
+        }
+
+        var closeBtn = document.getElementById('btnClose');
+        closeBtn.onclock = function(e) {
+          client.close();
+        }
+
+      } catch (e) {
+        console.log('exception caught', e);
+        return;
+      }
+    }
+  </script>
+</body>
+
+</html>
