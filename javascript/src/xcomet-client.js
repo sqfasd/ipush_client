@@ -178,7 +178,7 @@
     this.onMessage = function(message) {}
 
     if (!this.uid || !this.password || !this.address_) {
-      throw new Error('uid or password must be provided');
+      throw new Error('invalid parameters');
     }
 
     this.full_url_ = 'ws://' + address + '/connect?' +

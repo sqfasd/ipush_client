@@ -28,6 +28,12 @@
 
 <body>
   <div>
+    <button id='btnConnect'>Connect</button>
+    <input id='inputUserId' type='text' value='browser_user_1' />
+    <span>@</span>
+    <input id='inputServerAddress' type='text' value='127.0.0.1:9000' />
+  </div>
+  <div>
     <button id='btnSend'>Send</button>
     <input id='inputMessage' placeholder='message' type='text' />
     <input id='inputMessageTo' placeholder='to' type='text' />
@@ -47,57 +53,70 @@
 
   <script type="text/javascript">
     window.onload = function() {
-      var options = {
-        uid: 'browser_user_1',
-        password: '123456',
-      };
-      var address = '127.0.0.1:9000';
-      var client;
-      try {
-        client = new window.XCometClient(address, options);
-        client.onOpen = function() {
-          console.log('client onOpen');
-        }
-        client.onClose = function() {
-          console.log('client onClose');
-        }
-        client.onError = function(error) {
-          console.log('client onError', error);
-        }
-        client.onMessage = function(message) {
-          console.log('client.onMessage: ' + message);
-          var msgBox = document.getElementById('msgBox');
-          var newLine = document.createElement('div');
+      var client = null;
 
-          var fromSpan = document.createElement('span');
-          fromSpan.setAttribute('class', 'msgFrom');
-          fromSpan.textContent = message.from() + ':    ';
+      var connectBtn = document.getElementById('btnConnect');
 
-          var bodySpan = document.createElement('span');
-          bodySpan.setAttribute('class', 'msgBody');
-          bodySpan.textContent = message.body();
+      connectBtn.onclick = function(e) {
+        var options = {
+          uid: document.getElementById('inputUserId').value,
+          password: '123456'
+        };
+        console.log('connect options', options);
+        var address = document.getElementById('inputServerAddress').value;
+        try {
+          client = new window.XCometClient(address, options);
+          client.onOpen = function() {
+            console.log('client onOpen');
+          }
+          client.onClose = function() {
+            console.log('client onClose');
+          }
+          client.onError = function(error) {
+            console.log('client onError', error);
+          }
+          client.onMessage = function(message) {
+            console.log('client.onMessage: ' + message);
+            var msgBox = document.getElementById('msgBox');
+            var newLine = document.createElement('div');
 
-          newLine.appendChild(fromSpan);
-          newLine.appendChild(bodySpan);
-          msgBox.appendChild(newLine);
+            var fromSpan = document.createElement('span');
+            fromSpan.setAttribute('class', 'msgFrom');
+            fromSpan.textContent = message.from() + ':    ';
+
+            var bodySpan = document.createElement('span');
+            bodySpan.setAttribute('class', 'msgBody');
+            bodySpan.textContent = message.body();
+
+            newLine.appendChild(fromSpan);
+            newLine.appendChild(bodySpan);
+            msgBox.appendChild(newLine);
+          }
+        } catch (e) {
+          console.log('exception caught', e);
+          return;
         }
+      }
 
-        var sendBtn = document.getElementById('btnSend');
-        sendBtn.onclick = function(e) {
-          var message = document.getElementById('inputMessage').value;
-          var to = document.getElementById('inputMessageTo').value;
-          console.log('send message', message, to);
-          client.send(message, to);
+      var sendBtn = document.getElementById('btnSend');
+      sendBtn.onclick = function(e) {
+        if (!client) {
+          alert('not connected');
+          return;
         }
+        var message = document.getElementById('inputMessage').value;
+        var to = document.getElementById('inputMessageTo').value;
+        console.log('send message', message, to);
+        client.send(message, to);
+      }
 
-        var closeBtn = document.getElementById('btnClose');
-        closeBtn.onclick = function(e) {
-          client.close();
+      var closeBtn = document.getElementById('btnClose');
+      closeBtn.onclick = function(e) {
+        if (!client) {
+          alert('not connected');
+          return;
         }
-
-      } catch (e) {
-        console.log('exception caught', e);
-        return;
+        client.close();
       }
     }
   </script>
