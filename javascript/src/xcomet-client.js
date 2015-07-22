@@ -11,13 +11,7 @@
   var T_MESSAGE = 3;
   var T_CHANNEL_MESSAGE = 4;
   var T_ACK = 5;
-  var T_ROOM_JOIN = 6;
-  var T_ROOM_LEAVE = 7;
-  var T_ROOM_KICK = 8;
-  var T_ROOM_SEND = 9;
-  var T_ROOM_BROADCAST = 10;
-  var T_ROOM_SET = 11;
-  var T_COUNT = 12;
+  var T_COUNT = 6;
 
 
   var K_FROM = 'f';
@@ -27,10 +21,6 @@
   var K_USER = 'u';
   var K_CHANNEL = 'c';
   var K_BODY = 'b';
-  var K_ROOM = 'r';
-  var K_KEY = 'k';
-  var K_VALUE = 'v';
-  var K_ID = 'i';
 
   var DEFAULT_KEEPALIVE_INTERVAL_MS = 30000;
 
@@ -45,22 +35,6 @@
     } else {
       this.data_ = {};
     }
-  }
-
-  Message.prototype.isNormalMessage = function() {
-    return this.data_[K_TYPE] == T_MESSAGE;
-  }
-
-  Message.prototype.isChannelMessage = function() {
-    return this.data_[K_TYPE] == T_CHANNEL_MESSAGE;
-  }
-
-  Message.prototype.isRoomSendMessage = function() {
-    return this.data_[K_TYPE] == T_ROOM_SEND;
-  }
-
-  Message.prototype.isRoomBroadcastMessage = function() {
-    return this.data_[K_TYPE] == T_ROOM_BROADCAST;
   }
 
   Message.prototype.toString = function() {
@@ -127,30 +101,6 @@
     return this.data_[K_BODY];
   }
 
-  Message.prototype.setRoom = function(room) {
-    this.data_[K_ROOM] = room;
-  }
-
-  Message.prototype.room = function() {
-    return this.data_[K_ROOM];
-  }
-
-  Message.prototype.setKey = function(key) {
-    this.data_[K_KEY] = key;
-  }
-
-  Message.prototype.key = function() {
-    return this.data_[K_KEY];
-  }
-
-  Message.prototype.setValue = function(value) {
-    this.data_[K_VALUE] = value;
-  }
-
-  Message.prototype.value = function() {
-    return this.data_[K_VALUE];
-  }
-
   var protocol = {
     heartbeatPacket: function() {
       return ' ';
@@ -188,51 +138,10 @@
       return msg.serialize();
     },
 
-    roomJoinPacket: function(roomId) {
+    ackPacket: function(seq) {
       var msg = new Message();
-      msg.setType(T_ROOM_JOIN);
-      msg.setRoom(roomId);
-      return msg.serialize();
-    },
-
-    roomLeavePacket: function(roomId) {
-      var msg = new Message();
-      msg.setType(T_ROOM_LEAVE);
-      msg.setRoom(roomId);
-      return msg.serialize();
-    },
-
-    roomKickPacket: function(roomId, memberId) {
-      var msg = new Message();
-      msg.setType(T_ROOM_KICK);
-      msg.setRoom(roomId);
-      msg.setUser(memberId);
-      return msg.serialize();
-    },
-
-    roomSendPacket: function(roomId, body, to) {
-      var msg = new Message();
-      msg.setType(T_ROOM_SEND);
-      msg.setRoom(roomId);
-      msg.setTo(to);
-      msg.setBody(body);
-      return msg.serialize();
-    },
-
-    roomBroadcastPacket: function(roomId, body) {
-      var msg = new Message();
-      msg.setType(T_ROOM_BROADCAST);
-      msg.setRoom(roomId);
-      msg.setBody(body);
-      return msg.serialize();
-    },
-
-    roomSetPacket: function(roomId, key, value) {
-      var msg = new Message();
-      msg.setType(T_ROOM_SET);
-      msg.setRoom(roomId);
-      msg.setKey(key);
-      msg.setValue(value);
+      msg.setType(T_ACK);
+      msg.setSeq(seq);
       return msg.serialize();
     },
   };
@@ -293,6 +202,7 @@
       console.log('websocket onmessage', e);
       try {
         var msg = new Message(e.data);
+        this.sendAck(msg.seq());
         if (isFunction(this.onMessage)) {
           this.onMessage(msg);
         }
@@ -349,36 +259,12 @@
     this.sendPacket(protocol.unsubPacket(this.channelId, this.uid));
   }
 
-  XCometClient.prototype.roomJoin = function(roomId) {
-    this.sendPacket(protocol.roomJoinPacket(roomId));
-  }
-
-  XCometClient.prototype.roomLeave = function(roomId) {
-    this.sendPacket(protocol.roomLeavePacket(roomId));
-  }
-
-  XCometClient.prototype.roomKick = function(roomId, memberId) {
-    this.sendPacket(protocol.roomKickPacket(roomId, this.memberId));
-  }
-
-  XCometClient.prototype.roomSend = function(roomId, body, to) {
-    this.sendPacket(protocol.roomSendPacket(roomId, body, to));
-  }
-
-  XCometClient.prototype.roomBroadcast = function(roomId, body) {
-    this.sendPacket(protocol.roomBroadcastPacket(roomId, body));
-  }
-
-  XCometClient.prototype.roomSet = function(roomId, key, value) {
-    this.sendPacket(protocol.roomSetPacket(roomId, key, value));
-  }
-
-  XCometClient.prototype.roomState = function(roomId, cb) {
-    console.error('fixme');
-  }
-
   XCometClient.prototype.close = function() {
     this.sock_.close();
+  }
+
+  XCometClient.prototype.sendAck= function(seq) {
+    this.sendPacket(protocol.ackPacket(seq));
   }
 
   window.XCometClient = XCometClient;

@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <title>xcomet-client example</title>
   <style type="text/css">
+    #msgBox {
+      background-color: #F8F8FF;
+      width: 400;
+      height: 400;
+      overflow-y: auto;
+      scrolling: auto;
+      text-align: left;
+      border-style: inset;
+      font-size: 10pt;
+      color: #3333ff;
+    }
+    .msgFrom {
+      color: red;
+    }
+    .msgBody {
+      color: green;
+    }
   </style>
 
   <script src="./dist/xcomet-client.min.js"></script>
@@ -11,25 +28,19 @@
 
 <body>
   <div>
-    <input id='inputRoomId' type='text' />
-    <button id='btnJoin'>Join</button>
-    <button id='btnLeave'>Leave</button>
-  </div>
-  <div>
-    <input id='inputMessage' type='text' />
-    <input id='inputMessageTo' type='text' />
     <button id='btnSend'>Send</button>
+    <input id='inputMessage' placeholder='message' type='text' />
+    <input id='inputMessageTo' placeholder='to' type='text' />
   </div>
-  <div>
-    <input id='inputBroadcast' type='text' />
-    <button id='btnBroadcast'>Broadcast</button>
-  </div>
+
+  <div id="msgBox">
   <!--
-  <div>
-    <input id="inputRoomSet" type='text' />
-    <button id='btnRoomSet'>RoomSet</button>
-  </div>
+    <div>
+      <span class="msgFrom">{{from}}:</span>
+      <span class="msgBody">{{body}}</span>
+    </div>
   -->
+  </div>
   <div>
     <button id='btnClose'>Close</button>
   </div>
@@ -55,55 +66,32 @@
         }
         client.onMessage = function(message) {
           console.log('client.onMessage: ' + message);
-          if (message.isNormalMessage()) {
-            console.log('normal message');
-          } else if (message.isChannelMessage()) {
-            console.log('channel message');
-          } else if (message.isRoomSendMessage()) {
-            console.log('room send message');
-          } else if (message.isRoomBroadcastMessage()) {
-            console.log('room broadcast message');
-          } else {
-            console.log('unexpected message type');
-          }
-        }
+          var msgBox = document.getElementById('msgBox');
+          var newLine = document.createElement('div');
 
-        function getRoomId() {
-          return document.getElementById('inputRoomId').value;
-        }
+          var fromSpan = document.createElement('span');
+          fromSpan.setAttribute('class', 'msgFrom');
+          fromSpan.textContent = message.from() + ':    ';
 
-        var joinBtn = document.getElementById('btnJoin');
-        joinBtn.onclick = function(e) {
-          var roomId = getRoomId();
-          console.log('join room', roomId);
-          client.roomJoin(roomId);
-        }
+          var bodySpan = document.createElement('span');
+          bodySpan.setAttribute('class', 'msgBody');
+          bodySpan.textContent = message.body();
 
-        var leaveBtn = document.getElementById('btnLeave');
-        leaveBtn.onclick = function(e) {
-          var roomId = getRoomId();
-          console.log('join room', roomId);
-          client.roomLeave(roomId);
+          newLine.appendChild(fromSpan);
+          newLine.appendChild(bodySpan);
+          msgBox.appendChild(newLine);
         }
 
         var sendBtn = document.getElementById('btnSend');
-        sendBtn.onclock = function(e) {
+        sendBtn.onclick = function(e) {
           var message = document.getElementById('inputMessage').value;
           var to = document.getElementById('inputMessageTo').value;
           console.log('send message', message, to);
           client.send(message, to);
         }
 
-        var broadcastBtn = document.getElementById('btnBroadcast');
-        broadcastBtn.onclick = function(e) {
-          var roomId = getRoomId();
-          var message = document.getElementById('inputBroadcast').value;
-          console.log('room broadcast', message, roomId);
-          client.roomBroadcast(roomId, message);
-        }
-
         var closeBtn = document.getElementById('btnClose');
-        closeBtn.onclock = function(e) {
+        closeBtn.onclick = function(e) {
           client.close();
         }
 
