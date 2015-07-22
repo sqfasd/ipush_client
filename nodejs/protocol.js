@@ -3,14 +3,7 @@ var T_UNSUBSCRIBE = 2;
 var T_MESSAGE = 3;
 var T_CHANNEL_MESSAGE = 4;
 var T_ACK = 5;
-var T_ROOM_JOIN = 6;
-var T_ROOM_LEAVE = 7;
-var T_ROOM_KICK = 8;
-var T_ROOM_SEND = 9;
-var T_ROOM_BROADCAST = 10;
-var T_ROOM_SET = 11;
-var T_COUNT = 12;
-
+var T_COUNT = 6;
 
 var K_FROM = 'f';
 var K_TO = 't';
@@ -19,10 +12,6 @@ var K_TYPE = 'y';
 var K_USER = 'u';
 var K_CHANNEL = 'c';
 var K_BODY = 'b';
-var K_ROOM = 'r';
-var K_KEY = 'k';
-var K_VALUE = 'v';
-var K_ID = 'i';
 
 module.exports = {
   Message: Message,
@@ -61,50 +50,10 @@ module.exports = {
     return msg.serialize();
   },
 
-  roomJoinPacket: function(roomId) {
+  ackPacket: function(seq) {
     var msg = new Message();
-    msg.setType(T_ROOM_JOIN);
-    msg.setRoom(roomId);
-    return msg.serialize();
-  },
-
-  roomLeavePacket: function(roomId) {
-    var msg = new Message();
-    msg.setType(T_ROOM_LEAVE);
-    msg.setRoom(roomId);
-    return msg.serialize();
-  },
-
-  roomKickPacket: function(roomId, memberId) {
-    var msg = new Message();
-    msg.setType(T_ROOM_KICK);
-    msg.setRoom(roomId);
-    msg.setUser(memberId);
-    return msg.serialize();
-  },
-
-  roomSendPacket: function(roomId, body, to) {
-    var msg = new Message();
-    msg.setType(T_ROOM_SEND);
-    msg.setRoom(roomId);
-    msg.setTo(to);
-    msg.setBody(body);
-    return msg.serialize();
-  },
-
-  roomBroadcastPacket: function(roomId, body) {
-    var msg = new Message();
-    msg.setType(T_ROOM_BROADCAST);
-    msg.setRoom(roomId);
-    msg.setBody(body);
-    return msg.serialize();
-  },
-  roomSetPacket: function(roomId, key, value) {
-    var msg = new Message();
-    msg.setType(T_ROOM_SET);
-    msg.setRoom(roomId);
-    msg.setKey(key);
-    msg.setValue(value);
+    msg.setType(T_ACK);
+    msg.setSeq(seq);
     return msg.serialize();
   },
 }
@@ -120,22 +69,6 @@ function Message(raw) {
   } else {
     this.data_ = {};
   }
-}
-
-Message.prototype.isNormalMessage = function() {
-  return this.data_[K_TYPE] == T_MESSAGE;
-}
-
-Message.prototype.isChannelMessage = function() {
-  return this.data_[K_TYPE] == T_CHANNEL_MESSAGE;
-}
-
-Message.prototype.isRoomSendMessage = function() {
-  return this.data_[K_TYPE] == T_ROOM_SEND;
-}
-
-Message.prototype.isRoomBroadcastMessage = function() {
-  return this.data_[K_TYPE] == T_ROOM_BROADCAST;
 }
 
 Message.prototype.toString = function() {
@@ -200,28 +133,4 @@ Message.prototype.setBody = function(body) {
 
 Message.prototype.body = function() {
   return this.data_[K_BODY];
-}
-
-Message.prototype.setRoom = function(room) {
-  this.data_[K_ROOM] = room;
-}
-
-Message.prototype.room = function() {
-  return this.data_[K_ROOM];
-}
-
-Message.prototype.setKey = function(key) {
-  this.data_[K_KEY] = key;
-}
-
-Message.prototype.key = function() {
-  return this.data_[K_KEY];
-}
-
-Message.prototype.setValue = function(value) {
-  this.data_[K_VALUE] = value;
-}
-
-Message.prototype.value = function() {
-  return this.data_[K_VALUE];
 }

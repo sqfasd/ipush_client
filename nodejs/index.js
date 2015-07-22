@@ -1,6 +1,5 @@
 var querystring = require('querystring');
 var WebSocketClient = require('websocket').client;
-var request = require('request');
 var protocol = require('./protocol');
 
 var DEFAULT_KEEPALIVE_INTERVAL_MS = 30000;
@@ -70,6 +69,7 @@ function XCometClient(address, options) {
       }
       try {
         var msg = new protocol.Message(message.utf8Data);
+        this.sendAck(msg.seq());
         if (isFunction(this.onMessage)) {
           this.onMessage(msg);
         }
@@ -110,55 +110,17 @@ XCometClient.prototype.publish = function(body, channel) {
 }
 
 XCometClient.prototype.sub = function(channelId) {
-  this.sendPacket(protocol.subPacket(this.channelId, this.uid));
+  this.sendPacket(protocol.subPacket(channelId, this.uid));
 }
 
 XCometClient.prototype.unsub = function(channelId) {
-  this.sendPacket(protocol.unsubPacket(this.channelId, this.uid));
-}
-
-XCometClient.prototype.roomJoin = function(roomId) {
-  this.sendPacket(protocol.roomJoinPacket(roomId));
-}
-
-XCometClient.prototype.roomLeave = function(roomId) {
-  this.sendPacket(protocol.roomLeavePacket(roomId));
-}
-
-XCometClient.prototype.roomKick = function(roomId, memberId) {
-  this.sendPacket(protocol.roomKickPacket(roomId, this.memberId));
-}
-
-XCometClient.prototype.roomSend = function(roomId, body, to) {
-  this.sendPacket(protocol.roomSendPacket(roomId, body, to));
-}
-
-XCometClient.prototype.roomBroadcast = function(roomId, body) {
-  this.sendPacket(protocol.roomBroadcastPacket(roomId, body));
-}
-
-XCometClient.prototype.roomSet = function(roomId, key, value) {
-  this.sendPacket(protocol.roomSetPacket(roomId, key, value));
-}
-
-XCometClient.prototype.roomState = function(roomId, cb) {
-  var url = 'http://' + this.address_ + '/room/state?room=' + roomId;
-  request.get(url, function(err, resp, body) {
-    if (err) {
-      cb(new Error('request room state failed: ' + err));
-    } else if (resp.statusCode !== 200) {
-      cb(new Error('server error: ') + body);
-    } else {
-      try {
-        var result = JSON.parse(body);
-        cb(null, result);
-      } catch (e) {
-        cb(new Error('response format error: ' + e));
-      }
-    }
-  });
+  this.sendPacket(protocol.unsubPacket(channelId, this.uid));
 }
 
 XCometClient.prototype.close = function() {
   this.conn_.close();
+}
+
+XCometClient.prototype.sendAck= function(seq) {
+  this.sendPacket(protocol.ackPacket(seq));
 }

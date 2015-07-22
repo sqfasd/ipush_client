@@ -13,7 +13,6 @@
   "author": "qingfeng",
   "license": "ISC",
   "dependencies": {
-    "request": "^2.58.0",
     "websocket": "^1.0.19"
   }
 }
