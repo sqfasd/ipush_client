@@ -180,7 +180,7 @@ class SocketClient : public NonCopyable {
   BlockingQueue<PacketPtr> write_queue_;
   PacketPtr current_read_packet_;
 
-  int pipe_[2]; 
+  int pipe_[2];
   int keepalive_interval_sec_;
   int last_seq_;
 };

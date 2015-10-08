@@ -125,8 +125,8 @@ void BufferReader::Shrink() {
 Packet::Packet()
     : rstate_(RS_HEADER),
       len_(0),
-      left_(0), 
-      state_(NONE), 
+      left_(0),
+      state_(NONE),
       buf_start_(0) {
   ::memset(data_len_buf_, 0, sizeof(data_len_buf_));
 }
@@ -151,9 +151,10 @@ int Packet::Read(int fd) {
         return ret;
       }
     } else if (rstate_ == RS_BODY) {
-      char* pcontent = const_cast<char*>(content_.c_str()) + len_ - left_;
       while (left_ > 0) {
+        char* pcontent = const_cast<char*>(content_.c_str()) + len_ - left_;
         int n = reader_.Read(fd, pcontent, left_);
+        VLOG(7) << "buffer_content:" << content_.c_str();
         VLOG(7) << "Read n=" << n << ", left=" << left_;
         if (n <= 0) {
           return n;
@@ -409,39 +410,48 @@ void SocketClient::Reconnect() {
 }
 
 bool SocketClient::HandleRead() {
-  while (true) {
-    int ret = current_read_packet_->Read(sock_fd_);
-    if (ret == 0) {
-      LOG(INFO) << "read eof, connection closed";
-      return false;
-    } else if (ret < 0) {
-      if (ret == ERROR_NOMORE_DATA) {
-        VLOG(5) << "no more data";
-      } else {
-        VLOG(5) << CERROR("system read error");
-      }
-      return true;
-    } else {
-      Message msg = Message::UnserializeString(current_read_packet_->Content());
-      if(msg.Empty() || !msg.HasType()) {
-        LOG(WARNING) << "read message invalid: "
-                     << current_read_packet_->Content()
-                     << ", read ret=" << ret;
+  try {
+    while (true) {
+      int ret = current_read_packet_->Read(sock_fd_);
+      if (ret == 0) {
+        LOG(INFO) << "read eof, connection closed";
         return false;
-      }
-      VLOG(3) << "Read message: " << msg;
-      message_cb_(current_read_packet_->Content());
-      current_read_packet_->Reset();
-      if (msg.HasSeq() && msg.Seq() > 0) {
-        int seq = msg.Seq();
-        if (seq <= last_seq_) {
-          LOG(WARNING) << "receive previous seq: " << seq << ", " << last_seq_;
+      } else if (ret < 0) {
+        if (ret == ERROR_NOMORE_DATA) {
+          VLOG(5) << "no more data";
         } else {
-          last_seq_ = seq;
-          SendAck();
+          VLOG(5) << CERROR("system read error");
+        }
+        return true;
+      } else {
+        Message msg = Message::UnserializeString(current_read_packet_->Content());
+        VLOG(7) << current_read_packet_->Content();
+        if(msg.Empty() || !msg.HasType()) {
+          LOG(WARNING) << "read message invalid: "
+                       << current_read_packet_->Content()
+                       << ", read ret=" << ret;
+          return false;
+        }
+        VLOG(3) << "Read message: " << msg;
+        message_cb_(current_read_packet_->Content());
+        current_read_packet_->Reset();
+        if (msg.HasSeq() && msg.Seq() > 0) {
+          int seq = msg.Seq();
+          if (seq <= last_seq_) {
+            LOG(WARNING) << "receive previous seq: " << seq << ", " << last_seq_;
+          } else {
+            last_seq_ = seq;
+            SendAck();
+          }
         }
       }
     }
+  } catch (std::exception& e) {
+    LOG(ERROR) << "caught exception when receive: " << e.what();
+    return false;
+  } catch (...) {
+    LOG(ERROR) << "caught unknow exception";
+    return false;
   }
   return true;
 }
