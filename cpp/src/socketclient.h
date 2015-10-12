@@ -28,12 +28,15 @@ inline ostream& operator<<(ostream& os, const ClientOption& co) {
   return os;
 }
 
-const int MAX_BUFFER_SIZE = 1024;
+const int MAX_BUFFER_SIZE = 4096;
 
 class BufferReader {
  public:
   BufferReader();
   ~BufferReader();
+  void Reset() {
+    start_  = end_ = 0;
+  }
   int Read(int fd, char* addr, int len);
   int ReadLine(int fd, char* addr);
   int Size() {return end_ - start_;}
@@ -73,6 +76,8 @@ class Packet {
     ::memset(data_len_buf_, 0, sizeof(data_len_buf_));
     buf_start_ = 0;
     rstate_ = RS_HEADER;
+
+    reader_.Reset();
   }
   void AddToBuffer(const char* ptr, int len) {
     reader_.AddToBuffer(ptr, len);

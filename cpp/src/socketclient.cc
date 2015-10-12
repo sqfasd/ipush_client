@@ -427,9 +427,9 @@ bool SocketClient::HandleRead() {
         Message msg = Message::UnserializeString(current_read_packet_->Content());
         VLOG(7) << current_read_packet_->Content();
         if(msg.Empty() || !msg.HasType()) {
-          LOG(WARNING) << "read message invalid: "
-                       << current_read_packet_->Content()
-                       << ", read ret=" << ret;
+          LOG(WARNING) << "read ret = " << ret
+                       << ", invalid message = ["
+                       << current_read_packet_->Content() << "]";
           return false;
         }
         VLOG(3) << "Read message: " << msg;
