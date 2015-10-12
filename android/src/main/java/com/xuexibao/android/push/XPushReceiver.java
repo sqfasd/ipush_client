@@ -3,8 +3,6 @@ package com.xuexibao.android.push;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 /**
  * Created by sqf on 15-5-6.

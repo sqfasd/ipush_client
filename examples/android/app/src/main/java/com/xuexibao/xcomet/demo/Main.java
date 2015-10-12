@@ -6,10 +6,7 @@ package com.xuexibao.xcomet.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import com.xuexibao.android.push.XPushConfig;
@@ -41,10 +38,12 @@ public class Main extends Activity
 		super.onCreate(icicle);
 		setContentView(R.layout.main);
         textView = (TextView)findViewById(R.id.message_view);
+        textView.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         instance = this;
 
         XPushConfig.enableDebug();
+        XPushConfig.setDebugLevel(7);
         XPushConfig.setServerHost("182.92.113.188");
         XPushConfig.setServerPort(9000);
         XPushConfig.setAccount("android_user_2");
