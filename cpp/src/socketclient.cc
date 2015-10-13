@@ -164,7 +164,8 @@ int Packet::Read(int fd) {
       }
       int crlf_pos = content_.find("\r\n");
       if (crlf_pos != -1) {
-        content_[crlf_pos] = 0;
+        content_ = content_.substr(0, crlf_pos);
+        len_ = content_.size();
       }
       return 1;
     }
@@ -425,6 +426,10 @@ bool SocketClient::HandleRead() {
         }
         return true;
       } else {
+        if (current_read_packet_->Size() == 0) {
+          VLOG(3) << "receive zero length content";
+          return true;
+        }
         Message msg = Message::UnserializeString(current_read_packet_->Content());
         VLOG(7) << current_read_packet_->Content();
         if(msg.Empty() || !msg.HasType()) {
