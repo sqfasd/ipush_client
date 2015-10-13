@@ -142,7 +142,7 @@ int Packet::Read(int fd) {
       if(ret > 0) {
         VLOG(7) << "ReadLine: " << buf;
         len_ = ::strtol(buf, NULL, 16) + 2;
-        VLOG(7) << "Read len: " << len_;
+        VLOG(7) << "Read data len: " << len_;
         CHECK(len_ > 0 && len_ < 8000 * 1000);  // packet limit 8M
         left_ = len_;
         content_.resize(len_);
@@ -426,10 +426,6 @@ bool SocketClient::HandleRead() {
         }
         return true;
       } else {
-        if (current_read_packet_->Size() == 0) {
-          VLOG(3) << "receive zero length content";
-          continue;
-        }
         Message msg = Message::UnserializeString(current_read_packet_->Content());
         VLOG(7) << current_read_packet_->Content();
         if(msg.Empty() || !msg.HasType()) {
