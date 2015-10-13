@@ -231,6 +231,7 @@ SocketClient::~SocketClient() {
 
 int SocketClient::Connect() {
   WaitForClose();
+  VLOG(3) << "connect option " << option_;
   if (option_.host.empty() ||
       option_.port <= 0 ||
       option_.username.empty() ||
