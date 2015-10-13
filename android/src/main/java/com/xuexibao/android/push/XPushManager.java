@@ -3,6 +3,7 @@ package com.xuexibao.android.push;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 
 import com.xuexibao.xcomet.XCometClient;
 
@@ -134,10 +135,12 @@ public class XPushManager {
 
     private void doScheduleReconnect() {
         VLog.d(3, TAG, "doScheduleReconnect(): scheduling reconnect in 10 seconds");
+        Looper.prepare();
         if (mReconnectHandler == null) {
             mReconnectHandler = new Handler();
         }
         mReconnectHandler.postDelayed(mReconnectRunnable, 10000);
+        Looper.loop();
     }
 
     private void scheduleReconnect() {
@@ -174,13 +177,18 @@ public class XPushManager {
         VLog.d(4, TAG, "getKeepAliveIntervalSec: " + XPushConfig.getKeepAliveIntervalSec());
 
         VLog.d(3, TAG, "before real connect");
-        int ret = mPushClient.connect();
-        if (ret == 0) {
-            setState(State.Connecting);
-            VLog.d(3, TAG, "connect success, waiting form callback");
-        } else {
-            VLog.d(3, TAG, "connect failed with code " + ret);
-            scheduleReconnect();
-        }
+        setState(State.Connecting);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int ret = mPushClient.connect();
+                if (ret == 0) {
+                    VLog.d(3, TAG, "connect success, waiting form callback");
+                } else {
+                    VLog.d(3, TAG, "connect failed with code " + ret);
+                    scheduleReconnect();
+                }
+            }
+        }).start();
     }
 }

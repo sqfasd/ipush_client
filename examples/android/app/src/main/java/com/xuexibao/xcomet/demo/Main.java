@@ -50,5 +50,6 @@ public class Main extends Activity
         XPushConfig.setToken("android_token_2");
         XPushConfig.setKeepAliveIntervalSec(30);
         XPushManager.startPush(getApplicationContext());
+        textView.append("=============================================");
 	}
 }

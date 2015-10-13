@@ -428,7 +428,7 @@ bool SocketClient::HandleRead() {
       } else {
         if (current_read_packet_->Size() == 0) {
           VLOG(3) << "receive zero length content";
-          return true;
+          continue;
         }
         Message msg = Message::UnserializeString(current_read_packet_->Content());
         VLOG(7) << current_read_packet_->Content();
