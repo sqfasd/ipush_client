@@ -4,6 +4,12 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	>
+    <Button
+        android:id="@+id/test_btn"
+        android:layout_width="match_parent"
+        android:layout_height="20pt"
+        android:text="Click"
+        android:onClick="onTestBtnClick"/>
 	<TextView
         android:id="@+id/message_view"
         android:scrollbars="vertical"

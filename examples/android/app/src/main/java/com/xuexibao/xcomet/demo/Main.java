@@ -7,6 +7,7 @@ package com.xuexibao.xcomet.demo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xuexibao.android.push.XPushConfig;
@@ -16,6 +17,7 @@ public class Main extends Activity
 {
 	private static final String TAG = "Main";
     private static Main instance = null;
+    private int i = 0;
 
     private TextView textView = null;
 
@@ -52,4 +54,9 @@ public class Main extends Activity
         XPushManager.startPush(getApplicationContext());
         textView.append("=============================================");
 	}
+
+    public void onTestBtnClick(View view) {
+        textView.append("testBtnClick" + i + "\n");
+        ++i;
+    }
 }

@@ -165,8 +165,8 @@ int Packet::Read(int fd) {
       int crlf_pos = content_.find("\r\n");
       if (crlf_pos != -1) {
         content_ = content_.substr(0, crlf_pos);
-        len_ = content_.size();
       }
+      len_ = content_.size();
       return 1;
     }
   }
@@ -231,7 +231,6 @@ SocketClient::~SocketClient() {
 }
 
 int SocketClient::Connect() {
-  WaitForClose();
   VLOG(3) << "connect option " << option_;
   if (option_.host.empty() ||
       option_.port <= 0 ||
@@ -251,6 +250,7 @@ int SocketClient::Connect() {
     }
     VLOG(3) << "get ip: " << ip;
   }
+  VLOG(3) << "before create socket";
   sock_fd_ = ::socket(AF_INET, SOCK_STREAM, 0);
   if (sock_fd_== -1) {
     LOG(ERROR) << CERROR("socket error");
@@ -264,69 +264,89 @@ int SocketClient::Connect() {
   server_addr.sin_addr.s_addr = ::inet_addr(ip.c_str());
   server_addr.sin_port = htons(option_.port);
 
-  if (::connect(sock_fd_,
-                (struct sockaddr*)&server_addr,
-                sizeof(struct sockaddr)) == -1) {
-    LOG(ERROR) << CERROR("connect error");
-    return -4;
-  }
-  int size = ::snprintf(
-      buffer,
-      sizeof(buffer),
-      "GET /connect?uid=%s&password=%s HTTP/1.1\r\n"
-      "User-Agent: mobile_socket_client/0.1.0\r\n"
-      "Accept: */*\r\n"
-      "\r\n",
-      option_.username.c_str(),
-      option_.password.c_str());
-  if (::send(sock_fd_, buffer, size, 0) < 0) {
-    LOG(ERROR) << CERROR("send error");
-    return -5;
-  }
-  // TODO(qingfeng) handle message after header
-  ::memset(buffer, 0, sizeof(buffer));
-  int recvlen = 0;
-  if ((recvlen = ::recv(sock_fd_, buffer, sizeof(buffer), 0)) < 0) {
-    LOG(ERROR) << CERROR("receive error");
-    return -6;
-  }
-  VLOG(3) << "response: " << buffer;
-  if (::strstr(buffer, "HTTP/1.1 200") == NULL) {
-    const char* location = ::strstr(buffer, "HTTP/1.1 303");
-    VLOG(3) << "location: " << location;
-    if (location != NULL) {
-      const char* start = ::strstr(location, "http://");
-      const char* end = ::strstr(start, "\r\n");
-      VLOG(4) << "location url start: " << start;
-      VLOG(4) << "location url end: " <<  end;
-      if (start == NULL || end == NULL) {
-        LOG(ERROR) << "incorrect redirect location: " << location;
-        return -8;
-      }
-      string url = string(start, end - start);
-      VLOG(3) << "location url: " <<  url;
-      if (!ParseIpPort(url, option_.host, option_.port)) {
-        LOG(ERROR) << "incorrect redirect location: " << location;
-        return -8;
-      }
-      LOG(INFO) << "redirect to: " << url;
-      return Connect();
-    } else {
-      LOG(ERROR) << (string("connect failed: ") + buffer);
-      return -7;
+  int ret = 0;
+  do {
+    VLOG(3) << "before connect";
+    if (::connect(sock_fd_,
+                  (struct sockaddr*)&server_addr,
+                  sizeof(struct sockaddr)) == -1) {
+      LOG(ERROR) << CERROR("connect error");
+      ret = -4;
+      break;
     }
-  }
+    int size = ::snprintf(
+        buffer,
+        sizeof(buffer),
+        "GET /connect?uid=%s&password=%s HTTP/1.1\r\n"
+        "User-Agent: mobile_socket_client/0.1.0\r\n"
+        "Accept: */*\r\n"
+        "\r\n",
+        option_.username.c_str(),
+        option_.password.c_str());
+    if (::send(sock_fd_, buffer, size, 0) < 0) {
+      LOG(ERROR) << CERROR("send error");
+      ret = -5;
+      break;
+    }
+    // TODO(qingfeng) handle message after header
+    ::memset(buffer, 0, sizeof(buffer));
+    int recvlen = 0;
+    VLOG(3) << "before recv http response";
+    if ((recvlen = ::recv(sock_fd_, buffer, sizeof(buffer), 0)) < 0) {
+      LOG(ERROR) << CERROR("receive error");
+      ret = -6;
+      break;
+    }
+    VLOG(3) << "http response: " << buffer;
+    if (::strstr(buffer, "HTTP/1.1 200") == NULL) {
+      const char* location = ::strstr(buffer, "HTTP/1.1 303");
+      VLOG(3) << "location: " << location;
+      if (location != NULL) {
+        const char* start = ::strstr(location, "http://");
+        const char* end = ::strstr(start, "\r\n");
+        VLOG(4) << "location url start: " << start;
+        VLOG(4) << "location url end: " <<  end;
+        if (start == NULL || end == NULL) {
+          LOG(ERROR) << "incorrect redirect location: " << location;
+          ret = -8;
+          break;
+        }
+        string url = string(start, end - start);
+        VLOG(3) << "location url: " <<  url;
+        if (!ParseIpPort(url, option_.host, option_.port)) {
+          LOG(ERROR) << "incorrect redirect location: " << location;
+          ret = -8;
+          break;
+        }
+        LOG(INFO) << "redirect to: " << url;
+        ::shutdown(sock_fd_, SHUT_RDWR);
+        return Connect();
+      } else {
+        LOG(ERROR) << (string("connect failed: ") + buffer);
+        ret = -7;
+        break;
+      }
+    }
 
-  current_read_packet_.reset(new Packet());
-  const char* data_start = ::strstr(buffer, "\r\n\r\n") + 4;
-  if (data_start - buffer < recvlen) {
-    VLOG(5) << "data along with response header: " << data_start;
-    current_read_packet_->AddToBuffer(
-        data_start, buffer + recvlen - data_start);
+    current_read_packet_.reset(new Packet());
+    const char* data_start = ::strstr(buffer, "\r\n\r\n") + 4;
+    if (data_start - buffer < recvlen) {
+      VLOG(5) << "data along with response header: " << data_start;
+      current_read_packet_->AddToBuffer(
+          data_start, buffer + recvlen - data_start);
+    }
+    VLOG(3) << "before SetNonblock";
+    SetNonblock(sock_fd_);
+    VLOG(3) << "before create new thread";
+    worker_thread_ = std::thread(&SocketClient::Loop, this);
+    worker_thread_.detach();
+    ret = 0;
+  } while (0);
+
+  if (ret != 0 && sock_fd_ != -1) {
+    ::shutdown(sock_fd_, SHUT_RDWR);
   }
-  SetNonblock(sock_fd_);
-  worker_thread_ = std::thread(&SocketClient::Loop, this);
-  return 0;
+  return ret;
 }
 
 void SocketClient::Loop() {
@@ -426,6 +446,11 @@ bool SocketClient::HandleRead() {
         }
         return true;
       } else {
+        if (current_read_packet_->Size() == 0) {
+          LOG(WARNING) << "receive zero length packet";
+          current_read_packet_->Reset();
+          continue;
+        }
         Message msg = Message::UnserializeString(current_read_packet_->Content());
         VLOG(7) << current_read_packet_->Content();
         if(msg.Empty() || !msg.HasType()) {
@@ -514,15 +539,10 @@ void SocketClient::Close() {
 
 void SocketClient::WaitForClose() {
   VLOG(3) << "WaitForClose()";
-  if (is_connected_) {
-    Close();
-  } else if (sock_fd_ != -1) {
-    ::shutdown(sock_fd_, SHUT_RDWR);
-    sock_fd_ = -1;
-  }
-  if (worker_thread_.joinable()) {
-    VLOG(3) << "join worker thread";
-    worker_thread_.join();
+  Close();
+  while (sock_fd_ != -1) {
+    VLOG(3) << "waiting for closed ...";
+    ::sleep(1);
   }
 }
 

@@ -76,8 +76,6 @@ class Packet {
     ::memset(data_len_buf_, 0, sizeof(data_len_buf_));
     buf_start_ = 0;
     rstate_ = RS_HEADER;
-
-    reader_.Reset();
   }
   void AddToBuffer(const char* ptr, int len) {
     reader_.AddToBuffer(ptr, len);

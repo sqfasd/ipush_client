@@ -55,7 +55,7 @@ public class XPushManager {
             if (mState == State.Disconnecting) {
                 setState(State.Disconnected);
             } else {
-                startPush(mContext);
+                scheduleReconnect();
             }
         }
 
@@ -63,6 +63,7 @@ public class XPushManager {
         public void onConnect() {
             VLog.d(3, TAG, "onConnect" );
             setState(State.Connected);
+            mRetryCount = 0;
         }
     };
 
