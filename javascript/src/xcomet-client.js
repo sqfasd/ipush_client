@@ -1,7 +1,6 @@
 /*!
  * xcomet-client JavaScript Library v0.1.0
  *
- * Copyright 2015 xuexibao.com, Inc.
  * Date: 2015-07-20
  */
 
