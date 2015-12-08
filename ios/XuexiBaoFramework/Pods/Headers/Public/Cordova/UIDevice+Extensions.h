@@ -1,1 +1,0 @@
-../../../Cordova/CordovaLib/Classes/UIDevice+Extensions.h

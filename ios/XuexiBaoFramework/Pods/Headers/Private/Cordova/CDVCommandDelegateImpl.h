@@ -1,1 +1,0 @@
-../../../Cordova/CordovaLib/Classes/CDVCommandDelegateImpl.h
