@@ -4,7 +4,7 @@
 
     <application>
         <service
-            android:name="com.xuexibao.android.push.XPushService"
+            android:name="com.ipush.android.XPushService"
             android:enabled="true"
             android:exported="true" >
         </service>

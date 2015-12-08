@@ -1,11 +1,11 @@
-package com.xuexibao.android.push;
+package com.ipush.android;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.xuexibao.xcomet.XCometClient;
+import com.ipush.xcomet.XCometClient;
 
 /**
  * Created by sqf on 15-5-5.

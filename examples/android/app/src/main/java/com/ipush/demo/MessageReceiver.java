@@ -1,10 +1,11 @@
-package com.xuexibao.xcomet.demo;
+package com.ipush.demo;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.xuexibao.android.push.XPushMessage;
-import com.xuexibao.android.push.XPushReceiver;
+import com.ipush.android.XPushMessage;
+import com.ipush.android.XPushReceiver;
+import com.ipush.demo.Main;
 
 /**
  * Created by sqf on 15-5-6.

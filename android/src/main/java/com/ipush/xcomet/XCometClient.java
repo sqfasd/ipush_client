@@ -1,6 +1,4 @@
-package com.xuexibao.xcomet;
-
-import com.xuexibao.android.push.XPushManager;
+package com.ipush.xcomet;
 
 public class XCometClient {
     private long mNativeHandler = 0;

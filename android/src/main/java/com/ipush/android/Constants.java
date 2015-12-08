@@ -1,4 +1,4 @@
-package com.xuexibao.android.push;
+package com.ipush.android;
 
 /**
  * Created by sqf on 15-5-5.

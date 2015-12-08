@@ -1,4 +1,4 @@
-package com.xuexibao.android.push;
+package com.ipush.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;

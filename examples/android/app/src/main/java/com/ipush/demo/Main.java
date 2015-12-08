@@ -2,7 +2,7 @@
  * $Id: TestKeepAlive.java 216 2009-01-08 02:03:13Z jasta00 $
  */
 
-package com.xuexibao.xcomet.demo;
+package com.ipush.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,8 +10,9 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
-import com.xuexibao.android.push.XPushConfig;
-import com.xuexibao.android.push.XPushManager;
+import com.ipush.android.XPushConfig;
+import com.ipush.android.XPushManager;
+import com.ipush.xcomet.demo.R;
 
 public class Main extends Activity
 {

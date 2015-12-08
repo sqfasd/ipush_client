@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xuexibao.xcomet.demo"
+    package="com.ipush.xcomet.demo"
     android:versionCode="1"
     android:versionName="1.0.0">
 
@@ -11,7 +11,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name">
         <activity
-            android:name=".Main"
+            android:name="com.ipush.demo.Main"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,19 +20,19 @@
         </activity>
 
         <receiver
-            android:name=".MessageReceiver"
+            android:name="com.ipush.demo.MessageReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.PACKAGE_RESTARTED" />
-                <action android:name="com.xuexibao.android.push.MESSAGE_RECEIVED" />
+                <action android:name="com.ipush.android.MESSAGE_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name="com.xuexibao.android.push.XPushService"
+            android:name="com.ipush.android.XPushService"
             android:exported="true"
             android:persistent="true" >
         </service>
