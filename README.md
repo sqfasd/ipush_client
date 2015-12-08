@@ -1,4 +1,4 @@
-# xcomet_client
+# ipush_client
 
 ## Android
 
